@@ -10,7 +10,12 @@ public class Trancoder {
     super();
   }
 
-  protected String convert(final String string) {
+  protected String convert(final String string, final int size) {
+    final String value = safeValue(string);
+    return StringUtils.rightPad(value, size, ' ');
+  }
+
+  private static String safeValue(final String string) {
     return Objects.nonNull(string) ? string : StringUtils.EMPTY;
   }
 }
