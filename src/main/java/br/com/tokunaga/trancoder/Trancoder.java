@@ -10,16 +10,16 @@ public class Trancoder {
     super();
   }
 
-  protected String convert(final String string, final int size, char padChar) {
-    return convert(string, size, padChar, false);
+  protected String convert(final String str, final int size, char padChar) {
+    return convert(str, size, padChar, false);
   }
 
-  protected String convert(final String string, final int size, final char padChar, final boolean leftPad) {
-    final String value = safeValue(string);
-    return leftPad ? StringUtils.leftPad(value, size, padChar) : StringUtils.rightPad(value, size, padChar);
+  protected String convert(final String value, final int size, final char padChar, final boolean leftPad) {
+    final String str = safeValue(value);
+    return leftPad ? StringUtils.leftPad(str, size, padChar) : StringUtils.rightPad(str, size, padChar);
   }
 
-  private static String safeValue(final String string) {
-    return Objects.nonNull(string) ? string : StringUtils.EMPTY;
+  private static String safeValue(final String str) {
+    return Objects.nonNull(str) ? str : StringUtils.EMPTY;
   }
 }
