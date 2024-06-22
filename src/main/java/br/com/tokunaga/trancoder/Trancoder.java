@@ -18,14 +18,18 @@ public class Trancoder {
 
   protected String convert(final String value, final int size, final char padChar, final boolean leftPad) {
     final String str = safeValue(value);
-    final String padded = padValue(size, padChar, leftPad, str);
-    if (padded.length() > size)
+    final String pad = padValue(str, size, padChar, leftPad);
+    if (isPadOverflow(pad, size))
       throw new TrancodeOverflowException();
 
-    return padded;
+    return pad;
   }
 
-  private static String padValue(final int size, final char padChar, final boolean leftPad, final String str) {
+  private static boolean isPadOverflow(final String str, final int size) {
+    return str.length() > size;
+  }
+
+  private static String padValue(final String str, final int size, final char padChar, final boolean leftPad) {
     return leftPad ? StringUtils.leftPad(str, size, padChar) : StringUtils.rightPad(str, size, padChar);
   }
 
