@@ -10,13 +10,13 @@ public class Trancoder {
     super();
   }
 
-  protected String convert(final String string, final int size) {
-    return convert(string, size, false);
+  protected String convert(final String string, final int size, char padChar) {
+    return convert(string, size, padChar, false);
   }
 
-  protected String convert(final String string, final int size, final boolean leftPad) {
+  protected String convert(final String string, final int size, final char padChar, final boolean leftPad) {
     final String value = safeValue(string);
-    return leftPad ? StringUtils.leftPad(value, size, ' ') : StringUtils.rightPad(value, size, ' ');
+    return leftPad ? StringUtils.leftPad(value, size, padChar) : StringUtils.rightPad(value, size, padChar);
   }
 
   private static String safeValue(final String string) {
