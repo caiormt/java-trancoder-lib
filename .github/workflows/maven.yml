@@ -11,6 +11,7 @@ on:
       - "**/CONTRIBUTING.md"
       - "**/CONTRIBUTORS.txt"
       - "**/LICENSE"
+      - "**/CODEOWNERS"
   pull_request:
     branches:
       - main
@@ -19,6 +20,7 @@ on:
       - "**/CONTRIBUTING.md"
       - "**/CONTRIBUTORS.txt"
       - "**/LICENSE"
+      - "**/CODEOWNERS"
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
