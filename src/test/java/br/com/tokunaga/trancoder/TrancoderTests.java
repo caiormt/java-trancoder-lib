@@ -10,6 +10,8 @@ import net.jqwik.api.constraints.IntRange;
 import net.jqwik.api.constraints.NotEmpty;
 import net.jqwik.api.lifecycle.BeforeProperty;
 
+import br.com.tokunaga.trancoder.exception.TrancodeOverflowException;
+
 class TrancoderTests {
 
   private Trancoder trancoder;
@@ -68,5 +70,18 @@ class TrancoderTests {
     String expected = StringUtils.rightPad("", size, padChar);
     assertThat(trancoder.convert(str, str.length() + size, padChar, true))
         .isEqualTo(expected + str);
+  }
+
+  @Property
+  void shouldThrowOverflowConvertingAnyStringExceedingSize(
+      @ForAll @NotEmpty final String str,
+      @ForAll @IntRange(min = 1, max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    assertThatThrownBy(() -> trancoder.convert(str, str.length() - size, padChar, true))
+        .isExactlyInstanceOf(TrancodeOverflowException.class);
+
+    assertThatThrownBy(() -> trancoder.convert(str, str.length() - size, padChar, false))
+        .isExactlyInstanceOf(TrancodeOverflowException.class);
   }
 }
