@@ -4,6 +4,8 @@ import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
 
+import br.com.tokunaga.trancoder.exception.TrancodeOverflowException;
+
 public class Trancoder {
 
   public Trancoder() {
@@ -16,6 +18,14 @@ public class Trancoder {
 
   protected String convert(final String value, final int size, final char padChar, final boolean leftPad) {
     final String str = safeValue(value);
+    final String padded = padValue(size, padChar, leftPad, str);
+    if (padded.length() > size)
+      throw new TrancodeOverflowException();
+
+    return padded;
+  }
+
+  private static String padValue(final int size, final char padChar, final boolean leftPad, final String str) {
     return leftPad ? StringUtils.leftPad(str, size, padChar) : StringUtils.rightPad(str, size, padChar);
   }
 
