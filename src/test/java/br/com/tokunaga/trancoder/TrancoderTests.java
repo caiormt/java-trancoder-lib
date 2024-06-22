@@ -20,39 +20,53 @@ class TrancoderTests {
   }
 
   @Property
-  void shouldConvertNullString(@ForAll @IntRange(max = 1000) final int size) {
-    String expected = StringUtils.rightPad("", size, ' ');
-    assertThat(trancoder.convert(null, size, ' ', false))
+  void shouldConvertNullString(
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = StringUtils.rightPad("", size, padChar);
+    assertThat(trancoder.convert(null, size, padChar, false))
+        .isEqualTo(expected);
+
+    assertThat(trancoder.convert(null, size, padChar, true))
         .isEqualTo(expected);
   }
 
   @Property
-  void shouldConvertEmptyString(@ForAll @IntRange(max = 1000) final int size) {
-    String expected = StringUtils.rightPad("", size, ' ');
-    assertThat(trancoder.convert("", size, ' ', false))
+  void shouldConvertEmptyString(
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = StringUtils.rightPad("", size, padChar);
+    assertThat(trancoder.convert("", size, padChar, false))
+        .isEqualTo(expected);
+
+    assertThat(trancoder.convert("", size, padChar, true))
         .isEqualTo(expected);
   }
 
   @Property
   void shouldConvertAnyString(
       @ForAll @NotEmpty final String str,
-      @ForAll @IntRange(max = 1000) final int size) {
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
 
-    String expected = StringUtils.rightPad("", size, ' ');
-    assertThat(trancoder.convert(str, str.length() + size, ' ', false))
+    String expected = StringUtils.rightPad("", size, padChar);
+    assertThat(trancoder.convert(str, str.length() + size, padChar, false))
         .isEqualTo(str + expected);
 
-    assertThat(trancoder.convert(str, str.length() + size, ' '))
+    assertThat(trancoder.convert(str, str.length() + size, padChar))
         .isEqualTo(str + expected);
   }
 
   @Property
   void shouldConvertAnyStringLeftPadded(
       @ForAll @NotEmpty final String str,
-      @ForAll @IntRange(max = 1000) final int size) {
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
 
-    String expected = StringUtils.rightPad("", size, ' ');
-    assertThat(trancoder.convert(str, str.length() + size, ' ', true))
+    String expected = StringUtils.rightPad("", size, padChar);
+    assertThat(trancoder.convert(str, str.length() + size, padChar, true))
         .isEqualTo(expected + str);
   }
 }
