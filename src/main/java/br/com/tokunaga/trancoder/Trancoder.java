@@ -12,10 +12,6 @@ public class Trancoder {
     super();
   }
 
-  protected String convert(final String str, final int size, char padChar) {
-    return convert(str, size, padChar, false);
-  }
-
   protected String convert(final String value, final int size, final char padChar, final boolean leftPad) {
     final String str = safeValue(value);
     final String pad = padValue(str, size, padChar, leftPad);

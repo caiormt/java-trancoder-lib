@@ -56,9 +56,6 @@ class TrancoderTests {
     String expected = StringUtils.rightPad("", size, padChar);
     assertThat(trancoder.convert(str, str.length() + size, padChar, false))
         .isEqualTo(str + expected);
-
-    assertThat(trancoder.convert(str, str.length() + size, padChar))
-        .isEqualTo(str + expected);
   }
 
   @Property
