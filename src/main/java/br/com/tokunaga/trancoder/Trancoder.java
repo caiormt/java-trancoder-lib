@@ -10,6 +10,10 @@ public class Trancoder {
     super();
   }
 
+  protected String convert(final String string, final int size) {
+    return convert(string, size, false);
+  }
+
   protected String convert(final String string, final int size, final boolean leftPad) {
     final String value = safeValue(string);
     return leftPad ? StringUtils.leftPad(value, size, ' ') : StringUtils.rightPad(value, size, ' ');
