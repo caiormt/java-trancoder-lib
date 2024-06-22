@@ -22,14 +22,14 @@ class TrancoderTests {
   @Property
   void shouldConvertNullString(@ForAll @IntRange(max = 1000) final int size) {
     String expected = StringUtils.rightPad("", size, ' ');
-    assertThat(trancoder.convert(null, size, false))
+    assertThat(trancoder.convert(null, size, ' ', false))
         .isEqualTo(expected);
   }
 
   @Property
   void shouldConvertEmptyString(@ForAll @IntRange(max = 1000) final int size) {
     String expected = StringUtils.rightPad("", size, ' ');
-    assertThat(trancoder.convert("", size, false))
+    assertThat(trancoder.convert("", size, ' ', false))
         .isEqualTo(expected);
   }
 
@@ -39,10 +39,10 @@ class TrancoderTests {
       @ForAll @IntRange(max = 1000) final int size) {
 
     String expected = StringUtils.rightPad("", size, ' ');
-    assertThat(trancoder.convert(str, str.length() + size, false))
+    assertThat(trancoder.convert(str, str.length() + size, ' ', false))
         .isEqualTo(str + expected);
 
-    assertThat(trancoder.convert(str, str.length() + size))
+    assertThat(trancoder.convert(str, str.length() + size, ' '))
         .isEqualTo(str + expected);
   }
 
@@ -52,7 +52,7 @@ class TrancoderTests {
       @ForAll @IntRange(max = 1000) final int size) {
 
     String expected = StringUtils.rightPad("", size, ' ');
-    assertThat(trancoder.convert(str, str.length() + size, true))
+    assertThat(trancoder.convert(str, str.length() + size, ' ', true))
         .isEqualTo(expected + str);
   }
 }
