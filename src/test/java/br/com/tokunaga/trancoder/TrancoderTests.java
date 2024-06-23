@@ -67,10 +67,12 @@ class TrancoderTests {
       @ForAll @IntRange(min = 1, max = 1000) final int size,
       @ForAll final char padChar) {
 
-    assertThatThrownBy(() -> Trancoder.convert(str, str.length() - size, padChar, true))
+    final int length = str.length();
+    final int selectSize = length - size;
+    assertThatThrownBy(() -> Trancoder.convert(str, selectSize, padChar, true))
         .isExactlyInstanceOf(TrancodeOverflowException.class);
 
-    assertThatThrownBy(() -> Trancoder.convert(str, str.length() - size, padChar, false))
+    assertThatThrownBy(() -> Trancoder.convert(str, selectSize, padChar, false))
         .isExactlyInstanceOf(TrancodeOverflowException.class);
   }
 }
