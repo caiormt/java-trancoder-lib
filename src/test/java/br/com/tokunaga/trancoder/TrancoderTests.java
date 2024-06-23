@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 
 import org.apache.commons.lang3.StringUtils;
 
+import net.jqwik.api.Example;
 import net.jqwik.api.ForAll;
 import net.jqwik.api.Property;
 import net.jqwik.api.constraints.IntRange;
@@ -24,6 +25,12 @@ class TrancoderTests {
 
     assertThat(Trancoder.convert(null, size, padChar, true))
         .isEqualTo(expected);
+  }
+
+  @Example
+  void shouldConvertNullInteger() {
+    assertThat(Trancoder.convert(null))
+        .isEqualTo("");
   }
 
   @Property
