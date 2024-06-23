@@ -8,18 +8,10 @@ import net.jqwik.api.ForAll;
 import net.jqwik.api.Property;
 import net.jqwik.api.constraints.IntRange;
 import net.jqwik.api.constraints.NotEmpty;
-import net.jqwik.api.lifecycle.BeforeProperty;
 
 import br.com.tokunaga.trancoder.exception.TrancodeOverflowException;
 
 class TrancoderTests {
-
-  private Trancoder trancoder;
-
-  @BeforeProperty
-  void setUp() {
-    trancoder = new Trancoder();
-  }
 
   @Property
   void shouldConvertNullString(
@@ -27,10 +19,10 @@ class TrancoderTests {
       @ForAll final char padChar) {
 
     String expected = StringUtils.rightPad("", size, padChar);
-    assertThat(trancoder.convert(null, size, padChar, false))
+    assertThat(Trancoder.convert(null, size, padChar, false))
         .isEqualTo(expected);
 
-    assertThat(trancoder.convert(null, size, padChar, true))
+    assertThat(Trancoder.convert(null, size, padChar, true))
         .isEqualTo(expected);
   }
 
@@ -40,10 +32,10 @@ class TrancoderTests {
       @ForAll final char padChar) {
 
     String expected = StringUtils.rightPad("", size, padChar);
-    assertThat(trancoder.convert("", size, padChar, false))
+    assertThat(Trancoder.convert("", size, padChar, false))
         .isEqualTo(expected);
 
-    assertThat(trancoder.convert("", size, padChar, true))
+    assertThat(Trancoder.convert("", size, padChar, true))
         .isEqualTo(expected);
   }
 
@@ -54,7 +46,7 @@ class TrancoderTests {
       @ForAll final char padChar) {
 
     String expected = StringUtils.rightPad("", size, padChar);
-    assertThat(trancoder.convert(str, str.length() + size, padChar, false))
+    assertThat(Trancoder.convert(str, str.length() + size, padChar, false))
         .isEqualTo(str + expected);
   }
 
@@ -65,7 +57,7 @@ class TrancoderTests {
       @ForAll final char padChar) {
 
     String expected = StringUtils.rightPad("", size, padChar);
-    assertThat(trancoder.convert(str, str.length() + size, padChar, true))
+    assertThat(Trancoder.convert(str, str.length() + size, padChar, true))
         .isEqualTo(expected + str);
   }
 
@@ -75,10 +67,10 @@ class TrancoderTests {
       @ForAll @IntRange(min = 1, max = 1000) final int size,
       @ForAll final char padChar) {
 
-    assertThatThrownBy(() -> trancoder.convert(str, str.length() - size, padChar, true))
+    assertThatThrownBy(() -> Trancoder.convert(str, str.length() - size, padChar, true))
         .isExactlyInstanceOf(TrancodeOverflowException.class);
 
-    assertThatThrownBy(() -> trancoder.convert(str, str.length() - size, padChar, false))
+    assertThatThrownBy(() -> Trancoder.convert(str, str.length() - size, padChar, false))
         .isExactlyInstanceOf(TrancodeOverflowException.class);
   }
 }

@@ -6,13 +6,13 @@ import org.apache.commons.lang3.StringUtils;
 
 import br.com.tokunaga.trancoder.exception.TrancodeOverflowException;
 
-public class Trancoder {
+public abstract class Trancoder {
 
-  public Trancoder() {
+  private Trancoder() {
     super();
   }
 
-  protected String convert(final String value, final int size, final char padChar, final boolean leftPad) {
+  public static String convert(final String value, final int size, final char padChar, final boolean leftPad) {
     final String str = safeValue(value);
     final String pad = padValue(str, size, padChar, leftPad);
     if (isPadOverflow(pad, size))
