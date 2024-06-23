@@ -111,4 +111,20 @@ class TrancoderTests {
     assertThatThrownBy(() -> Trancoder.convert(str, target, padChar, false))
         .isExactlyInstanceOf(TrancodeOverflowException.class);
   }
+
+  @Property
+  void shouldThrowOverflowConvertingAnyIntegerExceedingSize(
+      @ForAll @NotEmpty final Integer value,
+      @ForAll @IntRange(min = 1, max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = Integer.toString(value);
+    int length = expected.length();
+    int target = length - size;
+    assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, true))
+        .isExactlyInstanceOf(TrancodeOverflowException.class);
+
+    assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, false))
+        .isExactlyInstanceOf(TrancodeOverflowException.class);
+  }
 }
