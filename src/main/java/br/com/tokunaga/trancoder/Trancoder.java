@@ -21,6 +21,10 @@ public abstract class Trancoder {
     return pad;
   }
 
+  public static String convert(final Integer value) {
+    return "";
+  }
+
   private static boolean isPadOverflow(final String str, final int size) {
     return str.length() > size;
   }
