@@ -42,6 +42,11 @@ public abstract class Trancoder {
     return safePadValue(str, size, padChar, leftPad);
   }
 
+  public static String convert(final Float value, final int size, final char padChar, final boolean leftPad) {
+    final String str = safeValue(value);
+    return safePadValue(str, size, padChar, leftPad);
+  }
+
   private static String safePadValue(final String str, final int size, final char padChar, final boolean leftPad) {
     final String value = padValue(str, size, padChar, leftPad);
     if (isPadOverflow(value, size))
