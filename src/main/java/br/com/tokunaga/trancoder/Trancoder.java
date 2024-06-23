@@ -47,22 +47,22 @@ public abstract class Trancoder {
     return safePadValue(str, size, padChar, leftPad);
   }
 
-  private static String safePadValue(final String str, final int size, final char padChar, final boolean leftPad) {
-    final String value = padValue(str, size, padChar, leftPad);
-    if (isPadOverflow(value, size))
-      throw new TrancodeOverflowException();
-    return value;
-  }
-
-  private static boolean isPadOverflow(final String str, final int size) {
-    return str.length() > size;
+  private static String safeValue(final Object value) {
+    return Objects.toString(value, StringUtils.EMPTY);
   }
 
   private static String padValue(final String str, final int size, final char padChar, final boolean leftPad) {
     return leftPad ? StringUtils.leftPad(str, size, padChar) : StringUtils.rightPad(str, size, padChar);
   }
 
-  private static String safeValue(final Object value) {
-    return Objects.toString(value, StringUtils.EMPTY);
+  private static boolean isPadOverflow(final String str, final int size) {
+    return str.length() > size;
+  }
+
+  private static String safePadValue(final String str, final int size, final char padChar, final boolean leftPad) {
+    final String value = padValue(str, size, padChar, leftPad);
+    if (isPadOverflow(value, size))
+      throw new TrancodeOverflowException();
+    return value;
   }
 }
