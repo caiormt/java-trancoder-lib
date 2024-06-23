@@ -77,6 +77,16 @@ class TrancoderTests {
   }
 
   @Property
+  void shouldConvertNullFloat(
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert((Float) null, size, padChar, false))
+        .isEqualTo(pad);
+  }
+
+  @Property
   void shouldConvertEmptyString(
       @ForAll @IntRange(max = 1000) final int size,
       @ForAll final char padChar) {
@@ -166,6 +176,19 @@ class TrancoderTests {
   }
 
   @Property
+  void shouldConvertAnyFloat(
+      @ForAll final Float value,
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = Float.toString(value);
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert(value, length + size, padChar, false))
+        .isEqualTo(expected + pad);
+  }
+
+  @Property
   void shouldConvertAnyStringLeftPadded(
       @ForAll @NotEmpty final String str,
       @ForAll @IntRange(max = 1000) final int size,
@@ -216,6 +239,19 @@ class TrancoderTests {
   }
 
   @Property
+  void shouldConvertAnyByteLeftPadded(
+      @ForAll final Byte value,
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = Byte.toString(value);
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert(value, length + size, padChar, true))
+        .isEqualTo(pad + expected);
+  }
+
+  @Property
   void shouldConvertAnyDoubleLeftPadded(
       @ForAll final Double value,
       @ForAll @IntRange(max = 1000) final int size,
@@ -229,12 +265,12 @@ class TrancoderTests {
   }
 
   @Property
-  void shouldConvertAnyByteLeftPadded(
-      @ForAll final Byte value,
+  void shouldConvertAnyFloatLeftPadded(
+      @ForAll final Float value,
       @ForAll @IntRange(max = 1000) final int size,
       @ForAll final char padChar) {
 
-    String expected = Byte.toString(value);
+    String expected = Float.toString(value);
     int length = expected.length();
     String pad = StringUtils.repeat(padChar, size);
     assertThat(Trancoder.convert(value, length + size, padChar, true))
@@ -327,6 +363,22 @@ class TrancoderTests {
       @ForAll final char padChar) {
 
     String expected = Double.toString(value);
+    int length = expected.length();
+    int target = length - size;
+    assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, true))
+        .isExactlyInstanceOf(TrancodeOverflowException.class);
+
+    assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, false))
+        .isExactlyInstanceOf(TrancodeOverflowException.class);
+  }
+
+  @Property
+  void shouldThrowOverflowConvertingAnyFloatExceedingSize(
+      @ForAll @NotEmpty final Float value,
+      @ForAll @IntRange(min = 1, max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = Float.toString(value);
     int length = expected.length();
     int target = length - size;
     assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, true))
