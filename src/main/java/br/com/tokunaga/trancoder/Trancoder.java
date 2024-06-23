@@ -22,7 +22,7 @@ public abstract class Trancoder {
   }
 
   public static String convert(final Integer value, final int size) {
-    final String str = Objects.nonNull(value) ? Integer.toString(value) : "";
+    final String str = safeValue(value);
     return StringUtils.rightPad(str, size, '0');
   }
 
@@ -36,5 +36,9 @@ public abstract class Trancoder {
 
   private static String safeValue(final String str) {
     return Objects.nonNull(str) ? str : StringUtils.EMPTY;
+  }
+
+  private static String safeValue(final Integer value) {
+    return Objects.nonNull(value) ? Integer.toString(value) : StringUtils.EMPTY;
   }
 }
