@@ -18,7 +18,7 @@ class TrancoderTests {
       @ForAll @IntRange(max = 1000) final int size,
       @ForAll final char padChar) {
 
-    String expected = StringUtils.rightPad("", size, padChar);
+    String expected = StringUtils.repeat(padChar, size);
     assertThat(Trancoder.convert(null, size, padChar, false))
         .isEqualTo(expected);
 
@@ -31,7 +31,7 @@ class TrancoderTests {
       @ForAll @IntRange(max = 1000) final int size,
       @ForAll final char padChar) {
 
-    String expected = StringUtils.rightPad("", size, padChar);
+    String expected = StringUtils.repeat(padChar, size);
     assertThat(Trancoder.convert("", size, padChar, false))
         .isEqualTo(expected);
 
@@ -45,7 +45,7 @@ class TrancoderTests {
       @ForAll @IntRange(max = 1000) final int size,
       @ForAll final char padChar) {
 
-    String expected = StringUtils.rightPad("", size, padChar);
+    String expected = StringUtils.repeat(padChar, size);
     assertThat(Trancoder.convert(str, str.length() + size, padChar, false))
         .isEqualTo(str + expected);
   }
@@ -56,7 +56,7 @@ class TrancoderTests {
       @ForAll @IntRange(max = 1000) final int size,
       @ForAll final char padChar) {
 
-    String expected = StringUtils.rightPad("", size, padChar);
+    String expected = StringUtils.repeat(padChar, size);
     assertThat(Trancoder.convert(str, str.length() + size, padChar, true))
         .isEqualTo(expected + str);
   }
