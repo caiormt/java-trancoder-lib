@@ -22,7 +22,7 @@ public abstract class Trancoder {
   }
 
   public static String convert(final Integer value) {
-    return "";
+    return Objects.nonNull(value) ? Integer.toString(value) : "";
   }
 
   private static boolean isPadOverflow(final String str, final int size) {
