@@ -21,9 +21,9 @@ public abstract class Trancoder {
     return pad;
   }
 
-  public static String convert(final Integer value, final int size) {
+  public static String convert(final Integer value, final int size, final boolean leftPad) {
     final String str = safeValue(value);
-    return StringUtils.rightPad(str, size, '0');
+    return padValue(str, size, '0', leftPad);
   }
 
   private static boolean isPadOverflow(final String str, final int size) {
