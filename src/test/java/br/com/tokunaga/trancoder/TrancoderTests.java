@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.*;
 
 import org.apache.commons.lang3.StringUtils;
 
-import net.jqwik.api.Example;
 import net.jqwik.api.ForAll;
 import net.jqwik.api.Property;
 import net.jqwik.api.constraints.IntRange;
@@ -30,7 +29,7 @@ class TrancoderTests {
   @Property
   void shouldConvertNullInteger(@ForAll @IntRange(max = 1000) final int size) {
     String pad = StringUtils.repeat('0', size);
-    assertThat(Trancoder.convert(null, size))
+    assertThat(Trancoder.convert(null, size, false))
         .isEqualTo(pad);
   }
 
@@ -66,7 +65,7 @@ class TrancoderTests {
     String expected = Integer.toString(value);
     int length = expected.length();
     String pad = StringUtils.repeat('0', size);
-    assertThat(Trancoder.convert(value, length + size))
+    assertThat(Trancoder.convert(value, length + size, false))
         .isEqualTo(expected + pad);
   }
 
@@ -79,6 +78,18 @@ class TrancoderTests {
     String pad = StringUtils.repeat(padChar, size);
     assertThat(Trancoder.convert(str, str.length() + size, padChar, true))
         .isEqualTo(pad + str);
+  }
+
+  @Property
+  void shouldConvertAnyIntegerLeftPadded(
+      @ForAll final Integer value,
+      @ForAll @IntRange(max = 1000) final int size) {
+
+    String expected = Integer.toString(value);
+    int length = expected.length();
+    String pad = StringUtils.repeat('0', size);
+    assertThat(Trancoder.convert(value, length + size, true))
+        .isEqualTo(pad + expected);
   }
 
   @Property
