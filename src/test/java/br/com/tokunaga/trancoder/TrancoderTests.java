@@ -19,12 +19,12 @@ class TrancoderTests {
       @ForAll @IntRange(max = 1000) final int size,
       @ForAll final char padChar) {
 
-    String expected = StringUtils.repeat(padChar, size);
+    String pad = StringUtils.repeat(padChar, size);
     assertThat(Trancoder.convert(null, size, padChar, false))
-        .isEqualTo(expected);
+        .isEqualTo(pad);
 
     assertThat(Trancoder.convert(null, size, padChar, true))
-        .isEqualTo(expected);
+        .isEqualTo(pad);
   }
 
   @Example
@@ -35,9 +35,9 @@ class TrancoderTests {
 
   @Property
   void shouldConvertNullIntegerSized(@ForAll @IntRange(min = 1, max = 1000) final int size) {
-    String expected = StringUtils.repeat('0', size);
+    String pad = StringUtils.repeat('0', size);
     assertThat(Trancoder.convert(null, size))
-        .isEqualTo(expected);
+        .isEqualTo(pad);
   }
 
   @Property
@@ -45,12 +45,12 @@ class TrancoderTests {
       @ForAll @IntRange(max = 1000) final int size,
       @ForAll final char padChar) {
 
-    String expected = StringUtils.repeat(padChar, size);
+    String pad = StringUtils.repeat(padChar, size);
     assertThat(Trancoder.convert("", size, padChar, false))
-        .isEqualTo(expected);
+        .isEqualTo(pad);
 
     assertThat(Trancoder.convert("", size, padChar, true))
-        .isEqualTo(expected);
+        .isEqualTo(pad);
   }
 
   @Property
@@ -59,15 +59,15 @@ class TrancoderTests {
       @ForAll @IntRange(max = 1000) final int size,
       @ForAll final char padChar) {
 
-    String expected = StringUtils.repeat(padChar, size);
+    String pad = StringUtils.repeat(padChar, size);
     assertThat(Trancoder.convert(str, str.length() + size, padChar, false))
-        .isEqualTo(str + expected);
+        .isEqualTo(str + pad);
   }
 
   @Property
   void shouldConvertAnyInteger(@ForAll final Integer value) {
     String expected = Integer.toString(value);
-    final int length = expected.length();
+    int length = expected.length();
     assertThat(Trancoder.convert(value, length))
         .isEqualTo(expected);
   }
@@ -77,11 +77,11 @@ class TrancoderTests {
       @ForAll final Integer value,
       @ForAll @IntRange(min = 1, max = 1000) final int size) {
 
-    String str = Integer.toString(value);
-    String expected = StringUtils.repeat('0', size);
-    final int length = Integer.toString(value).length();
+    String expected = Integer.toString(value);
+    int length = expected.length();
+    String pad = StringUtils.repeat('0', size);
     assertThat(Trancoder.convert(value, length + size))
-        .isEqualTo(str + expected);
+        .isEqualTo(expected + pad);
   }
 
   @Property
@@ -90,9 +90,9 @@ class TrancoderTests {
       @ForAll @IntRange(max = 1000) final int size,
       @ForAll final char padChar) {
 
-    String expected = StringUtils.repeat(padChar, size);
+    String pad = StringUtils.repeat(padChar, size);
     assertThat(Trancoder.convert(str, str.length() + size, padChar, true))
-        .isEqualTo(expected + str);
+        .isEqualTo(pad + str);
   }
 
   @Property
@@ -101,12 +101,12 @@ class TrancoderTests {
       @ForAll @IntRange(min = 1, max = 1000) final int size,
       @ForAll final char padChar) {
 
-    final int length = str.length();
-    final int selectSize = length - size;
-    assertThatThrownBy(() -> Trancoder.convert(str, selectSize, padChar, true))
+    int length = str.length();
+    int target = length - size;
+    assertThatThrownBy(() -> Trancoder.convert(str, target, padChar, true))
         .isExactlyInstanceOf(TrancodeOverflowException.class);
 
-    assertThatThrownBy(() -> Trancoder.convert(str, selectSize, padChar, false))
+    assertThatThrownBy(() -> Trancoder.convert(str, target, padChar, false))
         .isExactlyInstanceOf(TrancodeOverflowException.class);
   }
 }
