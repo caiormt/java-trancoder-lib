@@ -19,17 +19,20 @@ class TrancoderTests {
       @ForAll final char padChar) {
 
     String pad = StringUtils.repeat(padChar, size);
-    assertThat(Trancoder.convert(null, size, padChar, false))
+    assertThat(Trancoder.convert((String) null, size, padChar, false))
         .isEqualTo(pad);
 
-    assertThat(Trancoder.convert(null, size, padChar, true))
+    assertThat(Trancoder.convert((String) null, size, padChar, true))
         .isEqualTo(pad);
   }
 
   @Property
-  void shouldConvertNullInteger(@ForAll @IntRange(max = 1000) final int size) {
-    String pad = StringUtils.repeat('0', size);
-    assertThat(Trancoder.convert(null, size, false))
+  void shouldConvertNullInteger(
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert((Integer) null, size, padChar, false))
         .isEqualTo(pad);
   }
 
@@ -60,12 +63,13 @@ class TrancoderTests {
   @Property
   void shouldConvertAnyInteger(
       @ForAll final Integer value,
-      @ForAll @IntRange(max = 1000) final int size) {
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
 
     String expected = Integer.toString(value);
     int length = expected.length();
-    String pad = StringUtils.repeat('0', size);
-    assertThat(Trancoder.convert(value, length + size, false))
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert(value, length + size, padChar, false))
         .isEqualTo(expected + pad);
   }
 
@@ -83,12 +87,13 @@ class TrancoderTests {
   @Property
   void shouldConvertAnyIntegerLeftPadded(
       @ForAll final Integer value,
-      @ForAll @IntRange(max = 1000) final int size) {
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
 
     String expected = Integer.toString(value);
     int length = expected.length();
-    String pad = StringUtils.repeat('0', size);
-    assertThat(Trancoder.convert(value, length + size, true))
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert(value, length + size, padChar, true))
         .isEqualTo(pad + expected);
   }
 
