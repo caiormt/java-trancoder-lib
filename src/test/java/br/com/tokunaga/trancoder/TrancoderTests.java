@@ -27,14 +27,8 @@ class TrancoderTests {
         .isEqualTo(pad);
   }
 
-  @Example
-  void shouldConvertNullInteger() {
-    assertThat(Trancoder.convert(null, 0))
-        .isEqualTo("");
-  }
-
   @Property
-  void shouldConvertNullIntegerSized(@ForAll @IntRange(min = 1, max = 1000) final int size) {
+  void shouldConvertNullInteger(@ForAll @IntRange(max = 1000) final int size) {
     String pad = StringUtils.repeat('0', size);
     assertThat(Trancoder.convert(null, size))
         .isEqualTo(pad);
@@ -65,17 +59,9 @@ class TrancoderTests {
   }
 
   @Property
-  void shouldConvertAnyInteger(@ForAll final Integer value) {
-    String expected = Integer.toString(value);
-    int length = expected.length();
-    assertThat(Trancoder.convert(value, length))
-        .isEqualTo(expected);
-  }
-
-  @Property
-  void shouldConvertAnyIntegerSized(
+  void shouldConvertAnyInteger(
       @ForAll final Integer value,
-      @ForAll @IntRange(min = 1, max = 1000) final int size) {
+      @ForAll @IntRange(max = 1000) final int size) {
 
     String expected = Integer.toString(value);
     int length = expected.length();
