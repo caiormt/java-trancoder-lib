@@ -58,6 +58,12 @@ class TrancoderTests {
   }
 
   @Property
+  void shouldConvertAnyInteger(@ForAll final Integer value) {
+    assertThat(Trancoder.convert(value))
+        .isEqualTo(Integer.toString(value));
+  }
+
+  @Property
   void shouldConvertAnyStringLeftPadded(
       @ForAll @NotEmpty final String str,
       @ForAll @IntRange(max = 1000) final int size,
