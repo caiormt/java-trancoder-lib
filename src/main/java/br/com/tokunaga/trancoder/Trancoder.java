@@ -14,20 +14,19 @@ public abstract class Trancoder {
 
   public static String convert(final String value, final int size, final char padChar, final boolean leftPad) {
     final String str = safeValue(value);
-    final String pad = padValue(str, size, padChar, leftPad);
-    if (isPadOverflow(pad, size))
-      throw new TrancodeOverflowException();
-
-    return pad;
+    return safePadValue(str, size, padChar, leftPad);
   }
 
   public static String convert(final Integer value, final int size, final char padChar, final boolean leftPad) {
     final String str = safeValue(value);
-    final String pad = padValue(str, size, padChar, leftPad);
-    if (isPadOverflow(pad, size))
-      throw new TrancodeOverflowException();
+    return safePadValue(str, size, padChar, leftPad);
+  }
 
-    return pad;
+  private static String safePadValue(final String str, final int size, final char padChar, final boolean leftPad) {
+    final String value = padValue(str, size, padChar, leftPad);
+    if (isPadOverflow(value, size))
+      throw new TrancodeOverflowException();
+    return value;
   }
 
   private static boolean isPadOverflow(final String str, final int size) {
