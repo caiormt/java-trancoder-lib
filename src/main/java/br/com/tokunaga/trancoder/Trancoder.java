@@ -52,23 +52,7 @@ public abstract class Trancoder {
     return leftPad ? StringUtils.leftPad(str, size, padChar) : StringUtils.rightPad(str, size, padChar);
   }
 
-  private static String safeValue(final String str) {
-    return Objects.nonNull(str) ? str : StringUtils.EMPTY;
-  }
-
-  private static String safeValue(final Integer value) {
-    return Objects.nonNull(value) ? Integer.toString(value) : StringUtils.EMPTY;
-  }
-
-  private static String safeValue(final Long value) {
-    return Objects.nonNull(value) ? Long.toString(value) : StringUtils.EMPTY;
-  }
-
-  private static String safeValue(final Short value) {
-    return Objects.nonNull(value) ? Short.toString(value) : StringUtils.EMPTY;
-  }
-
-  private static String safeValue(final Byte value) {
-    return Objects.nonNull(value) ? Byte.toString(value) : StringUtils.EMPTY;
+  private static String safeValue(final Object value) {
+    return Objects.toString(value, StringUtils.EMPTY);
   }
 }
