@@ -8,13 +8,10 @@ import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
 
-import net.jqwik.api.Arbitrary;
 import net.jqwik.api.ForAll;
 import net.jqwik.api.Property;
-import net.jqwik.api.Provide;
 import net.jqwik.api.constraints.IntRange;
 import net.jqwik.api.constraints.NotEmpty;
-import net.jqwik.time.api.Dates;
 
 import br.com.tokunaga.trancoder.exception.TrancodeOverflowException;
 
@@ -253,7 +250,7 @@ class TrancoderTests {
 
   @Property
   void shouldConvertAnyDate(
-      @ForAll("dates") final Date value,
+      @ForAll final Date value,
       @ForAll @IntRange(max = 1000) final int size,
       @ForAll final char padChar) {
 
@@ -381,7 +378,7 @@ class TrancoderTests {
 
   @Property
   void shouldConvertAnyDateLeftPadded(
-      @ForAll("dates") final Date value,
+      @ForAll final Date value,
       @ForAll @IntRange(max = 1000) final int size,
       @ForAll final char padChar) {
 
@@ -537,7 +534,7 @@ class TrancoderTests {
 
   @Property
   void shouldThrowOverflowConvertingAnyDateExceedingSize(
-      @ForAll("dates") final Date value,
+      @ForAll final Date value,
       @ForAll @IntRange(min = 1, max = 1000) final int size,
       @ForAll final char padChar) {
 
@@ -549,10 +546,5 @@ class TrancoderTests {
 
     assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, false))
         .isExactlyInstanceOf(TrancodeOverflowException.class);
-  }
-
-  @Provide
-  Arbitrary<Date> dates() {
-    return Dates.datesAsDate();
   }
 }
