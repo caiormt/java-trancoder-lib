@@ -4,13 +4,17 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
 
+import net.jqwik.api.Arbitrary;
 import net.jqwik.api.ForAll;
 import net.jqwik.api.Property;
+import net.jqwik.api.Provide;
 import net.jqwik.api.constraints.IntRange;
 import net.jqwik.api.constraints.NotEmpty;
+import net.jqwik.time.api.Dates;
 
 import br.com.tokunaga.trancoder.exception.TrancodeOverflowException;
 
@@ -106,6 +110,16 @@ class TrancoderTests {
 
     String pad = StringUtils.repeat(padChar, size);
     assertThat(Trancoder.convert((BigDecimal) null, size, padChar, false))
+        .isEqualTo(pad);
+  }
+
+  @Property
+  void shouldConvertNullDate(
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert((Date) null, size, padChar, false))
         .isEqualTo(pad);
   }
 
@@ -238,6 +252,19 @@ class TrancoderTests {
   }
 
   @Property
+  void shouldConvertAnyDate(
+      @ForAll("dates") final Date value,
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = value.toString();
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert(value, length + size, padChar, false))
+        .isEqualTo(expected + pad);
+  }
+
+  @Property
   void shouldConvertAnyStringLeftPadded(
       @ForAll @NotEmpty final String str,
       @ForAll @IntRange(max = 1000) final int size,
@@ -342,6 +369,19 @@ class TrancoderTests {
   @Property
   void shouldConvertAnyBigDecimalLeftPadded(
       @ForAll final BigDecimal value,
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = value.toString();
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert(value, length + size, padChar, true))
+        .isEqualTo(pad + expected);
+  }
+
+  @Property
+  void shouldConvertAnyDateLeftPadded(
+      @ForAll("dates") final Date value,
       @ForAll @IntRange(max = 1000) final int size,
       @ForAll final char padChar) {
 
@@ -493,5 +533,26 @@ class TrancoderTests {
 
     assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, false))
         .isExactlyInstanceOf(TrancodeOverflowException.class);
+  }
+
+  @Property
+  void shouldThrowOverflowConvertingAnyDateExceedingSize(
+      @ForAll("dates") final Date value,
+      @ForAll @IntRange(min = 1, max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = value.toString();
+    int length = expected.length();
+    int target = length - size;
+    assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, true))
+        .isExactlyInstanceOf(TrancodeOverflowException.class);
+
+    assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, false))
+        .isExactlyInstanceOf(TrancodeOverflowException.class);
+  }
+
+  @Provide
+  Arbitrary<Date> dates() {
+    return Dates.datesAsDate();
   }
 }
