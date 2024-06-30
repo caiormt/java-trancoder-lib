@@ -409,7 +409,7 @@ class TrancoderTests {
 
   @Property
   void shouldThrowOverflowConvertingAnyIntegerExceedingSize(
-      @ForAll @NotEmpty final Integer value,
+      @ForAll final Integer value,
       @ForAll @IntRange(min = 1, max = 1000) final int size,
       @ForAll final char padChar) {
 
@@ -425,7 +425,7 @@ class TrancoderTests {
 
   @Property
   void shouldThrowOverflowConvertingAnyLongExceedingSize(
-      @ForAll @NotEmpty final Long value,
+      @ForAll final Long value,
       @ForAll @IntRange(min = 1, max = 1000) final int size,
       @ForAll final char padChar) {
 
@@ -441,7 +441,7 @@ class TrancoderTests {
 
   @Property
   void shouldThrowOverflowConvertingAnyShortExceedingSize(
-      @ForAll @NotEmpty final Short value,
+      @ForAll final Short value,
       @ForAll @IntRange(min = 1, max = 1000) final int size,
       @ForAll final char padChar) {
 
@@ -457,7 +457,7 @@ class TrancoderTests {
 
   @Property
   void shouldThrowOverflowConvertingAnyByteExceedingSize(
-      @ForAll @NotEmpty final Byte value,
+      @ForAll final Byte value,
       @ForAll @IntRange(min = 1, max = 1000) final int size,
       @ForAll final char padChar) {
 
@@ -473,7 +473,7 @@ class TrancoderTests {
 
   @Property
   void shouldThrowOverflowConvertingAnyDoubleExceedingSize(
-      @ForAll @NotEmpty final Double value,
+      @ForAll final Double value,
       @ForAll @IntRange(min = 1, max = 1000) final int size,
       @ForAll final char padChar) {
 
@@ -489,7 +489,7 @@ class TrancoderTests {
 
   @Property
   void shouldThrowOverflowConvertingAnyFloatExceedingSize(
-      @ForAll @NotEmpty final Float value,
+      @ForAll final Float value,
       @ForAll @IntRange(min = 1, max = 1000) final int size,
       @ForAll final char padChar) {
 
@@ -505,7 +505,7 @@ class TrancoderTests {
 
   @Property
   void shouldThrowOverflowConvertingAnyBigIntegerExceedingSize(
-      @ForAll @NotEmpty final BigInteger value,
+      @ForAll final BigInteger value,
       @ForAll @IntRange(min = 1, max = 1000) final int size,
       @ForAll final char padChar) {
 
@@ -521,7 +521,7 @@ class TrancoderTests {
 
   @Property
   void shouldThrowOverflowConvertingAnyBigDecimalExceedingSize(
-      @ForAll @NotEmpty final BigDecimal value,
+      @ForAll final BigDecimal value,
       @ForAll @IntRange(min = 1, max = 1000) final int size,
       @ForAll final char padChar) {
 
