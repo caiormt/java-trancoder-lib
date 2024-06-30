@@ -1,5 +1,7 @@
 package br.com.tokunaga.trancoder;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
@@ -43,6 +45,16 @@ public abstract class Trancoder {
   }
 
   public static String convert(final Float value, final int size, final char padChar, final boolean leftPad) {
+    final String str = safeValue(value);
+    return safePadValue(str, size, padChar, leftPad);
+  }
+
+  public static String convert(final BigInteger value, final int size, final char padChar, final boolean leftPad) {
+    final String str = safeValue(value);
+    return safePadValue(str, size, padChar, leftPad);
+  }
+
+  public static String convert(final BigDecimal value, final int size, final char padChar, final boolean leftPad) {
     final String str = safeValue(value);
     return safePadValue(str, size, padChar, leftPad);
   }
