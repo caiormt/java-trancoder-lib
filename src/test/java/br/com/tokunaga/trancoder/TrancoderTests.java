@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
@@ -117,6 +119,26 @@ class TrancoderTests {
 
     String pad = StringUtils.repeat(padChar, size);
     assertThat(Trancoder.convert((Date) null, size, padChar, false))
+        .isEqualTo(pad);
+  }
+
+  @Property
+  void shouldConvertNullLocalDate(
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert((LocalDate) null, size, padChar, false))
+        .isEqualTo(pad);
+  }
+
+  @Property
+  void shouldConvertNullLocalDateTime(
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert((LocalDateTime) null, size, padChar, false))
         .isEqualTo(pad);
   }
 
@@ -262,6 +284,32 @@ class TrancoderTests {
   }
 
   @Property
+  void shouldConvertAnyLocalDate(
+      @ForAll final LocalDate value,
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = value.toString();
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert(value, length + size, padChar, false))
+        .isEqualTo(expected + pad);
+  }
+
+  @Property
+  void shouldConvertAnyLocalDateTime(
+      @ForAll final LocalDateTime value,
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = value.toString();
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert(value, length + size, padChar, false))
+        .isEqualTo(expected + pad);
+  }
+
+  @Property
   void shouldConvertAnyStringLeftPadded(
       @ForAll @NotEmpty final String str,
       @ForAll @IntRange(max = 1000) final int size,
@@ -379,6 +427,32 @@ class TrancoderTests {
   @Property
   void shouldConvertAnyDateLeftPadded(
       @ForAll final Date value,
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = value.toString();
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert(value, length + size, padChar, true))
+        .isEqualTo(pad + expected);
+  }
+
+  @Property
+  void shouldConvertAnyLocalDateLeftPadded(
+      @ForAll final LocalDate value,
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = value.toString();
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert(value, length + size, padChar, true))
+        .isEqualTo(pad + expected);
+  }
+
+  @Property
+  void shouldConvertAnyLocalDateTimeLeftPadded(
+      @ForAll final LocalDateTime value,
       @ForAll @IntRange(max = 1000) final int size,
       @ForAll final char padChar) {
 
@@ -535,6 +609,38 @@ class TrancoderTests {
   @Property
   void shouldThrowOverflowConvertingAnyDateExceedingSize(
       @ForAll final Date value,
+      @ForAll @IntRange(min = 1, max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = value.toString();
+    int length = expected.length();
+    int target = length - size;
+    assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, true))
+        .isExactlyInstanceOf(TrancodeOverflowException.class);
+
+    assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, false))
+        .isExactlyInstanceOf(TrancodeOverflowException.class);
+  }
+
+  @Property
+  void shouldThrowOverflowConvertingAnyLocalDateExceedingSize(
+      @ForAll final LocalDate value,
+      @ForAll @IntRange(min = 1, max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = value.toString();
+    int length = expected.length();
+    int target = length - size;
+    assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, true))
+        .isExactlyInstanceOf(TrancodeOverflowException.class);
+
+    assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, false))
+        .isExactlyInstanceOf(TrancodeOverflowException.class);
+  }
+
+  @Property
+  void shouldThrowOverflowConvertingAnyLocalDateTimeExceedingSize(
+      @ForAll final LocalDateTime value,
       @ForAll @IntRange(min = 1, max = 1000) final int size,
       @ForAll final char padChar) {
 
