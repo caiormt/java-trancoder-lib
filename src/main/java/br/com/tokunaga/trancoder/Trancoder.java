@@ -14,6 +14,7 @@ import br.com.tokunaga.trancoder.exception.TrancodeOverflowException;
 public abstract class Trancoder {
 
   private static final String DATE = "00.00.0000";
+  private static final String DATETIME = "00.00.0000.00-00-00-000000";
   private static final String EMPTY = "";
   private static final String SPACE = " ";
   private static final String ZERO = "0";
@@ -143,8 +144,14 @@ public abstract class Trancoder {
     return safePadValue(str, size, padChar, leftPad);
   }
 
-  public static String convert(final LocalDateTime value, final int size, final char padChar, final boolean leftPad) {
-    final String str = safeValue(value);
+  public static String convert(
+      final LocalDateTime value,
+      final int size,
+      final char padChar,
+      final boolean leftPad,
+      final boolean defaultIfNull) {
+
+    final String str = safeValue(value, dateTimeNullDefault(defaultIfNull));
     return safePadValue(str, size, padChar, leftPad);
   }
 
@@ -158,6 +165,10 @@ public abstract class Trancoder {
 
   private static String dateNullDefault(final boolean defaultIfNull) {
     return defaultIfNull ? DATE : EMPTY;
+  }
+
+  private static String dateTimeNullDefault(final boolean defaultIfNull) {
+    return defaultIfNull ? DATETIME : EMPTY;
   }
 
   private static String numericNullDefault(final boolean zeroIfNull) {
