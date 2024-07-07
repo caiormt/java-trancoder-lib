@@ -52,6 +52,9 @@ class TrancoderTests {
     String pad = StringUtils.repeat(padChar, size - 1);
     assertThat(Trancoder.convert((Integer) null, size, padChar, false, true))
         .isEqualTo(ZERO + pad);
+
+    assertThat(Trancoder.convert((Integer) null, size, padChar, true, true))
+        .isEqualTo(pad + ZERO);
   }
 
   @Property
@@ -72,6 +75,9 @@ class TrancoderTests {
     String pad = StringUtils.repeat(padChar, size - 1);
     assertThat(Trancoder.convert((Long) null, size, padChar, false, true))
         .isEqualTo(ZERO + pad);
+
+    assertThat(Trancoder.convert((Long) null, size, padChar, true, true))
+        .isEqualTo(pad + ZERO);
   }
 
   @Property
@@ -92,6 +98,9 @@ class TrancoderTests {
     String pad = StringUtils.repeat(padChar, size - 1);
     assertThat(Trancoder.convert((Short) null, size, padChar, false, true))
         .isEqualTo(ZERO + pad);
+
+    assertThat(Trancoder.convert((Short) null, size, padChar, true, true))
+        .isEqualTo(pad + ZERO);
   }
 
   @Property
@@ -112,6 +121,9 @@ class TrancoderTests {
     String pad = StringUtils.repeat(padChar, size - 1);
     assertThat(Trancoder.convert((Byte) null, size, padChar, false, true))
         .isEqualTo(ZERO + pad);
+
+    assertThat(Trancoder.convert((Byte) null, size, padChar, true, true))
+        .isEqualTo(pad + ZERO);
   }
 
   @Property
