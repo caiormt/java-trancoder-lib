@@ -155,10 +155,6 @@ public abstract class Trancoder {
     return safePadValue(str, size, padChar, leftPad);
   }
 
-  private static String safeValue(final Object value) {
-    return safeValue(value, EMPTY);
-  }
-
   private static String safeValue(final Object value, final String nullDefault) {
     return Objects.toString(value, nullDefault);
   }
