@@ -14,6 +14,7 @@ import br.com.tokunaga.trancoder.exception.TrancodeOverflowException;
 public abstract class Trancoder {
 
   private static final String ZERO = "0";
+  private static final String EMPTY = "";
 
   private Trancoder() {
     super();
@@ -86,7 +87,7 @@ public abstract class Trancoder {
   }
 
   private static String safeValue(final Object value) {
-    return safeValue(value, StringUtils.EMPTY);
+    return safeValue(value, EMPTY);
   }
 
   private static String safeValue(final Object value, final String nullDefault) {
@@ -94,7 +95,7 @@ public abstract class Trancoder {
   }
 
   private static String nullDefault(final boolean zeroIfNull) {
-    return zeroIfNull ? ZERO : StringUtils.EMPTY;
+    return zeroIfNull ? ZERO : EMPTY;
   }
 
   private static String padValue(final String str, final int size, final char padChar, final boolean leftPad) {
