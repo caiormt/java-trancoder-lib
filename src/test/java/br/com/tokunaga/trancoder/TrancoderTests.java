@@ -20,6 +20,7 @@ import br.com.tokunaga.trancoder.exception.TrancodeOverflowException;
 class TrancoderTests {
 
   private static final String DATE = "00.00.0000";
+  private static final String DATETIME = "00.00.0000.00-00-00-000000";
   private static final String ZERO = "0";
   private static final String SPACE = " ";
 
@@ -285,8 +286,21 @@ class TrancoderTests {
       @ForAll final char padChar) {
 
     String pad = StringUtils.repeat(padChar, size);
-    assertThat(Trancoder.convert((LocalDateTime) null, size, padChar, false))
+    assertThat(Trancoder.convert((LocalDateTime) null, size, padChar, false, false))
         .isEqualTo(pad);
+  }
+
+  @Property
+  void shouldConvertNullLocalDateTimeAsDefault(
+      @ForAll @IntRange(min = 26, max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String pad = StringUtils.repeat(padChar, size - 26);
+    assertThat(Trancoder.convert((LocalDateTime) null, size, padChar, false, true))
+        .isEqualTo(DATETIME + pad);
+
+    assertThat(Trancoder.convert((LocalDateTime) null, size, padChar, true, true))
+        .isEqualTo(pad + DATETIME);
   }
 
   @Property
@@ -452,7 +466,7 @@ class TrancoderTests {
     String expected = value.toString();
     int length = expected.length();
     String pad = StringUtils.repeat(padChar, size);
-    assertThat(Trancoder.convert(value, length + size, padChar, false))
+    assertThat(Trancoder.convert(value, length + size, padChar, false, false))
         .isEqualTo(expected + pad);
   }
 
@@ -606,7 +620,7 @@ class TrancoderTests {
     String expected = value.toString();
     int length = expected.length();
     String pad = StringUtils.repeat(padChar, size);
-    assertThat(Trancoder.convert(value, length + size, padChar, true))
+    assertThat(Trancoder.convert(value, length + size, padChar, true, false))
         .isEqualTo(pad + expected);
   }
 
@@ -860,10 +874,16 @@ class TrancoderTests {
     String expected = value.toString();
     int length = expected.length();
     int target = length - size;
-    assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, true))
+    assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, true, false))
         .isExactlyInstanceOf(TrancodeOverflowException.class);
 
-    assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, false))
+    assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, false, false))
+        .isExactlyInstanceOf(TrancodeOverflowException.class);
+
+    assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, true, true))
+        .isExactlyInstanceOf(TrancodeOverflowException.class);
+
+    assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, false, true))
         .isExactlyInstanceOf(TrancodeOverflowException.class);
   }
 }
