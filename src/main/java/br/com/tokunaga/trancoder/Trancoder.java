@@ -41,14 +41,20 @@ public abstract class Trancoder {
       final int size,
       final char padChar,
       final boolean leftPad,
-      boolean zeroIfNull) {
+      final boolean zeroIfNull) {
 
     final String str = safeValue(value, nullDefault(zeroIfNull));
     return safePadValue(str, size, padChar, leftPad);
   }
 
-  public static String convert(final Short value, final int size, final char padChar, final boolean leftPad) {
-    final String str = safeValue(value);
+  public static String convert(
+      final Short value,
+      final int size,
+      final char padChar,
+      final boolean leftPad,
+      final boolean zeroIfNull) {
+
+    final String str = safeValue(value, nullDefault(zeroIfNull));
     return safePadValue(str, size, padChar, leftPad);
   }
 
