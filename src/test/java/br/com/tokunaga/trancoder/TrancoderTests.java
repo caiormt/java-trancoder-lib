@@ -166,8 +166,21 @@ class TrancoderTests {
       @ForAll final char padChar) {
 
     String pad = StringUtils.repeat(padChar, size);
-    assertThat(Trancoder.convert((BigInteger) null, size, padChar, false))
+    assertThat(Trancoder.convert((BigInteger) null, size, padChar, false, false))
         .isEqualTo(pad);
+  }
+
+  @Property
+  void shouldConvertNullBigIntegerAsZero(
+      @ForAll @IntRange(min = 1, max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String pad = StringUtils.repeat(padChar, size - 1);
+    assertThat(Trancoder.convert((BigInteger) null, size, padChar, false, true))
+        .isEqualTo(ZERO + pad);
+
+    assertThat(Trancoder.convert((BigInteger) null, size, padChar, true, true))
+        .isEqualTo(pad + ZERO);
   }
 
   @Property
@@ -321,7 +334,7 @@ class TrancoderTests {
     String expected = value.toString();
     int length = expected.length();
     String pad = StringUtils.repeat(padChar, size);
-    assertThat(Trancoder.convert(value, length + size, padChar, false))
+    assertThat(Trancoder.convert(value, length + size, padChar, false, false))
         .isEqualTo(expected + pad);
   }
 
@@ -475,7 +488,7 @@ class TrancoderTests {
     String expected = value.toString();
     int length = expected.length();
     String pad = StringUtils.repeat(padChar, size);
-    assertThat(Trancoder.convert(value, length + size, padChar, true))
+    assertThat(Trancoder.convert(value, length + size, padChar, true, false))
         .isEqualTo(pad + expected);
   }
 
@@ -681,10 +694,16 @@ class TrancoderTests {
     String expected = value.toString();
     int length = expected.length();
     int target = length - size;
-    assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, true))
+    assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, true, false))
         .isExactlyInstanceOf(TrancodeOverflowException.class);
 
-    assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, false))
+    assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, false, false))
+        .isExactlyInstanceOf(TrancodeOverflowException.class);
+
+    assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, true, true))
+        .isExactlyInstanceOf(TrancodeOverflowException.class);
+
+    assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, false, true))
         .isExactlyInstanceOf(TrancodeOverflowException.class);
   }
 
