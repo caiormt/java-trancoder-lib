@@ -20,6 +20,7 @@ import br.com.tokunaga.trancoder.exception.TrancodeOverflowException;
 class TrancoderTests {
 
   private static final String ZERO = "0";
+  private static final String SPACE = " ";
 
   @Property
   void shouldConvertNullString(
@@ -27,11 +28,24 @@ class TrancoderTests {
       @ForAll final char padChar) {
 
     String pad = StringUtils.repeat(padChar, size);
-    assertThat(Trancoder.convert((String) null, size, padChar, false))
+    assertThat(Trancoder.convert((String) null, size, padChar, false, false))
         .isEqualTo(pad);
 
-    assertThat(Trancoder.convert((String) null, size, padChar, true))
+    assertThat(Trancoder.convert((String) null, size, padChar, true, false))
         .isEqualTo(pad);
+  }
+
+  @Property
+  void shouldConvertNullStringAsSpace(
+      @ForAll @IntRange(min = 1, max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String pad = StringUtils.repeat(padChar, size - 1);
+    assertThat(Trancoder.convert((String) null, size, padChar, false, true))
+        .isEqualTo(SPACE + pad);
+
+    assertThat(Trancoder.convert((String) null, size, padChar, true, true))
+        .isEqualTo(pad + SPACE);
   }
 
   @Property
@@ -202,10 +216,10 @@ class TrancoderTests {
       @ForAll final char padChar) {
 
     String pad = StringUtils.repeat(padChar, size);
-    assertThat(Trancoder.convert("", size, padChar, false))
+    assertThat(Trancoder.convert("", size, padChar, false, false))
         .isEqualTo(pad);
 
-    assertThat(Trancoder.convert("", size, padChar, true))
+    assertThat(Trancoder.convert("", size, padChar, true, false))
         .isEqualTo(pad);
   }
 
@@ -216,7 +230,7 @@ class TrancoderTests {
       @ForAll final char padChar) {
 
     String pad = StringUtils.repeat(padChar, size);
-    assertThat(Trancoder.convert(str, str.length() + size, padChar, false))
+    assertThat(Trancoder.convert(str, str.length() + size, padChar, false, false))
         .isEqualTo(str + pad);
   }
 
@@ -370,7 +384,7 @@ class TrancoderTests {
       @ForAll final char padChar) {
 
     String pad = StringUtils.repeat(padChar, size);
-    assertThat(Trancoder.convert(str, str.length() + size, padChar, true))
+    assertThat(Trancoder.convert(str, str.length() + size, padChar, true, false))
         .isEqualTo(pad + str);
   }
 
@@ -525,10 +539,16 @@ class TrancoderTests {
 
     int length = str.length();
     int target = length - size;
-    assertThatThrownBy(() -> Trancoder.convert(str, target, padChar, true))
+    assertThatThrownBy(() -> Trancoder.convert(str, target, padChar, true, false))
         .isExactlyInstanceOf(TrancodeOverflowException.class);
 
-    assertThatThrownBy(() -> Trancoder.convert(str, target, padChar, false))
+    assertThatThrownBy(() -> Trancoder.convert(str, target, padChar, false, false))
+        .isExactlyInstanceOf(TrancodeOverflowException.class);
+
+    assertThatThrownBy(() -> Trancoder.convert(str, target, padChar, true, true))
+        .isExactlyInstanceOf(TrancodeOverflowException.class);
+
+    assertThatThrownBy(() -> Trancoder.convert(str, target, padChar, false, true))
         .isExactlyInstanceOf(TrancodeOverflowException.class);
   }
 
