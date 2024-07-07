@@ -13,6 +13,7 @@ import br.com.tokunaga.trancoder.exception.TrancodeOverflowException;
 
 public abstract class Trancoder {
 
+  private static final String SPACE = " ";
   private static final String ZERO = "0";
   private static final String EMPTY = "";
 
@@ -20,8 +21,14 @@ public abstract class Trancoder {
     super();
   }
 
-  public static String convert(final String value, final int size, final char padChar, final boolean leftPad) {
-    final String str = safeValue(value);
+  public static String convert(
+      final String value,
+      final int size,
+      final char padChar,
+      final boolean leftPad,
+      final boolean spaceIfNull) {
+
+    final String str = safeValue(value, stringNullDefault(spaceIfNull));
     return safePadValue(str, size, padChar, leftPad);
   }
 
@@ -32,7 +39,7 @@ public abstract class Trancoder {
       final boolean leftPad,
       final boolean zeroIfNull) {
 
-    final String str = safeValue(value, nullDefault(zeroIfNull));
+    final String str = safeValue(value, numericNullDefault(zeroIfNull));
     return safePadValue(str, size, padChar, leftPad);
   }
 
@@ -43,7 +50,7 @@ public abstract class Trancoder {
       final boolean leftPad,
       final boolean zeroIfNull) {
 
-    final String str = safeValue(value, nullDefault(zeroIfNull));
+    final String str = safeValue(value, numericNullDefault(zeroIfNull));
     return safePadValue(str, size, padChar, leftPad);
   }
 
@@ -54,7 +61,7 @@ public abstract class Trancoder {
       final boolean leftPad,
       final boolean zeroIfNull) {
 
-    final String str = safeValue(value, nullDefault(zeroIfNull));
+    final String str = safeValue(value, numericNullDefault(zeroIfNull));
     return safePadValue(str, size, padChar, leftPad);
   }
 
@@ -65,7 +72,7 @@ public abstract class Trancoder {
       final boolean leftPad,
       final boolean zeroIfNull) {
 
-    final String str = safeValue(value, nullDefault(zeroIfNull));
+    final String str = safeValue(value, numericNullDefault(zeroIfNull));
     return safePadValue(str, size, padChar, leftPad);
   }
 
@@ -112,8 +119,12 @@ public abstract class Trancoder {
     return Objects.toString(value, nullDefault);
   }
 
-  private static String nullDefault(final boolean zeroIfNull) {
+  private static String numericNullDefault(final boolean zeroIfNull) {
     return zeroIfNull ? ZERO : EMPTY;
+  }
+
+  private static String stringNullDefault(final boolean spaceIfNull) {
+    return spaceIfNull ? SPACE : EMPTY;
   }
 
   private static String padValue(final String str, final int size, final char padChar, final boolean leftPad) {
