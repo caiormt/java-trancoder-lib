@@ -13,9 +13,9 @@ import br.com.tokunaga.trancoder.exception.TrancodeOverflowException;
 
 public abstract class Trancoder {
 
+  private static final String EMPTY = "";
   private static final String SPACE = " ";
   private static final String ZERO = "0";
-  private static final String EMPTY = "";
 
   private Trancoder() {
     super();
