@@ -19,6 +19,8 @@ import br.com.tokunaga.trancoder.exception.TrancodeOverflowException;
 
 class TrancoderTests {
 
+  private static final String ZERO = "0";
+
   @Property
   void shouldConvertNullString(
       @ForAll @IntRange(max = 1000) final int size,
@@ -49,7 +51,7 @@ class TrancoderTests {
 
     String pad = StringUtils.repeat(padChar, size - 1);
     assertThat(Trancoder.convert((Integer) null, size, padChar, false, true))
-        .isEqualTo("0" + pad);
+        .isEqualTo(ZERO + pad);
   }
 
   @Property
@@ -69,7 +71,7 @@ class TrancoderTests {
 
     String pad = StringUtils.repeat(padChar, size - 1);
     assertThat(Trancoder.convert((Long) null, size, padChar, false, true))
-        .isEqualTo("0" + pad);
+        .isEqualTo(ZERO + pad);
   }
 
   @Property
@@ -89,7 +91,7 @@ class TrancoderTests {
 
     String pad = StringUtils.repeat(padChar, size - 1);
     assertThat(Trancoder.convert((Short) null, size, padChar, false, true))
-        .isEqualTo("0" + pad);
+        .isEqualTo(ZERO + pad);
   }
 
   @Property
