@@ -36,8 +36,14 @@ public abstract class Trancoder {
     return safePadValue(str, size, padChar, leftPad);
   }
 
-  public static String convert(final Long value, final int size, final char padChar, final boolean leftPad) {
-    final String str = safeValue(value);
+  public static String convert(
+      final Long value,
+      final int size,
+      final char padChar,
+      final boolean leftPad,
+      boolean zeroIfNull) {
+
+    final String str = safeValue(value, nullDefault(zeroIfNull));
     return safePadValue(str, size, padChar, leftPad);
   }
 
