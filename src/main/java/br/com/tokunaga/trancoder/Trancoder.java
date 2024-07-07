@@ -76,16 +76,6 @@ public abstract class Trancoder {
     return safePadValue(str, size, padChar, leftPad);
   }
 
-  public static String convert(final Double value, final int size, final char padChar, final boolean leftPad) {
-    final String str = safeValue(value);
-    return safePadValue(str, size, padChar, leftPad);
-  }
-
-  public static String convert(final Float value, final int size, final char padChar, final boolean leftPad) {
-    final String str = safeValue(value);
-    return safePadValue(str, size, padChar, leftPad);
-  }
-
   public static String convert(
       final BigInteger value,
       final int size,
@@ -94,6 +84,16 @@ public abstract class Trancoder {
       final boolean zeroIfNull) {
 
     final String str = safeValue(value, numericNullDefault(zeroIfNull));
+    return safePadValue(str, size, padChar, leftPad);
+  }
+
+  public static String convert(final Double value, final int size, final char padChar, final boolean leftPad) {
+    final String str = safeValue(value);
+    return safePadValue(str, size, padChar, leftPad);
+  }
+
+  public static String convert(final Float value, final int size, final char padChar, final boolean leftPad) {
+    final String str = safeValue(value);
     return safePadValue(str, size, padChar, leftPad);
   }
 
