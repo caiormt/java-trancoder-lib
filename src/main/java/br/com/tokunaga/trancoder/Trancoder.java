@@ -13,6 +13,8 @@ import br.com.tokunaga.trancoder.exception.TrancodeOverflowException;
 
 public abstract class Trancoder {
 
+  private static final String ZERO = "0";
+
   private Trancoder() {
     super();
   }
@@ -22,8 +24,14 @@ public abstract class Trancoder {
     return safePadValue(str, size, padChar, leftPad);
   }
 
-  public static String convert(final Integer value, final int size, final char padChar, final boolean leftPad) {
-    final String str = safeValue(value);
+  public static String convert(
+      final Integer value,
+      final int size,
+      final char padChar,
+      final boolean leftPad,
+      final boolean zeroIfNull) {
+
+    final String str = safeValue(value, nullDefault(zeroIfNull));
     return safePadValue(str, size, padChar, leftPad);
   }
 
@@ -78,7 +86,15 @@ public abstract class Trancoder {
   }
 
   private static String safeValue(final Object value) {
-    return Objects.toString(value, StringUtils.EMPTY);
+    return safeValue(value, StringUtils.EMPTY);
+  }
+
+  private static String safeValue(final Object value, final String nullDefault) {
+    return Objects.toString(value, nullDefault);
+  }
+
+  private static String nullDefault(final boolean zeroIfNull) {
+    return zeroIfNull ? ZERO : StringUtils.EMPTY;
   }
 
   private static String padValue(final String str, final int size, final char padChar, final boolean leftPad) {
