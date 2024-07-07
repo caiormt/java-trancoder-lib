@@ -109,8 +109,14 @@ public abstract class Trancoder {
     return safePadValue(str, size, padChar, leftPad);
   }
 
-  public static String convert(final BigDecimal value, final int size, final char padChar, final boolean leftPad) {
-    final String str = safeValue(value);
+  public static String convert(
+      final BigDecimal value,
+      final int size,
+      final char padChar,
+      final boolean leftPad,
+      final boolean zeroIfNull) {
+
+    final String str = safeValue(value, numericNullDefault(zeroIfNull));
     return safePadValue(str, size, padChar, leftPad);
   }
 
