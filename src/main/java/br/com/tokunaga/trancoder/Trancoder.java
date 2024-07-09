@@ -7,6 +7,7 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
 import java.util.Date;
@@ -21,9 +22,8 @@ import br.com.tokunaga.trancoder.exception.TrancodeOverflowException;
 public abstract class Trancoder {
 
   public static final Date NULL_DATE = new Date(0L);
-  public static final LocalDate NULL_LOCAL_DATE = LocalDate.of(1, 1, 1);
+  public static final LocalDateTime NULL_LOCAL_DATE = LocalDateTime.of(LocalDate.of(1, 1, 1), LocalTime.MIDNIGHT);
 
-  private static final String DATETIME = "00.00.0000.00-00-00-000000";
   private static final String EMPTY = "";
   private static final String SPACE = " ";
 
@@ -160,11 +160,12 @@ public abstract class Trancoder {
   public static String convert(
       final LocalDateTime value,
       final int size,
+      final String pattern,
       final char padChar,
       final boolean leftPad,
       final boolean defaultIfNull) {
 
-    final String str = safeValue(value, dateTimeNullDefault(defaultIfNull));
+    final String str = safeValue(value, pattern, defaultIfNull);
     return safePadValue(str, size, padChar, leftPad);
   }
 
@@ -216,10 +217,6 @@ public abstract class Trancoder {
     nf.setGroupingUsed(false);
     nf.setRoundingMode(RoundingMode.HALF_EVEN);
     return nf;
-  }
-
-  private static String dateTimeNullDefault(final boolean defaultIfNull) {
-    return defaultIfNull ? DATETIME : EMPTY;
   }
 
   private static String stringNullDefault(final boolean spaceIfNull) {
