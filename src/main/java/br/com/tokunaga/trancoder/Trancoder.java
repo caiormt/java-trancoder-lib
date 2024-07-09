@@ -7,6 +7,8 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import java.util.Date;
 import java.util.Objects;
 import java.util.TimeZone;
@@ -19,8 +21,8 @@ import br.com.tokunaga.trancoder.exception.TrancodeOverflowException;
 public abstract class Trancoder {
 
   public static final Date NULL_DATE = new Date(0L);
+  public static final LocalDate NULL_LOCAL_DATE = LocalDate.of(1, 1, 1);
 
-  private static final String DATE = "00.00.0000";
   private static final String DATETIME = "00.00.0000.00-00-00-000000";
   private static final String EMPTY = "";
   private static final String SPACE = " ";
@@ -146,11 +148,12 @@ public abstract class Trancoder {
   public static String convert(
       final LocalDate value,
       final int size,
+      final String pattern,
       final char padChar,
       final boolean leftPad,
       final boolean defaultIfNull) {
 
-    final String str = safeValue(value, dateNullDefault(defaultIfNull));
+    final String str = safeValue(value, pattern, defaultIfNull);
     return safePadValue(str, size, padChar, leftPad);
   }
 
@@ -183,12 +186,21 @@ public abstract class Trancoder {
     return Objects.nonNull(value) ? nf.format(value) : nullValue(zeroIfNull, nf);
   }
 
-  private static String nullValue(final boolean defaultIfNull, final SimpleDateFormat numberFormat) {
-    return defaultIfNull ? numberFormat.format(NULL_DATE) : EMPTY;
+  private static String safeValue(final TemporalAccessor value, final String pattern, final boolean defaultIfNull) {
+    final DateTimeFormatter dtf = DateTimeFormatter.ofPattern(pattern);
+    return Objects.nonNull(value) ? dtf.format(value) : nullValue(defaultIfNull, dtf);
+  }
+
+  private static String nullValue(final boolean defaultIfNull, final SimpleDateFormat simpleDateFormat) {
+    return defaultIfNull ? simpleDateFormat.format(NULL_DATE) : EMPTY;
   }
 
   private static String nullValue(final boolean zeroIfNull, final NumberFormat numberFormat) {
     return zeroIfNull ? numberFormat.format(NumberUtils.DOUBLE_ZERO) : EMPTY;
+  }
+
+  private static String nullValue(final boolean defaultIfNull, final DateTimeFormatter dateTimeFormatter) {
+    return defaultIfNull ? dateTimeFormatter.format(NULL_LOCAL_DATE) : EMPTY;
   }
 
   private static SimpleDateFormat formatDateWithPattern(final String pattern) {
@@ -204,10 +216,6 @@ public abstract class Trancoder {
     nf.setGroupingUsed(false);
     nf.setRoundingMode(RoundingMode.HALF_EVEN);
     return nf;
-  }
-
-  private static String dateNullDefault(final boolean defaultIfNull) {
-    return defaultIfNull ? DATE : EMPTY;
   }
 
   private static String dateTimeNullDefault(final boolean defaultIfNull) {
