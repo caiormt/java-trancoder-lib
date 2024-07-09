@@ -118,11 +118,12 @@ public abstract class Trancoder {
   public static String convert(
       final BigDecimal value,
       final int size,
+      final int precision,
       final char padChar,
       final boolean leftPad,
       final boolean zeroIfNull) {
 
-    final String str = safeValue(value, numericNullDefault(zeroIfNull));
+    final String str = safeValue(value, precision, zeroIfNull);
     return safePadValue(str, size, padChar, leftPad);
   }
 
