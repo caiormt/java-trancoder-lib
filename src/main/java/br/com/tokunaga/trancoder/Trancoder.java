@@ -93,11 +93,12 @@ public abstract class Trancoder {
   public static String convert(
       final Double value,
       final int size,
+      final int precision,
       final char padChar,
       final boolean leftPad,
       final boolean zeroIfNull) {
 
-    final String str = safeValue(value, decimalNullDefault(zeroIfNull));
+    final String str = safeValue(value, precision, zeroIfNull);
     return safePadValue(str, size, padChar, leftPad);
   }
 
@@ -160,8 +161,10 @@ public abstract class Trancoder {
     return Objects.toString(value, nullDefault);
   }
 
-  private static String safeValue(final Double value, final String nullDefault) {
-    return Objects.nonNull(value) ? String.format("%.2f", value) : nullDefault;
+  private static String safeValue(final Double value, final int precision, final boolean zeroIfNull) {
+    if (Objects.isNull(value))
+      return zeroIfNull ? String.format("%." + precision + "f", 0d) : EMPTY;
+    return String.format("%." + precision + "f", value);
   }
 
   private static String dateNullDefault(final boolean defaultIfNull) {
