@@ -32,7 +32,14 @@ class TrancoderTests {
     String pad = StringUtils.repeat(padChar, size);
     assertThat(Trancoder.convert((String) null, size, padChar, false, false))
         .isEqualTo(pad);
+  }
 
+  @Property
+  void shouldConvertNullStringLeftPadded(
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String pad = StringUtils.repeat(padChar, size);
     assertThat(Trancoder.convert((String) null, size, padChar, true, false))
         .isEqualTo(pad);
   }
@@ -45,7 +52,14 @@ class TrancoderTests {
     String pad = StringUtils.repeat(padChar, size - 1);
     assertThat(Trancoder.convert((String) null, size, padChar, false, true))
         .isEqualTo(SPACE + pad);
+  }
 
+  @Property
+  void shouldConvertNullStringAsSpaceLeftPadded(
+      @ForAll @IntRange(min = 1, max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String pad = StringUtils.repeat(padChar, size - 1);
     assertThat(Trancoder.convert((String) null, size, padChar, true, true))
         .isEqualTo(pad + SPACE);
   }
@@ -61,6 +75,16 @@ class TrancoderTests {
   }
 
   @Property
+  void shouldConvertNullIntegerLeftPadded(
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert((Integer) null, size, padChar, true, false))
+        .isEqualTo(pad);
+  }
+
+  @Property
   void shouldConvertNullIntegerAsZero(
       @ForAll @IntRange(min = 1, max = 1000) final int size,
       @ForAll final char padChar) {
@@ -68,7 +92,14 @@ class TrancoderTests {
     String pad = StringUtils.repeat(padChar, size - 1);
     assertThat(Trancoder.convert((Integer) null, size, padChar, false, true))
         .isEqualTo(ZERO + pad);
+  }
 
+  @Property
+  void shouldConvertNullIntegerAsZeroLeftPadded(
+      @ForAll @IntRange(min = 1, max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String pad = StringUtils.repeat(padChar, size - 1);
     assertThat(Trancoder.convert((Integer) null, size, padChar, true, true))
         .isEqualTo(pad + ZERO);
   }
@@ -84,6 +115,16 @@ class TrancoderTests {
   }
 
   @Property
+  void shouldConvertNullLongLeftPadded(
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert((Long) null, size, padChar, true, false))
+        .isEqualTo(pad);
+  }
+
+  @Property
   void shouldConvertNullLongAsZero(
       @ForAll @IntRange(min = 1, max = 1000) final int size,
       @ForAll final char padChar) {
@@ -91,7 +132,14 @@ class TrancoderTests {
     String pad = StringUtils.repeat(padChar, size - 1);
     assertThat(Trancoder.convert((Long) null, size, padChar, false, true))
         .isEqualTo(ZERO + pad);
+  }
 
+  @Property
+  void shouldConvertNullLongAsZeroLeftPadded(
+      @ForAll @IntRange(min = 1, max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String pad = StringUtils.repeat(padChar, size - 1);
     assertThat(Trancoder.convert((Long) null, size, padChar, true, true))
         .isEqualTo(pad + ZERO);
   }
@@ -107,6 +155,16 @@ class TrancoderTests {
   }
 
   @Property
+  void shouldConvertNullShortLeftPadded(
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert((Short) null, size, padChar, true, false))
+        .isEqualTo(pad);
+  }
+
+  @Property
   void shouldConvertNullShortAsZero(
       @ForAll @IntRange(min = 1, max = 1000) final int size,
       @ForAll final char padChar) {
@@ -114,7 +172,14 @@ class TrancoderTests {
     String pad = StringUtils.repeat(padChar, size - 1);
     assertThat(Trancoder.convert((Short) null, size, padChar, false, true))
         .isEqualTo(ZERO + pad);
+  }
 
+  @Property
+  void shouldConvertNullShortAsZeroLeftPadded(
+      @ForAll @IntRange(min = 1, max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String pad = StringUtils.repeat(padChar, size - 1);
     assertThat(Trancoder.convert((Short) null, size, padChar, true, true))
         .isEqualTo(pad + ZERO);
   }
@@ -130,6 +195,16 @@ class TrancoderTests {
   }
 
   @Property
+  void shouldConvertNullByteLeftPadded(
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert((Byte) null, size, padChar, true, false))
+        .isEqualTo(pad);
+  }
+
+  @Property
   void shouldConvertNullByteAsZero(
       @ForAll @IntRange(min = 1, max = 1000) final int size,
       @ForAll final char padChar) {
@@ -137,7 +212,14 @@ class TrancoderTests {
     String pad = StringUtils.repeat(padChar, size - 1);
     assertThat(Trancoder.convert((Byte) null, size, padChar, false, true))
         .isEqualTo(ZERO + pad);
+  }
 
+  @Property
+  void shouldConvertNullByteAsZeroLeftPadded(
+      @ForAll @IntRange(min = 1, max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String pad = StringUtils.repeat(padChar, size - 1);
     assertThat(Trancoder.convert((Byte) null, size, padChar, true, true))
         .isEqualTo(pad + ZERO);
   }
@@ -153,6 +235,16 @@ class TrancoderTests {
   }
 
   @Property
+  void shouldConvertNullDoubleLeftPadded(
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert((Double) null, size, padChar, true, false))
+        .isEqualTo(pad);
+  }
+
+  @Property
   void shouldConvertNullDoubleAsZero(
       @ForAll @IntRange(min = 1, max = 1000) final int size,
       @ForAll final char padChar) {
@@ -160,7 +252,14 @@ class TrancoderTests {
     String pad = StringUtils.repeat(padChar, size - 1);
     assertThat(Trancoder.convert((Double) null, size, padChar, false, true))
         .isEqualTo(ZERO + pad);
+  }
 
+  @Property
+  void shouldConvertNullDoubleAsZeroLeftPadded(
+      @ForAll @IntRange(min = 1, max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String pad = StringUtils.repeat(padChar, size - 1);
     assertThat(Trancoder.convert((Double) null, size, padChar, true, true))
         .isEqualTo(pad + ZERO);
   }
@@ -176,6 +275,16 @@ class TrancoderTests {
   }
 
   @Property
+  void shouldConvertNullFloatLeftPadded(
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert((Float) null, size, padChar, true, false))
+        .isEqualTo(pad);
+  }
+
+  @Property
   void shouldConvertNullFloatAsZero(
       @ForAll @IntRange(min = 1, max = 1000) final int size,
       @ForAll final char padChar) {
@@ -183,7 +292,14 @@ class TrancoderTests {
     String pad = StringUtils.repeat(padChar, size - 1);
     assertThat(Trancoder.convert((Float) null, size, padChar, false, true))
         .isEqualTo(ZERO + pad);
+  }
 
+  @Property
+  void shouldConvertNullFloatAsZeroLeftPadded(
+      @ForAll @IntRange(min = 1, max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String pad = StringUtils.repeat(padChar, size - 1);
     assertThat(Trancoder.convert((Float) null, size, padChar, true, true))
         .isEqualTo(pad + ZERO);
   }
@@ -199,6 +315,16 @@ class TrancoderTests {
   }
 
   @Property
+  void shouldConvertNullBigIntegerLeftPadded(
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert((BigInteger) null, size, padChar, true, false))
+        .isEqualTo(pad);
+  }
+
+  @Property
   void shouldConvertNullBigIntegerAsZero(
       @ForAll @IntRange(min = 1, max = 1000) final int size,
       @ForAll final char padChar) {
@@ -206,7 +332,14 @@ class TrancoderTests {
     String pad = StringUtils.repeat(padChar, size - 1);
     assertThat(Trancoder.convert((BigInteger) null, size, padChar, false, true))
         .isEqualTo(ZERO + pad);
+  }
 
+  @Property
+  void shouldConvertNullBigIntegerAsZeroLeftPadded(
+      @ForAll @IntRange(min = 1, max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String pad = StringUtils.repeat(padChar, size - 1);
     assertThat(Trancoder.convert((BigInteger) null, size, padChar, true, true))
         .isEqualTo(pad + ZERO);
   }
@@ -222,6 +355,16 @@ class TrancoderTests {
   }
 
   @Property
+  void shouldConvertNullBigDecimalLeftPadded(
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert((BigDecimal) null, size, padChar, true, false))
+        .isEqualTo(pad);
+  }
+
+  @Property
   void shouldConvertNullBigDecimalAsZero(
       @ForAll @IntRange(min = 1, max = 1000) final int size,
       @ForAll final char padChar) {
@@ -229,7 +372,14 @@ class TrancoderTests {
     String pad = StringUtils.repeat(padChar, size - 1);
     assertThat(Trancoder.convert((BigDecimal) null, size, padChar, false, true))
         .isEqualTo(ZERO + pad);
+  }
 
+  @Property
+  void shouldConvertNullBigDecimalAsZeroLeftPadded(
+      @ForAll @IntRange(min = 1, max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String pad = StringUtils.repeat(padChar, size - 1);
     assertThat(Trancoder.convert((BigDecimal) null, size, padChar, true, true))
         .isEqualTo(pad + ZERO);
   }
@@ -245,6 +395,16 @@ class TrancoderTests {
   }
 
   @Property
+  void shouldConvertNullDateLeftPadded(
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert((Date) null, size, padChar, true, false))
+        .isEqualTo(pad);
+  }
+
+  @Property
   void shouldConvertNullDateAsDefault(
       @ForAll @IntRange(min = 10, max = 1000) final int size,
       @ForAll final char padChar) {
@@ -252,7 +412,14 @@ class TrancoderTests {
     String pad = StringUtils.repeat(padChar, size - 10);
     assertThat(Trancoder.convert((Date) null, size, padChar, false, true))
         .isEqualTo(DATE + pad);
+  }
 
+  @Property
+  void shouldConvertNullDateAsDefaultLeftPadded(
+      @ForAll @IntRange(min = 10, max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String pad = StringUtils.repeat(padChar, size - 10);
     assertThat(Trancoder.convert((Date) null, size, padChar, true, true))
         .isEqualTo(pad + DATE);
   }
@@ -268,6 +435,16 @@ class TrancoderTests {
   }
 
   @Property
+  void shouldConvertNullLocalDateLeftPadded(
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert((LocalDate) null, size, padChar, true, false))
+        .isEqualTo(pad);
+  }
+
+  @Property
   void shouldConvertNullLocalDateAsDefault(
       @ForAll @IntRange(min = 10, max = 1000) final int size,
       @ForAll final char padChar) {
@@ -275,7 +452,14 @@ class TrancoderTests {
     String pad = StringUtils.repeat(padChar, size - 10);
     assertThat(Trancoder.convert((LocalDate) null, size, padChar, false, true))
         .isEqualTo(DATE + pad);
+  }
 
+  @Property
+  void shouldConvertNullLocalDateAsDefaultLeftPadded(
+      @ForAll @IntRange(min = 10, max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String pad = StringUtils.repeat(padChar, size - 10);
     assertThat(Trancoder.convert((LocalDate) null, size, padChar, true, true))
         .isEqualTo(pad + DATE);
   }
@@ -291,6 +475,16 @@ class TrancoderTests {
   }
 
   @Property
+  void shouldConvertNullLocalDateTimeLeftPadded(
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert((LocalDateTime) null, size, padChar, true, false))
+        .isEqualTo(pad);
+  }
+
+  @Property
   void shouldConvertNullLocalDateTimeAsDefault(
       @ForAll @IntRange(min = 26, max = 1000) final int size,
       @ForAll final char padChar) {
@@ -298,7 +492,14 @@ class TrancoderTests {
     String pad = StringUtils.repeat(padChar, size - 26);
     assertThat(Trancoder.convert((LocalDateTime) null, size, padChar, false, true))
         .isEqualTo(DATETIME + pad);
+  }
 
+  @Property
+  void shouldConvertNullLocalDateTimeAsDefaultLeftPadded(
+      @ForAll @IntRange(min = 26, max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String pad = StringUtils.repeat(padChar, size - 26);
     assertThat(Trancoder.convert((LocalDateTime) null, size, padChar, true, true))
         .isEqualTo(pad + DATETIME);
   }
@@ -311,7 +512,14 @@ class TrancoderTests {
     String pad = StringUtils.repeat(padChar, size);
     assertThat(Trancoder.convert("", size, padChar, false, false))
         .isEqualTo(pad);
+  }
 
+  @Property
+  void shouldConvertEmptyStringLeftPadded(
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String pad = StringUtils.repeat(padChar, size);
     assertThat(Trancoder.convert("", size, padChar, true, false))
         .isEqualTo(pad);
   }
