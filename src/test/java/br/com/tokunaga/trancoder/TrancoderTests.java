@@ -22,8 +22,6 @@ class TrancoderTests {
 
   private static final String DATE = "00.00.0000";
   private static final String DATETIME = "00.00.0000.00-00-00-000000";
-  private static final String ZERO = "0";
-  private static final String SPACE = " ";
 
   @Property
   void shouldConvertNullString(
@@ -50,9 +48,11 @@ class TrancoderTests {
       @ForAll @IntRange(min = 1, max = 1000) final int size,
       @ForAll final char padChar) {
 
-    String pad = StringUtils.repeat(padChar, size - 1);
+    String expected = " ";
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size - length);
     assertThat(Trancoder.convert((String) null, size, padChar, false, true))
-        .isEqualTo(SPACE + pad);
+        .isEqualTo(expected + pad);
   }
 
   @Property
@@ -60,9 +60,11 @@ class TrancoderTests {
       @ForAll @IntRange(min = 1, max = 1000) final int size,
       @ForAll final char padChar) {
 
-    String pad = StringUtils.repeat(padChar, size - 1);
+    String expected = " ";
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size - length);
     assertThat(Trancoder.convert((String) null, size, padChar, true, true))
-        .isEqualTo(pad + SPACE);
+        .isEqualTo(pad + expected);
   }
 
   @Property
@@ -90,9 +92,11 @@ class TrancoderTests {
       @ForAll @IntRange(min = 1, max = 1000) final int size,
       @ForAll final char padChar) {
 
-    String pad = StringUtils.repeat(padChar, size - 1);
+    String expected = "0";
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size - length);
     assertThat(Trancoder.convert((Integer) null, size, padChar, false, true))
-        .isEqualTo(ZERO + pad);
+        .isEqualTo(expected + pad);
   }
 
   @Property
@@ -100,9 +104,11 @@ class TrancoderTests {
       @ForAll @IntRange(min = 1, max = 1000) final int size,
       @ForAll final char padChar) {
 
-    String pad = StringUtils.repeat(padChar, size - 1);
+    String expected = "0";
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size - length);
     assertThat(Trancoder.convert((Integer) null, size, padChar, true, true))
-        .isEqualTo(pad + ZERO);
+        .isEqualTo(pad + expected);
   }
 
   @Property
@@ -130,9 +136,11 @@ class TrancoderTests {
       @ForAll @IntRange(min = 1, max = 1000) final int size,
       @ForAll final char padChar) {
 
-    String pad = StringUtils.repeat(padChar, size - 1);
+    String expected = "0";
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size - length);
     assertThat(Trancoder.convert((Long) null, size, padChar, false, true))
-        .isEqualTo(ZERO + pad);
+        .isEqualTo(expected + pad);
   }
 
   @Property
@@ -140,9 +148,11 @@ class TrancoderTests {
       @ForAll @IntRange(min = 1, max = 1000) final int size,
       @ForAll final char padChar) {
 
-    String pad = StringUtils.repeat(padChar, size - 1);
+    String expected = "0";
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size - length);
     assertThat(Trancoder.convert((Long) null, size, padChar, true, true))
-        .isEqualTo(pad + ZERO);
+        .isEqualTo(pad + expected);
   }
 
   @Property
@@ -170,9 +180,11 @@ class TrancoderTests {
       @ForAll @IntRange(min = 1, max = 1000) final int size,
       @ForAll final char padChar) {
 
-    String pad = StringUtils.repeat(padChar, size - 1);
+    String expected = "0";
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size - length);
     assertThat(Trancoder.convert((Short) null, size, padChar, false, true))
-        .isEqualTo(ZERO + pad);
+        .isEqualTo(expected + pad);
   }
 
   @Property
@@ -180,9 +192,11 @@ class TrancoderTests {
       @ForAll @IntRange(min = 1, max = 1000) final int size,
       @ForAll final char padChar) {
 
-    String pad = StringUtils.repeat(padChar, size - 1);
+    String expected = "0";
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size - length);
     assertThat(Trancoder.convert((Short) null, size, padChar, true, true))
-        .isEqualTo(pad + ZERO);
+        .isEqualTo(pad + expected);
   }
 
   @Property
@@ -210,9 +224,11 @@ class TrancoderTests {
       @ForAll @IntRange(min = 1, max = 1000) final int size,
       @ForAll final char padChar) {
 
-    String pad = StringUtils.repeat(padChar, size - 1);
+    String expected = "0";
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size - length);
     assertThat(Trancoder.convert((Byte) null, size, padChar, false, true))
-        .isEqualTo(ZERO + pad);
+        .isEqualTo(expected + pad);
   }
 
   @Property
@@ -220,9 +236,11 @@ class TrancoderTests {
       @ForAll @IntRange(min = 1, max = 1000) final int size,
       @ForAll final char padChar) {
 
-    String pad = StringUtils.repeat(padChar, size - 1);
+    String expected = "0";
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size - length);
     assertThat(Trancoder.convert((Byte) null, size, padChar, true, true))
-        .isEqualTo(pad + ZERO);
+        .isEqualTo(pad + expected);
   }
 
   @Property
@@ -436,9 +454,11 @@ class TrancoderTests {
       @ForAll @IntRange(min = 1, max = 1000) final int size,
       @ForAll final char padChar) {
 
-    String pad = StringUtils.repeat(padChar, size - 1);
+    String expected = "0";
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size - length);
     assertThat(Trancoder.convert((BigInteger) null, size, padChar, false, true))
-        .isEqualTo(ZERO + pad);
+        .isEqualTo(expected + pad);
   }
 
   @Property
@@ -446,9 +466,11 @@ class TrancoderTests {
       @ForAll @IntRange(min = 1, max = 1000) final int size,
       @ForAll final char padChar) {
 
-    String pad = StringUtils.repeat(padChar, size - 1);
+    String expected = "0";
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size - length);
     assertThat(Trancoder.convert((BigInteger) null, size, padChar, true, true))
-        .isEqualTo(pad + ZERO);
+        .isEqualTo(pad + expected);
   }
 
   @Property
