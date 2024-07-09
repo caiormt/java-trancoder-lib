@@ -21,19 +21,19 @@ import br.com.tokunaga.trancoder.exception.TrancodeOverflowException;
 
 public abstract class Trancoder {
 
-  public static final Date DEFAULT_DATE =
+  private static final Date DEFAULT_DATE =
       new Date(0L);
 
-  public static final LocalDate DEFAULT_LOCALDATE =
+  private static final LocalDate DEFAULT_LOCALDATE =
       LocalDate.of(1, 1, 1);
 
-  public static final LocalTime DEFAULT_LOCALTIME =
+  private static final LocalTime DEFAULT_LOCALTIME =
       LocalTime.MIDNIGHT;
 
-  public static final LocalDateTime DEFAULT_LOCALDATETIME =
+  private static final LocalDateTime DEFAULT_LOCALDATETIME =
       LocalDateTime.of(DEFAULT_LOCALDATE, DEFAULT_LOCALTIME);
 
-  public static final TimeZone DEFAULT_TIMEZONE =
+  private static final TimeZone DEFAULT_TIMEZONE =
       TimeZone.getTimeZone("GMT");
 
   private Trancoder() {
