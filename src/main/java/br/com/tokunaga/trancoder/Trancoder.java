@@ -18,7 +18,6 @@ public abstract class Trancoder {
   private static final String EMPTY = "";
   private static final String SPACE = " ";
   private static final String ZERO = "0";
-  private static final String DECIMAL = "0.00";
 
   private Trancoder() {
     super();
@@ -173,10 +172,6 @@ public abstract class Trancoder {
 
   private static String dateTimeNullDefault(final boolean defaultIfNull) {
     return defaultIfNull ? DATETIME : EMPTY;
-  }
-
-  private static String decimalNullDefault(final boolean zeroIfNull) {
-    return zeroIfNull ? DECIMAL : EMPTY;
   }
 
   private static String numericNullDefault(final boolean zeroIfNull) {
