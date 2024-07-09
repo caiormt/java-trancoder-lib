@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -646,7 +647,7 @@ class TrancoderTests {
       @ForAll @IntRange(max = 1000) final int size,
       @ForAll final char padChar) {
 
-    String expected = String.format("%.2f", value);
+    String expected = new DecimalFormat("0.00").format(value);
     int length = expected.length();
     String pad = StringUtils.repeat(padChar, size);
     assertThat(Trancoder.convert(value, length + size, 2, padChar, false, false))
@@ -659,7 +660,7 @@ class TrancoderTests {
       @ForAll @IntRange(max = 1000) final int size,
       @ForAll final char padChar) {
 
-    String expected = String.format("%.0f", value);
+    String expected = new DecimalFormat("0").format(value);
     int length = expected.length();
     String pad = StringUtils.repeat(padChar, size);
     assertThat(Trancoder.convert(value, length + size, 0, padChar, false, false))
@@ -672,7 +673,7 @@ class TrancoderTests {
       @ForAll @IntRange(max = 1000) final int size,
       @ForAll final char padChar) {
 
-    String expected = String.format("%.1f", value);
+    String expected = new DecimalFormat("0.0").format(value);
     int length = expected.length();
     String pad = StringUtils.repeat(padChar, size);
     assertThat(Trancoder.convert(value, length + size, 1, padChar, false, false))
@@ -826,7 +827,7 @@ class TrancoderTests {
       @ForAll @IntRange(max = 1000) final int size,
       @ForAll final char padChar) {
 
-    String expected = String.format("%.2f", value);
+    String expected = new DecimalFormat("0.00").format(value);
     int length = expected.length();
     String pad = StringUtils.repeat(padChar, size);
     assertThat(Trancoder.convert(value, length + size, 2, padChar, true, false))
@@ -839,7 +840,7 @@ class TrancoderTests {
       @ForAll @IntRange(max = 1000) final int size,
       @ForAll final char padChar) {
 
-    String expected = String.format("%.0f", value);
+    String expected = new DecimalFormat("0").format(value);
     int length = expected.length();
     String pad = StringUtils.repeat(padChar, size);
     assertThat(Trancoder.convert(value, length + size, 0, padChar, true, false))
@@ -852,7 +853,7 @@ class TrancoderTests {
       @ForAll @IntRange(max = 1000) final int size,
       @ForAll final char padChar) {
 
-    String expected = String.format("%.1f", value);
+    String expected = new DecimalFormat("0.0").format(value);
     int length = expected.length();
     String pad = StringUtils.repeat(padChar, size);
     assertThat(Trancoder.convert(value, length + size, 1, padChar, true, false))
@@ -1052,7 +1053,7 @@ class TrancoderTests {
       @ForAll @IntRange(min = 4, max = 1000) final int size,
       @ForAll final char padChar) {
 
-    String expected = String.format("%.2f", value);
+    String expected = new DecimalFormat("0.00").format(value);
     int length = expected.length();
     int target = length - size;
     assertThatThrownBy(() -> Trancoder.convert(value, target, 2, padChar, true, false))
