@@ -18,6 +18,7 @@ public abstract class Trancoder {
   private static final String EMPTY = "";
   private static final String SPACE = " ";
   private static final String ZERO = "0";
+  private static final String DECIMAL = "0.00";
 
   private Trancoder() {
     super();
@@ -96,7 +97,7 @@ public abstract class Trancoder {
       final boolean leftPad,
       final boolean zeroIfNull) {
 
-    final String str = safeValue(value, numericNullDefault(zeroIfNull));
+    final String str = safeValue(value, decimalNullDefault(zeroIfNull));
     return safePadValue(str, size, padChar, leftPad);
   }
 
@@ -159,12 +160,20 @@ public abstract class Trancoder {
     return Objects.toString(value, nullDefault);
   }
 
+  private static String safeValue(final Double value, final String nullDefault) {
+    return Objects.nonNull(value) ? String.format("%.2f", value) : nullDefault;
+  }
+
   private static String dateNullDefault(final boolean defaultIfNull) {
     return defaultIfNull ? DATE : EMPTY;
   }
 
   private static String dateTimeNullDefault(final boolean defaultIfNull) {
     return defaultIfNull ? DATETIME : EMPTY;
+  }
+
+  private static String decimalNullDefault(final boolean zeroIfNull) {
+    return zeroIfNull ? DECIMAL : EMPTY;
   }
 
   private static String numericNullDefault(final boolean zeroIfNull) {
