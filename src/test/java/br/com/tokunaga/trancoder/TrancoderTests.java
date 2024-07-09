@@ -22,7 +22,6 @@ class TrancoderTests {
   private static final String DATE = "00.00.0000";
   private static final String DATETIME = "00.00.0000.00-00-00-000000";
   private static final String ZERO = "0";
-  private static final String DECIMAL_ZERO = "0.00";
   private static final String SPACE = " ";
 
   @Property
@@ -228,20 +227,22 @@ class TrancoderTests {
   @Property
   void shouldConvertNullDouble(
       @ForAll @IntRange(max = 1000) final int size,
+      @ForAll @IntRange(max = 5) final int precision,
       @ForAll final char padChar) {
 
     String pad = StringUtils.repeat(padChar, size);
-    assertThat(Trancoder.convert((Double) null, size, padChar, false, false))
+    assertThat(Trancoder.convert((Double) null, size, precision, padChar, false, false))
         .isEqualTo(pad);
   }
 
   @Property
   void shouldConvertNullDoubleLeftPadded(
       @ForAll @IntRange(max = 1000) final int size,
+      @ForAll @IntRange(max = 5) final int precision,
       @ForAll final char padChar) {
 
     String pad = StringUtils.repeat(padChar, size);
-    assertThat(Trancoder.convert((Double) null, size, padChar, true, false))
+    assertThat(Trancoder.convert((Double) null, size, precision, padChar, true, false))
         .isEqualTo(pad);
   }
 
@@ -250,9 +251,34 @@ class TrancoderTests {
       @ForAll @IntRange(min = 4, max = 1000) final int size,
       @ForAll final char padChar) {
 
-    String pad = StringUtils.repeat(padChar, size - 4);
-    assertThat(Trancoder.convert((Double) null, size, padChar, false, true))
-        .isEqualTo(DECIMAL_ZERO + pad);
+    String expected = "0.00";
+    String pad = StringUtils.repeat(padChar, size - expected.length());
+    assertThat(Trancoder.convert((Double) null, size, 2, padChar, false, true))
+        .isEqualTo(expected + pad);
+  }
+
+  @Property
+  void shouldConvertNullDoubleAsZeroWithZeroPrecision(
+      @ForAll @IntRange(min = 1, max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = "0";
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size - length);
+    assertThat(Trancoder.convert((Double) null, size, 0, padChar, false, true))
+        .isEqualTo(expected + pad);
+  }
+
+  @Property
+  void shouldConvertNullDoubleAsZeroWithOnePrecision(
+      @ForAll @IntRange(min = 3, max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = "0.0";
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size - length);
+    assertThat(Trancoder.convert((Double) null, size, 1, padChar, false, true))
+        .isEqualTo(expected + pad);
   }
 
   @Property
@@ -260,9 +286,35 @@ class TrancoderTests {
       @ForAll @IntRange(min = 4, max = 1000) final int size,
       @ForAll final char padChar) {
 
-    String pad = StringUtils.repeat(padChar, size - 4);
-    assertThat(Trancoder.convert((Double) null, size, padChar, true, true))
-        .isEqualTo(pad + DECIMAL_ZERO);
+    String expected = "0.00";
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size - length);
+    assertThat(Trancoder.convert((Double) null, size, 2, padChar, true, true))
+        .isEqualTo(pad + expected);
+  }
+
+  @Property
+  void shouldConvertNullDoubleAsZeroWithZeroPrecisionLeftPadded(
+      @ForAll @IntRange(min = 1, max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = "0";
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size - length);
+    assertThat(Trancoder.convert((Double) null, size, 0, padChar, true, true))
+        .isEqualTo(pad + expected);
+  }
+
+  @Property
+  void shouldConvertNullDoubleAsZeroWithOnePrecisionLeftPadded(
+      @ForAll @IntRange(min = 3, max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = "0.0";
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size - length);
+    assertThat(Trancoder.convert((Double) null, size, 1, padChar, true, true))
+        .isEqualTo(pad + expected);
   }
 
   @Property
@@ -597,7 +649,33 @@ class TrancoderTests {
     String expected = String.format("%.2f", value);
     int length = expected.length();
     String pad = StringUtils.repeat(padChar, size);
-    assertThat(Trancoder.convert(value, length + size, padChar, false, false))
+    assertThat(Trancoder.convert(value, length + size, 2, padChar, false, false))
+        .isEqualTo(expected + pad);
+  }
+
+  @Property
+  void shouldConvertAnyDoubleWithZeroPrecision(
+      @ForAll final Double value,
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = String.format("%.0f", value);
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert(value, length + size, 0, padChar, false, false))
+        .isEqualTo(expected + pad);
+  }
+
+  @Property
+  void shouldConvertAnyDoubleWithOnePrecision(
+      @ForAll final Double value,
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = String.format("%.1f", value);
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert(value, length + size, 1, padChar, false, false))
         .isEqualTo(expected + pad);
   }
 
@@ -751,7 +829,33 @@ class TrancoderTests {
     String expected = String.format("%.2f", value);
     int length = expected.length();
     String pad = StringUtils.repeat(padChar, size);
-    assertThat(Trancoder.convert(value, length + size, padChar, true, false))
+    assertThat(Trancoder.convert(value, length + size, 2, padChar, true, false))
+        .isEqualTo(pad + expected);
+  }
+
+  @Property
+  void shouldConvertAnyDoubleWithZeroLeftPadded(
+      @ForAll final Double value,
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = String.format("%.0f", value);
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert(value, length + size, 0, padChar, true, false))
+        .isEqualTo(pad + expected);
+  }
+
+  @Property
+  void shouldConvertAnyDoubleWithOneLeftPadded(
+      @ForAll final Double value,
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = String.format("%.1f", value);
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert(value, length + size, 1, padChar, true, false))
         .isEqualTo(pad + expected);
   }
 
@@ -951,16 +1055,16 @@ class TrancoderTests {
     String expected = String.format("%.2f", value);
     int length = expected.length();
     int target = length - size;
-    assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, true, false))
+    assertThatThrownBy(() -> Trancoder.convert(value, target, 2, padChar, true, false))
         .isExactlyInstanceOf(TrancodeOverflowException.class);
 
-    assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, false, false))
+    assertThatThrownBy(() -> Trancoder.convert(value, target, 2, padChar, false, false))
         .isExactlyInstanceOf(TrancodeOverflowException.class);
 
-    assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, true, true))
+    assertThatThrownBy(() -> Trancoder.convert(value, target, 2, padChar, true, true))
         .isExactlyInstanceOf(TrancodeOverflowException.class);
 
-    assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, false, true))
+    assertThatThrownBy(() -> Trancoder.convert(value, target, 2, padChar, false, true))
         .isExactlyInstanceOf(TrancodeOverflowException.class);
   }
 
