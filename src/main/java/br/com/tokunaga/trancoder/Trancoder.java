@@ -2,6 +2,8 @@ package br.com.tokunaga.trancoder;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
+import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -161,9 +163,19 @@ public abstract class Trancoder {
   }
 
   private static String safeValue(final Double value, final int precision, final boolean zeroIfNull) {
+    final NumberFormat nf = formatNumberWithPrecision(precision);
     if (Objects.isNull(value))
-      return zeroIfNull ? String.format("%." + precision + "f", 0d) : EMPTY;
-    return String.format("%." + precision + "f", value);
+      return zeroIfNull ? nf.format(0d) : EMPTY;
+    return nf.format(value);
+  }
+
+  private static NumberFormat formatNumberWithPrecision(final int precision) {
+    final NumberFormat nf = NumberFormat.getNumberInstance();
+    nf.setMaximumFractionDigits(precision);
+    nf.setMinimumFractionDigits(precision);
+    nf.setGroupingUsed(false);
+    nf.setRoundingMode(RoundingMode.HALF_EVEN);
+    return nf;
   }
 
   private static String dateNullDefault(final boolean defaultIfNull) {
