@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.Objects;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import br.com.tokunaga.trancoder.exception.TrancodeOverflowException;
 
@@ -19,7 +20,6 @@ public abstract class Trancoder {
   private static final String DATETIME = "00.00.0000.00-00-00-000000";
   private static final String EMPTY = "";
   private static final String SPACE = " ";
-  private static final String ZERO = "0";
 
   private Trancoder() {
     super();
@@ -43,7 +43,7 @@ public abstract class Trancoder {
       final boolean leftPad,
       final boolean zeroIfNull) {
 
-    final String str = safeValue(value, numericNullDefault(zeroIfNull));
+    final String str = safeValue(value, zeroIfNull);
     return safePadValue(str, size, padChar, leftPad);
   }
 
@@ -54,7 +54,7 @@ public abstract class Trancoder {
       final boolean leftPad,
       final boolean zeroIfNull) {
 
-    final String str = safeValue(value, numericNullDefault(zeroIfNull));
+    final String str = safeValue(value, zeroIfNull);
     return safePadValue(str, size, padChar, leftPad);
   }
 
@@ -65,7 +65,7 @@ public abstract class Trancoder {
       final boolean leftPad,
       final boolean zeroIfNull) {
 
-    final String str = safeValue(value, numericNullDefault(zeroIfNull));
+    final String str = safeValue(value, zeroIfNull);
     return safePadValue(str, size, padChar, leftPad);
   }
 
@@ -76,7 +76,7 @@ public abstract class Trancoder {
       final boolean leftPad,
       final boolean zeroIfNull) {
 
-    final String str = safeValue(value, numericNullDefault(zeroIfNull));
+    final String str = safeValue(value, zeroIfNull);
     return safePadValue(str, size, padChar, leftPad);
   }
 
@@ -87,7 +87,7 @@ public abstract class Trancoder {
       final boolean leftPad,
       final boolean zeroIfNull) {
 
-    final String str = safeValue(value, numericNullDefault(zeroIfNull));
+    final String str = safeValue(value, zeroIfNull);
     return safePadValue(str, size, padChar, leftPad);
   }
 
@@ -164,11 +164,17 @@ public abstract class Trancoder {
     return Objects.toString(value, nullDefault);
   }
 
+  private static String safeValue(final Number value, final boolean zeroIfNull) {
+    return safeValue(value, 0, zeroIfNull);
+  }
+
   private static String safeValue(final Number value, final int precision, final boolean zeroIfNull) {
     final NumberFormat nf = formatNumberWithPrecision(precision);
-    if (Objects.isNull(value))
-      return zeroIfNull ? nf.format(0d) : EMPTY;
-    return nf.format(value);
+    return Objects.nonNull(value) ? nf.format(value) : nullValue(zeroIfNull, nf);
+  }
+
+  private static String nullValue(final boolean zeroIfNull, final NumberFormat numberFormat) {
+    return zeroIfNull ? numberFormat.format(NumberUtils.DOUBLE_ZERO) : EMPTY;
   }
 
   private static NumberFormat formatNumberWithPrecision(final int precision) {
@@ -186,10 +192,6 @@ public abstract class Trancoder {
 
   private static String dateTimeNullDefault(final boolean defaultIfNull) {
     return defaultIfNull ? DATETIME : EMPTY;
-  }
-
-  private static String numericNullDefault(final boolean zeroIfNull) {
-    return zeroIfNull ? ZERO : EMPTY;
   }
 
   private static String stringNullDefault(final boolean spaceIfNull) {
