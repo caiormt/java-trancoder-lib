@@ -457,7 +457,7 @@ class TrancoderTests {
       @ForAll final char padChar) {
 
     String pad = StringUtils.repeat(padChar, size);
-    assertThat(Trancoder.convert((BigDecimal) null, size, padChar, false, false))
+    assertThat(Trancoder.convert((BigDecimal) null, size, 2, padChar, false, false))
         .isEqualTo(pad);
   }
 
@@ -467,28 +467,80 @@ class TrancoderTests {
       @ForAll final char padChar) {
 
     String pad = StringUtils.repeat(padChar, size);
-    assertThat(Trancoder.convert((BigDecimal) null, size, padChar, true, false))
+    assertThat(Trancoder.convert((BigDecimal) null, size, 2, padChar, true, false))
         .isEqualTo(pad);
   }
 
   @Property
   void shouldConvertNullBigDecimalAsZero(
+      @ForAll @IntRange(min = 4, max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = "0.00";
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size - length);
+    assertThat(Trancoder.convert((BigDecimal) null, size, 2, padChar, false, true))
+        .isEqualTo(expected + pad);
+  }
+
+  @Property
+  void shouldConvertNullBigDecimalAsZeroWithZeroPrecision(
       @ForAll @IntRange(min = 1, max = 1000) final int size,
       @ForAll final char padChar) {
 
-    String pad = StringUtils.repeat(padChar, size - 1);
-    assertThat(Trancoder.convert((BigDecimal) null, size, padChar, false, true))
-        .isEqualTo(ZERO + pad);
+    String expected = "0";
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size - length);
+    assertThat(Trancoder.convert((BigDecimal) null, size, 0, padChar, false, true))
+        .isEqualTo(expected + pad);
+  }
+
+  @Property
+  void shouldConvertNullBigDecimalAsZeroWithOnePrecision(
+      @ForAll @IntRange(min = 3, max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = "0.0";
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size - length);
+    assertThat(Trancoder.convert((BigDecimal) null, size, 1, padChar, false, true))
+        .isEqualTo(expected + pad);
   }
 
   @Property
   void shouldConvertNullBigDecimalAsZeroLeftPadded(
+      @ForAll @IntRange(min = 4, max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = "0.00";
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size - length);
+    assertThat(Trancoder.convert((BigDecimal) null, size, 2, padChar, true, true))
+        .isEqualTo(pad + expected);
+  }
+
+  @Property
+  void shouldConvertNullBigDecimalAsZeroWithZeroPrecisionLeftPadded(
       @ForAll @IntRange(min = 1, max = 1000) final int size,
       @ForAll final char padChar) {
 
-    String pad = StringUtils.repeat(padChar, size - 1);
-    assertThat(Trancoder.convert((BigDecimal) null, size, padChar, true, true))
-        .isEqualTo(pad + ZERO);
+    String expected = "0";
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size - length);
+    assertThat(Trancoder.convert((BigDecimal) null, size, 0, padChar, true, true))
+        .isEqualTo(pad + expected);
+  }
+
+  @Property
+  void shouldConvertNullBigDecimalAsZeroWithOnePrecisionLeftPadded(
+      @ForAll @IntRange(min = 3, max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = "0.0";
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size - length);
+    assertThat(Trancoder.convert((BigDecimal) null, size, 1, padChar, true, true))
+        .isEqualTo(pad + expected);
   }
 
   @Property
@@ -791,10 +843,36 @@ class TrancoderTests {
       @ForAll @IntRange(max = 1000) final int size,
       @ForAll final char padChar) {
 
-    String expected = value.toString();
+    String expected = new DecimalFormat("0.00").format(value);
     int length = expected.length();
     String pad = StringUtils.repeat(padChar, size);
-    assertThat(Trancoder.convert(value, length + size, padChar, false, false))
+    assertThat(Trancoder.convert(value, length + size, 2, padChar, false, false))
+        .isEqualTo(expected + pad);
+  }
+
+  @Property
+  void shouldConvertAnyBigDecimalWithZeroPrecision(
+      @ForAll final BigDecimal value,
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = new DecimalFormat("0").format(value);
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert(value, length + size, 0, padChar, false, false))
+        .isEqualTo(expected + pad);
+  }
+
+  @Property
+  void shouldConvertAnyBigDecimalWithOnePrecision(
+      @ForAll final BigDecimal value,
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = new DecimalFormat("0.0").format(value);
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert(value, length + size, 1, padChar, false, false))
         .isEqualTo(expected + pad);
   }
 
@@ -997,10 +1075,36 @@ class TrancoderTests {
       @ForAll @IntRange(max = 1000) final int size,
       @ForAll final char padChar) {
 
-    String expected = value.toString();
+    String expected = new DecimalFormat("0.00").format(value);
     int length = expected.length();
     String pad = StringUtils.repeat(padChar, size);
-    assertThat(Trancoder.convert(value, length + size, padChar, true, false))
+    assertThat(Trancoder.convert(value, length + size, 2, padChar, true, false))
+        .isEqualTo(pad + expected);
+  }
+
+  @Property
+  void shouldConvertAnyBigDecimalWithZeroPrecisionLeftPadded(
+      @ForAll final BigDecimal value,
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = new DecimalFormat("0").format(value);
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert(value, length + size, 0, padChar, true, false))
+        .isEqualTo(pad + expected);
+  }
+
+  @Property
+  void shouldConvertAnyBigDecimalWithOnePrecisionLeftPadded(
+      @ForAll final BigDecimal value,
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = new DecimalFormat("0.0").format(value);
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert(value, length + size, 1, padChar, true, false))
         .isEqualTo(pad + expected);
   }
 
@@ -1224,19 +1328,19 @@ class TrancoderTests {
       @ForAll @IntRange(min = 1, max = 1000) final int size,
       @ForAll final char padChar) {
 
-    String expected = value.toString();
+    String expected = new DecimalFormat("0.00").format(value);
     int length = expected.length();
     int target = length - size;
-    assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, true, false))
+    assertThatThrownBy(() -> Trancoder.convert(value, target, 2, padChar, true, false))
         .isExactlyInstanceOf(TrancodeOverflowException.class);
 
-    assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, false, false))
+    assertThatThrownBy(() -> Trancoder.convert(value, target, 2, padChar, false, false))
         .isExactlyInstanceOf(TrancodeOverflowException.class);
 
-    assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, true, true))
+    assertThatThrownBy(() -> Trancoder.convert(value, target, 2, padChar, true, true))
         .isExactlyInstanceOf(TrancodeOverflowException.class);
 
-    assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, false, true))
+    assertThatThrownBy(() -> Trancoder.convert(value, target, 2, padChar, false, true))
         .isExactlyInstanceOf(TrancodeOverflowException.class);
   }
 
