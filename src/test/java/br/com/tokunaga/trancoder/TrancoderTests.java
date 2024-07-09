@@ -8,6 +8,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
@@ -21,7 +22,6 @@ import br.com.tokunaga.trancoder.exception.TrancodeOverflowException;
 
 class TrancoderTests {
 
-  private static final String DATE = "00.00.0000";
   private static final String DATETIME = "00.00.0000.00-00-00-000000";
 
   @Property
@@ -672,7 +672,7 @@ class TrancoderTests {
       @ForAll final char padChar) {
 
     String pad = StringUtils.repeat(padChar, size);
-    assertThat(Trancoder.convert((LocalDate) null, size, padChar, false, false))
+    assertThat(Trancoder.convert((LocalDate) null, size, "dd.MM.yyyy", padChar, false, false))
         .isEqualTo(pad);
   }
 
@@ -682,7 +682,7 @@ class TrancoderTests {
       @ForAll final char padChar) {
 
     String pad = StringUtils.repeat(padChar, size);
-    assertThat(Trancoder.convert((LocalDate) null, size, padChar, true, false))
+    assertThat(Trancoder.convert((LocalDate) null, size, "dd.MM.yyyy", padChar, true, false))
         .isEqualTo(pad);
   }
 
@@ -691,9 +691,23 @@ class TrancoderTests {
       @ForAll @IntRange(min = 10, max = 1000) final int size,
       @ForAll final char padChar) {
 
-    String pad = StringUtils.repeat(padChar, size - 10);
-    assertThat(Trancoder.convert((LocalDate) null, size, padChar, false, true))
-        .isEqualTo(DATE + pad);
+    String expected = "01.01.0001";
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size - length);
+    assertThat(Trancoder.convert((LocalDate) null, size, "dd.MM.yyyy", padChar, false, true))
+        .isEqualTo(expected + pad);
+  }
+
+  @Property
+  void shouldConvertNullLocalDateAsDefaultWithPattern(
+      @ForAll @IntRange(min = 10, max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = "01-01-0001";
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size - length);
+    assertThat(Trancoder.convert((LocalDate) null, size, "dd-MM-yyyy", padChar, false, true))
+        .isEqualTo(expected + pad);
   }
 
   @Property
@@ -701,9 +715,23 @@ class TrancoderTests {
       @ForAll @IntRange(min = 10, max = 1000) final int size,
       @ForAll final char padChar) {
 
-    String pad = StringUtils.repeat(padChar, size - 10);
-    assertThat(Trancoder.convert((LocalDate) null, size, padChar, true, true))
-        .isEqualTo(pad + DATE);
+    String expected = "01.01.0001";
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size - length);
+    assertThat(Trancoder.convert((LocalDate) null, size, "dd.MM.yyyy", padChar, true, true))
+        .isEqualTo(pad + expected);
+  }
+
+  @Property
+  void shouldConvertNullLocalDateAsDefaultWithPatternLeftPadded(
+      @ForAll @IntRange(min = 10, max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = "01-01-0001";
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size - length);
+    assertThat(Trancoder.convert((LocalDate) null, size, "dd-MM-yyyy", padChar, true, true))
+        .isEqualTo(pad + expected);
   }
 
   @Property
@@ -991,10 +1019,23 @@ class TrancoderTests {
       @ForAll @IntRange(max = 1000) final int size,
       @ForAll final char padChar) {
 
-    String expected = value.toString();
+    String expected = DateTimeFormatter.ofPattern("dd.MM.yyyy").format(value);
     int length = expected.length();
     String pad = StringUtils.repeat(padChar, size);
-    assertThat(Trancoder.convert(value, length + size, padChar, false, false))
+    assertThat(Trancoder.convert(value, length + size, "dd.MM.yyyy", padChar, false, false))
+        .isEqualTo(expected + pad);
+  }
+
+  @Property
+  void shouldConvertAnyLocalDateWithPattern(
+      @ForAll final LocalDate value,
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = DateTimeFormatter.ofPattern("dd-MM-yyyy").format(value);
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert(value, length + size, "dd-MM-yyyy", padChar, false, false))
         .isEqualTo(expected + pad);
   }
 
@@ -1236,10 +1277,23 @@ class TrancoderTests {
       @ForAll @IntRange(max = 1000) final int size,
       @ForAll final char padChar) {
 
-    String expected = value.toString();
+    String expected = DateTimeFormatter.ofPattern("dd.MM.yyyy").format(value);
     int length = expected.length();
     String pad = StringUtils.repeat(padChar, size);
-    assertThat(Trancoder.convert(value, length + size, padChar, true, false))
+    assertThat(Trancoder.convert(value, length + size, "dd.MM.yyyy", padChar, true, false))
+        .isEqualTo(pad + expected);
+  }
+
+  @Property
+  void shouldConvertAnyLocalDateWithPatternLeftPadded(
+      @ForAll final LocalDate value,
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = DateTimeFormatter.ofPattern("dd-MM-yyyy").format(value);
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert(value, length + size, "dd-MM-yyyy", padChar, true, false))
         .isEqualTo(pad + expected);
   }
 
@@ -1484,16 +1538,16 @@ class TrancoderTests {
     String expected = value.toString();
     int length = expected.length();
     int target = length - size;
-    assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, true, false))
+    assertThatThrownBy(() -> Trancoder.convert(value, target, "dd.MM.yyyy", padChar, true, false))
         .isExactlyInstanceOf(TrancodeOverflowException.class);
 
-    assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, false, false))
+    assertThatThrownBy(() -> Trancoder.convert(value, target, "dd.MM.yyyy", padChar, false, false))
         .isExactlyInstanceOf(TrancodeOverflowException.class);
 
-    assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, true, true))
+    assertThatThrownBy(() -> Trancoder.convert(value, target, "dd.MM.yyyy", padChar, true, true))
         .isExactlyInstanceOf(TrancodeOverflowException.class);
 
-    assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, false, true))
+    assertThatThrownBy(() -> Trancoder.convert(value, target, "dd.MM.yyyy", padChar, false, true))
         .isExactlyInstanceOf(TrancodeOverflowException.class);
   }
 
