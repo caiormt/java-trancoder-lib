@@ -4,10 +4,12 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Objects;
+import java.util.TimeZone;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -15,6 +17,8 @@ import org.apache.commons.lang3.math.NumberUtils;
 import br.com.tokunaga.trancoder.exception.TrancodeOverflowException;
 
 public abstract class Trancoder {
+
+  public static final Date NULL_DATE = new Date(0L);
 
   private static final String DATE = "00.00.0000";
   private static final String DATETIME = "00.00.0000.00-00-00-000000";
@@ -130,11 +134,12 @@ public abstract class Trancoder {
   public static String convert(
       final Date value,
       final int size,
+      final String pattern,
       final char padChar,
       final boolean leftPad,
       final boolean defaultIfNull) {
 
-    final String str = safeValue(value, dateNullDefault(defaultIfNull));
+    final String str = safeValue(value, pattern, defaultIfNull);
     return safePadValue(str, size, padChar, leftPad);
   }
 
@@ -164,6 +169,11 @@ public abstract class Trancoder {
     return Objects.toString(value, nullDefault);
   }
 
+  private static String safeValue(final Date value, final String pattern, final boolean defaultIfNull) {
+    final SimpleDateFormat sdf = formatDateWithPattern(pattern);
+    return Objects.nonNull(value) ? sdf.format(value) : nullValue(defaultIfNull, sdf);
+  }
+
   private static String safeValue(final Number value, final boolean zeroIfNull) {
     return safeValue(value, 0, zeroIfNull);
   }
@@ -173,8 +183,18 @@ public abstract class Trancoder {
     return Objects.nonNull(value) ? nf.format(value) : nullValue(zeroIfNull, nf);
   }
 
+  private static String nullValue(final boolean defaultIfNull, final SimpleDateFormat numberFormat) {
+    return defaultIfNull ? numberFormat.format(NULL_DATE) : EMPTY;
+  }
+
   private static String nullValue(final boolean zeroIfNull, final NumberFormat numberFormat) {
     return zeroIfNull ? numberFormat.format(NumberUtils.DOUBLE_ZERO) : EMPTY;
+  }
+
+  private static SimpleDateFormat formatDateWithPattern(final String pattern) {
+    final SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+    sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+    return sdf;
   }
 
   private static NumberFormat formatNumberWithPrecision(final int precision) {
