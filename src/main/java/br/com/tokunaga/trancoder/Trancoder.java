@@ -21,11 +21,20 @@ import br.com.tokunaga.trancoder.exception.TrancodeOverflowException;
 
 public abstract class Trancoder {
 
-  public static final Date NULL_DATE = new Date(0L);
-  public static final LocalDateTime NULL_LOCAL_DATE = LocalDateTime.of(LocalDate.of(1, 1, 1), LocalTime.MIDNIGHT);
+  public static final Date DEFAULT_DATE =
+      new Date(0L);
 
-  private static final String EMPTY = "";
-  private static final String SPACE = " ";
+  public static final LocalDate DEFAULT_LOCALDATE =
+      LocalDate.of(1, 1, 1);
+
+  public static final LocalTime DEFAULT_LOCALTIME =
+      LocalTime.MIDNIGHT;
+
+  public static final LocalDateTime DEFAULT_LOCALDATETIME =
+      LocalDateTime.of(DEFAULT_LOCALDATE, DEFAULT_LOCALTIME);
+
+  public static final TimeZone DEFAULT_TIMEZONE =
+      TimeZone.getTimeZone("GMT");
 
   private Trancoder() {
     super();
@@ -38,7 +47,7 @@ public abstract class Trancoder {
       final boolean leftPad,
       final boolean spaceIfNull) {
 
-    final String str = safeValue(value, stringNullDefault(spaceIfNull));
+    final String str = safeValue(value, spaceIfNull);
     return safePadValue(str, size, padChar, leftPad);
   }
 
@@ -169,8 +178,8 @@ public abstract class Trancoder {
     return safePadValue(str, size, padChar, leftPad);
   }
 
-  private static String safeValue(final Object value, final String nullDefault) {
-    return Objects.toString(value, nullDefault);
+  private static String safeValue(final String value, final boolean spaceIfNull) {
+    return Objects.toString(value, nullValue(spaceIfNull));
   }
 
   private static String safeValue(final Date value, final String pattern, final boolean defaultIfNull) {
@@ -192,21 +201,25 @@ public abstract class Trancoder {
     return Objects.nonNull(value) ? dtf.format(value) : nullValue(defaultIfNull, dtf);
   }
 
+  private static String nullValue(final boolean spaceIfNull) {
+    return spaceIfNull ? StringUtils.SPACE : StringUtils.EMPTY;
+  }
+
   private static String nullValue(final boolean defaultIfNull, final SimpleDateFormat simpleDateFormat) {
-    return defaultIfNull ? simpleDateFormat.format(NULL_DATE) : EMPTY;
+    return defaultIfNull ? simpleDateFormat.format(DEFAULT_DATE) : StringUtils.EMPTY;
   }
 
   private static String nullValue(final boolean zeroIfNull, final NumberFormat numberFormat) {
-    return zeroIfNull ? numberFormat.format(NumberUtils.DOUBLE_ZERO) : EMPTY;
+    return zeroIfNull ? numberFormat.format(NumberUtils.DOUBLE_ZERO) : StringUtils.EMPTY;
   }
 
   private static String nullValue(final boolean defaultIfNull, final DateTimeFormatter dateTimeFormatter) {
-    return defaultIfNull ? dateTimeFormatter.format(NULL_LOCAL_DATE) : EMPTY;
+    return defaultIfNull ? dateTimeFormatter.format(DEFAULT_LOCALDATETIME) : StringUtils.EMPTY;
   }
 
   private static SimpleDateFormat formatDateWithPattern(final String pattern) {
     final SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-    sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+    sdf.setTimeZone(DEFAULT_TIMEZONE);
     return sdf;
   }
 
@@ -217,10 +230,6 @@ public abstract class Trancoder {
     nf.setGroupingUsed(false);
     nf.setRoundingMode(RoundingMode.HALF_EVEN);
     return nf;
-  }
-
-  private static String stringNullDefault(final boolean spaceIfNull) {
-    return spaceIfNull ? SPACE : EMPTY;
   }
 
   private static String padValue(final String str, final int size, final char padChar, final boolean leftPad) {
