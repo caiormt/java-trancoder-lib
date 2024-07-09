@@ -22,6 +22,7 @@ class TrancoderTests {
   private static final String DATE = "00.00.0000";
   private static final String DATETIME = "00.00.0000.00-00-00-000000";
   private static final String ZERO = "0";
+  private static final String DECIMAL_ZERO = "0.00";
   private static final String SPACE = " ";
 
   @Property
@@ -246,22 +247,22 @@ class TrancoderTests {
 
   @Property
   void shouldConvertNullDoubleAsZero(
-      @ForAll @IntRange(min = 1, max = 1000) final int size,
+      @ForAll @IntRange(min = 4, max = 1000) final int size,
       @ForAll final char padChar) {
 
-    String pad = StringUtils.repeat(padChar, size - 1);
+    String pad = StringUtils.repeat(padChar, size - 4);
     assertThat(Trancoder.convert((Double) null, size, padChar, false, true))
-        .isEqualTo(ZERO + pad);
+        .isEqualTo(DECIMAL_ZERO + pad);
   }
 
   @Property
   void shouldConvertNullDoubleAsZeroLeftPadded(
-      @ForAll @IntRange(min = 1, max = 1000) final int size,
+      @ForAll @IntRange(min = 4, max = 1000) final int size,
       @ForAll final char padChar) {
 
-    String pad = StringUtils.repeat(padChar, size - 1);
+    String pad = StringUtils.repeat(padChar, size - 4);
     assertThat(Trancoder.convert((Double) null, size, padChar, true, true))
-        .isEqualTo(pad + ZERO);
+        .isEqualTo(pad + DECIMAL_ZERO);
   }
 
   @Property
@@ -593,7 +594,7 @@ class TrancoderTests {
       @ForAll @IntRange(max = 1000) final int size,
       @ForAll final char padChar) {
 
-    String expected = Double.toString(value);
+    String expected = String.format("%.2f", value);
     int length = expected.length();
     String pad = StringUtils.repeat(padChar, size);
     assertThat(Trancoder.convert(value, length + size, padChar, false, false))
@@ -747,7 +748,7 @@ class TrancoderTests {
       @ForAll @IntRange(max = 1000) final int size,
       @ForAll final char padChar) {
 
-    String expected = Double.toString(value);
+    String expected = String.format("%.2f", value);
     int length = expected.length();
     String pad = StringUtils.repeat(padChar, size);
     assertThat(Trancoder.convert(value, length + size, padChar, true, false))
@@ -944,10 +945,10 @@ class TrancoderTests {
   @Property
   void shouldThrowOverflowConvertingAnyDoubleExceedingSize(
       @ForAll final Double value,
-      @ForAll @IntRange(min = 1, max = 1000) final int size,
+      @ForAll @IntRange(min = 4, max = 1000) final int size,
       @ForAll final char padChar) {
 
-    String expected = Double.toString(value);
+    String expected = String.format("%.2f", value);
     int length = expected.length();
     int target = length - size;
     assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, true, false))
