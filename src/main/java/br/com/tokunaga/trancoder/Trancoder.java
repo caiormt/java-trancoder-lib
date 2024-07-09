@@ -197,7 +197,7 @@ public abstract class Trancoder {
   }
 
   private static String safeValue(final TemporalAccessor value, final String pattern, final boolean defaultIfNull) {
-    final DateTimeFormatter dtf = DateTimeFormatter.ofPattern(pattern);
+    final DateTimeFormatter dtf = formatTemporalWithPattern(pattern);
     return Objects.nonNull(value) ? dtf.format(value) : nullValue(defaultIfNull, dtf);
   }
 
@@ -230,6 +230,10 @@ public abstract class Trancoder {
     nf.setGroupingUsed(false);
     nf.setRoundingMode(RoundingMode.HALF_EVEN);
     return nf;
+  }
+
+  private static DateTimeFormatter formatTemporalWithPattern(final String pattern) {
+    return DateTimeFormatter.ofPattern(pattern);
   }
 
   private static String padValue(final String str, final int size, final char padChar, final boolean leftPad) {
