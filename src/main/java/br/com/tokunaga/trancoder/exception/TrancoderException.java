@@ -6,6 +6,10 @@ public class TrancoderException extends RuntimeException {
     super();
   }
 
+  public TrancoderException(final String message) {
+    super(message);
+  }
+
   public TrancoderException(final Exception cause) {
     super(cause);
   }

@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import br.com.tokunaga.trancoder.annotation.StringField;
+import br.com.tokunaga.trancoder.exception.TrancodeFieldException;
 import br.com.tokunaga.trancoder.exception.TrancodeReflectionException;
 
 public abstract class Processor {
@@ -29,7 +30,7 @@ public abstract class Processor {
 
       final Object value = extractValue(field, object);
       if (Objects.nonNull(value) && !String.class.isAssignableFrom(value.getClass()))
-        continue; // TODO error
+        throw new TrancodeFieldException("");
 
       final String trancode = Trancoder.convert(
           (String) value,
