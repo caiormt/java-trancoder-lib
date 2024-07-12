@@ -50,7 +50,7 @@ public abstract class Processor {
       return FieldUtils.readField(field, object, true);
     }
     catch (final IllegalAccessException ex) {
-      throw new TrancodeReflectionException(ex); // NOSONAR
+      throw new TrancodeReflectionException(ex); //NOSONAR
     }
   }
 }
