@@ -29,7 +29,7 @@ public abstract class Processor {
         continue;
 
       final Object value = extractValue(field, object);
-      if (Objects.nonNull(value) && !String.class.isAssignableFrom(value.getClass()))
+      if (Objects.nonNull(value) && !String.class.isAssignableFrom(field.getType()))
         throw new TrancodeFieldException();
 
       final String trancode = Trancoder.convert(
