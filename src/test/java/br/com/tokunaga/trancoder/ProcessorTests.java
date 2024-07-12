@@ -10,8 +10,8 @@ import net.jqwik.api.Property;
 import net.jqwik.api.constraints.StringLength;
 
 import br.com.tokunaga.trancoder.exception.TrancodeFieldException;
-import br.com.tokunaga.trancoder.util.Bar;
 import br.com.tokunaga.trancoder.util.Foo;
+import br.com.tokunaga.trancoder.util.MismatchString;
 import br.com.tokunaga.trancoder.util.StringHolderLeft;
 import br.com.tokunaga.trancoder.util.StringHolderLeftNull;
 import br.com.tokunaga.trancoder.util.StringHolderRight;
@@ -27,8 +27,8 @@ class ProcessorTests {
 
   @Property
   void shouldThrowFieldExceptionOnMismatchField(@ForAll final Long value) {
-    final Bar bar = new Bar(value);
-    assertThatThrownBy(() -> Processor.trancode(bar))
+    final MismatchString mismatchString = new MismatchString(value);
+    assertThatThrownBy(() -> Processor.trancode(mismatchString))
         .isExactlyInstanceOf(TrancodeFieldException.class);
   }
 
