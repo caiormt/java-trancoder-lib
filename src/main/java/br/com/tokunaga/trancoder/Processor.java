@@ -30,7 +30,7 @@ public abstract class Processor {
 
       final Object value = extractValue(field, object);
       if (Objects.nonNull(value) && !String.class.isAssignableFrom(value.getClass()))
-        throw new TrancodeFieldException("");
+        throw new TrancodeFieldException();
 
       final String trancode = Trancoder.convert(
           (String) value,
@@ -50,8 +50,8 @@ public abstract class Processor {
     try {
       return FieldUtils.readField(field, object, true);
     }
-    catch (final IllegalAccessException ex) { //NOSONAR
-      throw new TrancodeReflectionException(ex);
+    catch (final IllegalAccessException ex) {
+      throw new TrancodeReflectionException();
     }
   }
 }
