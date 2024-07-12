@@ -7,4 +7,8 @@ public class Foo {
   public Foo(final String string) {
     this.string = string;
   }
+
+  public String getString() {
+    return string;
+  }
 }

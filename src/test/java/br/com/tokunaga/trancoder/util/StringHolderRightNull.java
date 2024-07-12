@@ -10,4 +10,8 @@ public class StringHolderRightNull {
   public StringHolderRightNull(final String string) {
     this.string = string;
   }
+
+  public String getString() {
+    return string;
+  }
 }
