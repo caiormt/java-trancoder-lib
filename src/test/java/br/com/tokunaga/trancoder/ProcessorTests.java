@@ -9,6 +9,7 @@ import net.jqwik.api.ForAll;
 import net.jqwik.api.Property;
 import net.jqwik.api.constraints.StringLength;
 
+import br.com.tokunaga.trancoder.util.Foo;
 import br.com.tokunaga.trancoder.util.StringHolderLeft;
 import br.com.tokunaga.trancoder.util.StringHolderLeftNull;
 import br.com.tokunaga.trancoder.util.StringHolderRight;
@@ -19,7 +20,14 @@ class ProcessorTests {
   @Example
   void shouldTrancodeNullObject() {
     assertThat(Processor.trancode(null))
-        .isEqualTo("");
+        .isEmpty();
+  }
+
+  @Property
+  void shouldIgnoreFieldWithoutAnnotation(@ForAll final String string) {
+    final Foo foo = new Foo(string);
+    assertThat(Processor.trancode(foo))
+        .isEmpty();
   }
 
   @Property
