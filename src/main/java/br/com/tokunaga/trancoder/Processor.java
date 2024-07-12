@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
 import br.com.tokunaga.trancoder.annotation.StringField;
+import br.com.tokunaga.trancoder.exception.TrancodeReflectionException;
 
 public abstract class Processor {
 
@@ -49,7 +50,7 @@ public abstract class Processor {
       return FieldUtils.readField(field, object, true);
     }
     catch (final IllegalAccessException ex) {
-      throw new RuntimeException(ex);
+      throw new TrancodeReflectionException(ex); // NOSONAR
     }
   }
 }
