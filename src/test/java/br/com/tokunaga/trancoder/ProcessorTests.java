@@ -9,6 +9,8 @@ import net.jqwik.api.ForAll;
 import net.jqwik.api.Property;
 import net.jqwik.api.constraints.StringLength;
 
+import br.com.tokunaga.trancoder.exception.TrancodeFieldException;
+import br.com.tokunaga.trancoder.util.Bar;
 import br.com.tokunaga.trancoder.util.Foo;
 import br.com.tokunaga.trancoder.util.StringHolderLeft;
 import br.com.tokunaga.trancoder.util.StringHolderLeftNull;
@@ -21,6 +23,13 @@ class ProcessorTests {
   void shouldTrancodeNullObject() {
     assertThat(Processor.trancode(null))
         .isEmpty();
+  }
+
+  @Property
+  void shouldThrowFieldExceptionOnMismatchField(@ForAll final Long value) {
+    final Bar bar = new Bar(value);
+    assertThatThrownBy(() -> Processor.trancode(bar))
+        .isExactlyInstanceOf(TrancodeFieldException.class);
   }
 
   @Property
