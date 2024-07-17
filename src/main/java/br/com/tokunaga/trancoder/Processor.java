@@ -6,13 +6,11 @@ import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
-import br.com.tokunaga.trancoder.annotation.NumericField;
-import br.com.tokunaga.trancoder.annotation.StringField;
 import br.com.tokunaga.trancoder.exception.TrancodeFieldException;
 import br.com.tokunaga.trancoder.exception.TrancodeReflectionException;
-import br.com.tokunaga.trancoder.util.NumericProperty;
+import br.com.tokunaga.trancoder.extract.DefaultExtractor;
+import br.com.tokunaga.trancoder.extract.Extractor;
 import br.com.tokunaga.trancoder.util.Property;
-import br.com.tokunaga.trancoder.util.StringProperty;
 
 public abstract class Processor {
 
@@ -21,6 +19,10 @@ public abstract class Processor {
   }
 
   public static String trancode(final Object object) {
+    return trancode(object, new DefaultExtractor());
+  }
+
+  public static String trancode(final Object object, final Extractor extractor) {
     if (Objects.isNull(object))
       return StringUtils.EMPTY;
 
@@ -28,7 +30,7 @@ public abstract class Processor {
     final StringBuilder sb = new StringBuilder();
     for (final Field field : FieldUtils.getAllFieldsList(cls)) {
 
-      final Property property = extractProperty(field);
+      final Property property = extractor.extract(field);
       if (Objects.isNull(property))
         continue;
 
@@ -44,18 +46,6 @@ public abstract class Processor {
     return sb.toString();
   }
 
-  private static Property extractProperty(final Field field) {
-    final StringField str = field.getAnnotation(StringField.class);
-    if (Objects.nonNull(str))
-      return createStringProperty(str);
-
-    final NumericField number = field.getAnnotation(NumericField.class);
-    if (Objects.nonNull(number))
-      return createNumericProperty(number);
-
-    return null;
-  }
-
   private static Object extractValue(final Field field, final Object object) {
     try {
       return FieldUtils.readField(field, object, true);
@@ -63,13 +53,5 @@ public abstract class Processor {
     catch (final IllegalAccessException ex) {
       throw new TrancodeReflectionException();
     }
-  }
-
-  private static StringProperty createStringProperty(final StringField field) {
-    return new StringProperty(field.size(), field.padChar(), field.leftPad(), field.spaceIfNull());
-  }
-
-  private static NumericProperty createNumericProperty(final NumericField field) {
-    return new NumericProperty(field.size(), field.padChar(), field.leftPad(), field.zeroIfNull());
   }
 }
