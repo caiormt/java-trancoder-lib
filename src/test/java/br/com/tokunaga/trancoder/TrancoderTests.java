@@ -801,6 +801,66 @@ class TrancoderTests {
   }
 
   @Property
+  void shouldConvertNullBoolean(
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert((Boolean) null, size, "S", "N", padChar, false, false))
+        .isEqualTo(pad);
+  }
+
+  @Property
+  void shouldConvertNullBooleanLeftPadded(
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert((Boolean) null, size, "S", "N", padChar, true, false))
+        .isEqualTo(pad);
+  }
+
+  @Property
+  void shouldConvertNullBooleanAsFalse(
+      @ForAll @IntRange(min = 1, max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String pad = StringUtils.repeat(padChar, size - 1);
+    assertThat(Trancoder.convert((Boolean) null, size, "S", "N", padChar, false, true))
+        .isEqualTo("N" + pad);
+  }
+
+  @Property
+  void shouldConvertNullBooleanAsFalseWithCase(
+      @ForAll @IntRange(min = 1, max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String pad = StringUtils.repeat(padChar, size - 1);
+    assertThat(Trancoder.convert((Boolean) null, size, "T", "F", padChar, false, true))
+        .isEqualTo("F" + pad);
+  }
+
+  @Property
+  void shouldConvertNullBooleanAsFalseLeftPadded(
+      @ForAll @IntRange(min = 1, max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String pad = StringUtils.repeat(padChar, size - 1);
+    assertThat(Trancoder.convert((Boolean) null, size, "S", "N", padChar, true, true))
+        .isEqualTo(pad + "N");
+  }
+
+  @Property
+  void shouldConvertNullBooleanAsFalseWithCaseLeftPadded(
+      @ForAll @IntRange(min = 1, max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String pad = StringUtils.repeat(padChar, size - 1);
+    assertThat(Trancoder.convert((Boolean) null, size, "T", "F", padChar, true, true))
+        .isEqualTo(pad + "F");
+  }
+
+  @Property
   void shouldConvertEmptyString(
       @ForAll @IntRange(max = 1000) final int size,
       @ForAll final char padChar) {
@@ -1092,6 +1152,32 @@ class TrancoderTests {
   }
 
   @Property
+  void shouldConvertAnyBoolean(
+      @ForAll final Boolean value,
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = value ? "S" : "N";
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert(value, length + size, "S", "N", padChar, false, false))
+        .isEqualTo(expected + pad);
+  }
+
+  @Property
+  void shouldConvertAnyBooleanWithCase(
+      @ForAll final Boolean value,
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = value ? "T" : "F";
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert(value, length + size, "T", "F", padChar, false, false))
+        .isEqualTo(expected + pad);
+  }
+
+  @Property
   void shouldConvertAnyStringLeftPadded(
       @ForAll @NotEmpty final String str,
       @ForAll @IntRange(max = 1000) final int size,
@@ -1363,6 +1449,32 @@ class TrancoderTests {
   }
 
   @Property
+  void shouldConvertAnyBooleanLeftPadded(
+      @ForAll final Boolean value,
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = value ? "S" : "N";
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert(value, length + size, "S", "N", padChar, true, false))
+        .isEqualTo(pad + expected);
+  }
+
+  @Property
+  void shouldConvertAnyBooleanWithCaseLeftPadded(
+      @ForAll final Boolean value,
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = value ? "T" : "F";
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert(value, length + size, "T", "F", padChar, true, false))
+        .isEqualTo(pad + expected);
+  }
+
+  @Property
   void shouldThrowOverflowConvertingAnyStringExceedingSize(
       @ForAll @NotEmpty final String str,
       @ForAll @IntRange(min = 1, max = 1000) final int size,
@@ -1622,6 +1734,28 @@ class TrancoderTests {
         .isExactlyInstanceOf(TrancodeOverflowException.class);
 
     assertThatThrownBy(() -> Trancoder.convert(value, target, "dd.MM.yyyy.HH-mm-ss-SSSSSS", padChar, false, true))
+        .isExactlyInstanceOf(TrancodeOverflowException.class);
+  }
+
+  @Property
+  void shouldThrowOverflowConvertingAnyBooleanExceedingSize(
+      @ForAll final Boolean value,
+      @ForAll @IntRange(min = 1, max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = value ? "S" : "N";
+    int length = expected.length();
+    int target = length - size;
+    assertThatThrownBy(() -> Trancoder.convert(value, target, "S", "N", padChar, true, false))
+        .isExactlyInstanceOf(TrancodeOverflowException.class);
+
+    assertThatThrownBy(() -> Trancoder.convert(value, target, "S", "N", padChar, false, false))
+        .isExactlyInstanceOf(TrancodeOverflowException.class);
+
+    assertThatThrownBy(() -> Trancoder.convert(value, target, "S", "N", padChar, true, true))
+        .isExactlyInstanceOf(TrancodeOverflowException.class);
+
+    assertThatThrownBy(() -> Trancoder.convert(value, target, "S", "N", padChar, false, true))
         .isExactlyInstanceOf(TrancodeOverflowException.class);
   }
 }
