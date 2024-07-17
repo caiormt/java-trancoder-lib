@@ -97,8 +97,8 @@ class ProcessorTests {
     final String expected = Integer.toString(integer);
     final int length = expected.length();
     final String pad = StringUtils.repeat('0', 100 - length);
-    final NumericHolderLeftNull<Integer> numericHolder = new NumericHolderLeftNull<>(integer);
-    assertThat(Processor.trancode(numericHolder))
+    final IntegerHolder integerHolder = new IntegerHolder(integer);
+    assertThat(Processor.trancode(integerHolder))
         .isEqualTo(pad + expected);
   }
 
