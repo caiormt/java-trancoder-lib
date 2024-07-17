@@ -227,8 +227,8 @@ class ProcessorTests {
   @Example
   void shouldTrancodeIntegerFieldNullLeftPadding() {
     final String pad = StringUtils.repeat('0', 99);
-    final NumericHolderLeftNull<Integer> numericHolder = new NumericHolderLeftNull<>(null);
-    assertThat(Processor.trancode(numericHolder))
+    final IntegerHolder integerHolder = new IntegerHolder(null);
+    assertThat(Processor.trancode(integerHolder))
         .isEqualTo(pad + "0");
   }
 
