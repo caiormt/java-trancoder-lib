@@ -10,7 +10,6 @@ import br.com.tokunaga.trancoder.annotation.NumericField;
 import br.com.tokunaga.trancoder.annotation.StringField;
 import br.com.tokunaga.trancoder.exception.TrancodeFieldException;
 import br.com.tokunaga.trancoder.exception.TrancodeReflectionException;
-import br.com.tokunaga.trancoder.exception.TrancoderException;
 import br.com.tokunaga.trancoder.util.NumericProperty;
 import br.com.tokunaga.trancoder.util.Property;
 import br.com.tokunaga.trancoder.util.StringProperty;
@@ -33,7 +32,8 @@ public abstract class Processor {
       if (Objects.isNull(property))
         continue;
 
-      validateFieldMatchingProperty(property, field);
+      if (!property.supports(field.getType()))
+        throw new TrancodeFieldException();
 
       final Object value = extractValue(field, object);
       final String trancode = trancodeValue(value, property);
@@ -42,23 +42,6 @@ public abstract class Processor {
     }
 
     return sb.toString();
-  }
-
-  private static void validateFieldMatchingProperty(final Property property, final Field field) {
-    final Class<?> cls = property.getClass();
-    final Class<?> fieldClass = field.getType();
-
-    if (StringProperty.class.isAssignableFrom(cls)) {
-      validateStringProperty(fieldClass);
-      return;
-    }
-
-    if (NumericProperty.class.isAssignableFrom(cls)) {
-      validateNumericProperty(fieldClass);
-      return;
-    }
-
-    throw new TrancoderException();
   }
 
   private static Property extractProperty(final Field field) {
@@ -102,15 +85,5 @@ public abstract class Processor {
 
   private static NumericProperty createNumericProperty(final NumericField field) {
     return new NumericProperty(field.size(), field.padChar(), field.leftPad(), field.zeroIfNull());
-  }
-
-  private static void validateStringProperty(final Class<?> cls) {
-    if (!String.class.isAssignableFrom(cls))
-      throw new TrancodeFieldException();
-  }
-
-  private static void validateNumericProperty(final Class<?> cls) {
-    if (!Number.class.isAssignableFrom(cls))
-      throw new TrancodeFieldException();
   }
 }

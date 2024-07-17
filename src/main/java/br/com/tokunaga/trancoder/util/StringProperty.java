@@ -12,4 +12,9 @@ public class StringProperty extends Property {
   public boolean spaceIfNull() {
     return spaceIfNull;
   }
+
+  @Override
+  public boolean supports(final Class<?> cls) {
+    return String.class.isAssignableFrom(cls);
+  }
 }

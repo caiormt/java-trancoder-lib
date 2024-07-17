@@ -1,6 +1,6 @@
 package br.com.tokunaga.trancoder.util;
 
-public class Property {
+public abstract class Property {
 
   private final int size;
   private final char padChar;
@@ -11,6 +11,8 @@ public class Property {
     this.padChar = padChar;
     this.leftPad = leftPad;
   }
+
+  public abstract boolean supports(final Class<?> cls);
 
   public int size() {
     return size;

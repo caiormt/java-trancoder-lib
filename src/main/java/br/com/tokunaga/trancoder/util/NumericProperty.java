@@ -12,4 +12,9 @@ public class NumericProperty extends Property {
   public boolean zeroIfNull() {
     return zeroIfNull;
   }
+
+  @Override
+  public boolean supports(final Class<?> cls) {
+    return Number.class.isAssignableFrom(cls);
+  }
 }
