@@ -20,7 +20,7 @@ import net.jqwik.api.constraints.StringLength;
 
 import br.com.tokunaga.trancoder.exception.TrancodeFieldException;
 import br.com.tokunaga.trancoder.util.BooleanHolder;
-import br.com.tokunaga.trancoder.util.DateHolderLeftNull;
+import br.com.tokunaga.trancoder.util.DateHolder;
 import br.com.tokunaga.trancoder.util.DecimalHolderLeftNull;
 import br.com.tokunaga.trancoder.util.Foo;
 import br.com.tokunaga.trancoder.util.MismatchNumeric;
@@ -153,7 +153,7 @@ class ProcessorTests {
     final String expected = new SimpleDateFormat("dd.MM.yyyy").format(value);
     final int length = expected.length();
     final String pad = StringUtils.repeat(' ', 100 - length);
-    final DateHolderLeftNull<Date> dateHolder = new DateHolderLeftNull<>(value);
+    final DateHolder dateHolder = new DateHolder(value);
     assertThat(Processor.trancode(dateHolder))
         .isEqualTo(expected + pad);
   }

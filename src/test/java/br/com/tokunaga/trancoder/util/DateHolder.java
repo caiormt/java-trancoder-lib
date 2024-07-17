@@ -4,16 +4,16 @@ import java.util.Date;
 
 import br.com.tokunaga.trancoder.annotation.DateField;
 
-public class DateHolderLeftNull<T extends Date> {
+public class DateHolder {
 
   @DateField(size = 100)
-  private T value;
+  private Date value;
 
-  public DateHolderLeftNull(final T value) {
+  public DateHolder(final Date value) {
     this.value = value;
   }
 
-  public T getValue() {
+  public Date getValue() {
     return value;
   }
 }
