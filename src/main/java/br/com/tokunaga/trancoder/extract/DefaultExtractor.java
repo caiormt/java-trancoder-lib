@@ -11,6 +11,7 @@ public class DefaultExtractor extends CompositeExtractor {
         new DecimalExtractor(),
         new DateExtractor(),
         new TimeExtractor(),
+        new DateTimeExtractor(),
         new BooleanExtractor()
     ));
   }
