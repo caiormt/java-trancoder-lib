@@ -2,16 +2,16 @@ package br.com.tokunaga.trancoder.util;
 
 import br.com.tokunaga.trancoder.annotation.NumericField;
 
-public class NumericHolderLeft<T extends Number> {
+public class IntegerHolder {
 
   @NumericField(size = 100, padChar = ' ', zeroIfNull = false)
-  private T value;
+  private Integer value;
 
-  public NumericHolderLeft(final T value) {
+  public IntegerHolder(final Integer value) {
     this.value = value;
   }
 
-  public T getValue() {
+  public Integer getValue() {
     return value;
   }
 }
