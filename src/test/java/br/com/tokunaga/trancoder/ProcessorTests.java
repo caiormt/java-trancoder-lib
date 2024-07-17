@@ -19,6 +19,7 @@ import net.jqwik.api.constraints.FloatRange;
 import net.jqwik.api.constraints.StringLength;
 
 import br.com.tokunaga.trancoder.exception.TrancodeFieldException;
+import br.com.tokunaga.trancoder.util.BooleanHolder;
 import br.com.tokunaga.trancoder.util.DateHolderLeftNull;
 import br.com.tokunaga.trancoder.util.DecimalHolderLeftNull;
 import br.com.tokunaga.trancoder.util.Foo;
@@ -154,6 +155,16 @@ class ProcessorTests {
     final String pad = StringUtils.repeat(' ', 100 - length);
     final DateHolderLeftNull<Date> dateHolder = new DateHolderLeftNull<>(value);
     assertThat(Processor.trancode(dateHolder))
+        .isEqualTo(expected + pad);
+  }
+
+  @Property
+  void shouldTrancodeBooleanField(@ForAll final Boolean value) {
+    final String expected = value ? "S" : "N";
+    final int length = expected.length();
+    final String pad = StringUtils.repeat(' ', 100 - length);
+    final BooleanHolder booleanHolder = new BooleanHolder(value);
+    assertThat(Processor.trancode(booleanHolder))
         .isEqualTo(expected + pad);
   }
 
