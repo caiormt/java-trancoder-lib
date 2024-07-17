@@ -11,7 +11,10 @@ import net.jqwik.api.constraints.StringLength;
 
 import br.com.tokunaga.trancoder.exception.TrancodeFieldException;
 import br.com.tokunaga.trancoder.util.Foo;
+import br.com.tokunaga.trancoder.util.MismatchNumeric;
 import br.com.tokunaga.trancoder.util.MismatchString;
+import br.com.tokunaga.trancoder.util.NumericHolderLeft;
+import br.com.tokunaga.trancoder.util.NumericHolderLeftNull;
 import br.com.tokunaga.trancoder.util.StringHolderLeft;
 import br.com.tokunaga.trancoder.util.StringHolderLeftNull;
 import br.com.tokunaga.trancoder.util.StringHolderRight;
@@ -33,6 +36,13 @@ class ProcessorTests {
   }
 
   @Property
+  void shouldThrowFieldExceptionOnMismatchFieldNumeric(@ForAll final String string) {
+    final MismatchNumeric mismatchNumeric = new MismatchNumeric(string);
+    assertThatThrownBy(() -> Processor.trancode(mismatchNumeric))
+        .isExactlyInstanceOf(TrancodeFieldException.class);
+  }
+
+  @Property
   void shouldIgnoreFieldWithoutAnnotation(@ForAll final String string) {
     final Foo foo = new Foo(string);
     assertThat(Processor.trancode(foo))
@@ -44,6 +54,16 @@ class ProcessorTests {
     final StringHolderRight stringHolder = new StringHolderRight(string);
     assertThat(Processor.trancode(stringHolder))
         .isEqualTo(string);
+  }
+
+  @Property
+  void shouldTrancodeIntegerField(@ForAll final Integer integer) {
+    final String expected = Integer.toString(integer);
+    final int length = expected.length();
+    final String pad = StringUtils.repeat('0', 100 - length);
+    final NumericHolderLeftNull<Integer> numericHolder = new NumericHolderLeftNull<>(integer);
+    assertThat(Processor.trancode(numericHolder))
+        .isEqualTo(pad + expected);
   }
 
   @Property
@@ -80,6 +100,14 @@ class ProcessorTests {
         .isEqualTo(pad + " ");
   }
 
+  @Example
+  void shouldTrancodeIntegerFieldNullLeftPadding() {
+    final String pad = StringUtils.repeat('0', 99);
+    final NumericHolderLeftNull<Integer> numericHolder = new NumericHolderLeftNull<>(null);
+    assertThat(Processor.trancode(numericHolder))
+        .isEqualTo(pad + "0");
+  }
+
   @Property
   void shouldTrancodeStringFieldZeroPadRightPadding(@ForAll @StringLength(max = 99) final String string) {
     final int length = string.length();
@@ -96,5 +124,15 @@ class ProcessorTests {
     final StringHolderLeftNull stringHolder = new StringHolderLeftNull(string);
     assertThat(Processor.trancode(stringHolder))
         .isEqualTo(pad + string);
+  }
+
+  @Property
+  void shouldTrancodeIntegerFieldSpacePadLeftPadding(@ForAll final Integer integer) {
+    final String expected = Integer.toString(integer);
+    final int length = expected.length();
+    final String pad = StringUtils.repeat(' ', 100 - length);
+    final NumericHolderLeft<Integer> numericHolder = new NumericHolderLeft<>(integer);
+    assertThat(Processor.trancode(numericHolder))
+        .isEqualTo(pad + expected);
   }
 }
