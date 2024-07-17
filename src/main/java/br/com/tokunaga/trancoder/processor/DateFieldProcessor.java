@@ -3,13 +3,11 @@ package br.com.tokunaga.trancoder.processor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.Objects;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.reflect.TypeUtils;
 
 import br.com.tokunaga.trancoder.Trancoder;
-import br.com.tokunaga.trancoder.exception.TrancodeFieldException;
 
 public class DateFieldProcessor extends FieldProcessor {
 
@@ -44,9 +42,6 @@ public class DateFieldProcessor extends FieldProcessor {
 
   @Override
   public String trancode(final Object value) {
-    if (Objects.isNull(value))
-      return Trancoder.convert((Date) null, size(), pattern(), padChar(), leftPad(), defaultIfNull());
-
     if (TypeUtils.isInstance(value, Date.class))
       return Trancoder.convert((Date) value, size(), pattern(), padChar(), leftPad(), defaultIfNull());
 
@@ -56,6 +51,6 @@ public class DateFieldProcessor extends FieldProcessor {
     if (TypeUtils.isInstance(value, LocalDateTime.class))
       return Trancoder.convert((LocalDateTime) value, size(), pattern(), padChar(), leftPad(), defaultIfNull());
 
-    throw new TrancodeFieldException();
+    return Trancoder.convert((Date) null, size(), pattern(), padChar(), leftPad(), defaultIfNull());
   }
 }
