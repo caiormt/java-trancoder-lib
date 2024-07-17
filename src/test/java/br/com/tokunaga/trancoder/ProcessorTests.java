@@ -20,6 +20,7 @@ import net.jqwik.api.constraints.StringLength;
 
 import br.com.tokunaga.trancoder.exception.TrancodeFieldException;
 import br.com.tokunaga.trancoder.util.BigDecimalHolder;
+import br.com.tokunaga.trancoder.util.BigIntegerHolder;
 import br.com.tokunaga.trancoder.util.BooleanHolder;
 import br.com.tokunaga.trancoder.util.ByteHolder;
 import br.com.tokunaga.trancoder.util.DateHolder;
@@ -31,7 +32,6 @@ import br.com.tokunaga.trancoder.util.IntegerSpaceHolder;
 import br.com.tokunaga.trancoder.util.LongHolder;
 import br.com.tokunaga.trancoder.util.MismatchNumeric;
 import br.com.tokunaga.trancoder.util.MismatchString;
-import br.com.tokunaga.trancoder.util.NumericHolderLeftNull;
 import br.com.tokunaga.trancoder.util.ShortHolder;
 import br.com.tokunaga.trancoder.util.StringHolderLeft;
 import br.com.tokunaga.trancoder.util.StringHolderLeftNull;
@@ -119,8 +119,8 @@ class ProcessorTests {
     final String expected = value.toString();
     final int length = expected.length();
     final String pad = StringUtils.repeat('0', 100 - length);
-    final NumericHolderLeftNull<BigInteger> numericHolder = new NumericHolderLeftNull<>(value);
-    assertThat(Processor.trancode(numericHolder))
+    final BigIntegerHolder bigIntegerHolder = new BigIntegerHolder(value);
+    assertThat(Processor.trancode(bigIntegerHolder))
         .isEqualTo(pad + expected);
   }
 
@@ -243,8 +243,8 @@ class ProcessorTests {
   @Example
   void shouldTrancodeBigIntegerFieldNullLeftPadding() {
     final String pad = StringUtils.repeat('0', 99);
-    final NumericHolderLeftNull<BigInteger> numericHolder = new NumericHolderLeftNull<>(null);
-    assertThat(Processor.trancode(numericHolder))
+    final BigIntegerHolder bigIntegerHolder = new BigIntegerHolder(null);
+    assertThat(Processor.trancode(bigIntegerHolder))
         .isEqualTo(pad + "0");
   }
 
