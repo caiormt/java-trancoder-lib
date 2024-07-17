@@ -1,5 +1,7 @@
 package br.com.tokunaga.trancoder.util;
 
+import br.com.tokunaga.trancoder.Trancoder;
+
 public class StringProperty extends Property {
 
   private final boolean spaceIfNull;
@@ -16,5 +18,10 @@ public class StringProperty extends Property {
   @Override
   public boolean supports(final Class<?> cls) {
     return String.class.isAssignableFrom(cls);
+  }
+
+  @Override
+  public String trancode(final Object value) {
+    return Trancoder.convert((String) value, size(), padChar(), leftPad(), spaceIfNull());
   }
 }

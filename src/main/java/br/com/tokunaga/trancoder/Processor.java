@@ -36,7 +36,7 @@ public abstract class Processor {
         throw new TrancodeFieldException();
 
       final Object value = extractValue(field, object);
-      final String trancode = trancodeValue(value, property);
+      final String trancode = property.trancode(value);
 
       sb.append(trancode);
     }
@@ -63,20 +63,6 @@ public abstract class Processor {
     catch (final IllegalAccessException ex) {
       throw new TrancodeReflectionException();
     }
-  }
-
-  private static String trancodeValue(final Object object, final Property property) {
-    if (StringProperty.class.isAssignableFrom(property.getClass())) {
-      final StringProperty str = (StringProperty) property;
-      return Trancoder.convert((String) object, str.size(), str.padChar(), str.leftPad(), str.spaceIfNull());
-    }
-
-    if (NumericProperty.class.isAssignableFrom(property.getClass())) {
-      final NumericProperty str = (NumericProperty) property;
-      return Trancoder.convert((Integer) object, str.size(), str.padChar(), str.leftPad(), str.zeroIfNull());
-    }
-
-    return StringUtils.EMPTY;
   }
 
   private static StringProperty createStringProperty(final StringField field) {

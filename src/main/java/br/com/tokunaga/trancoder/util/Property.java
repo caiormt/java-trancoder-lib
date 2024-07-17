@@ -14,6 +14,8 @@ public abstract class Property {
 
   public abstract boolean supports(final Class<?> cls);
 
+  public abstract String trancode(final Object value);
+
   public int size() {
     return size;
   }
