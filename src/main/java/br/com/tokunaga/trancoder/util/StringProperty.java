@@ -1,5 +1,7 @@
 package br.com.tokunaga.trancoder.util;
 
+import org.apache.commons.lang3.reflect.TypeUtils;
+
 import br.com.tokunaga.trancoder.Trancoder;
 
 public class StringProperty extends Property {
@@ -17,7 +19,7 @@ public class StringProperty extends Property {
 
   @Override
   public boolean supports(final Class<?> cls) {
-    return String.class.isAssignableFrom(cls);
+    return TypeUtils.isAssignable(cls, String.class);
   }
 
   @Override

@@ -2,10 +2,12 @@ package br.com.tokunaga.trancoder.util;
 
 import java.math.BigInteger;
 import java.util.Objects;
+import java.util.stream.Stream;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.reflect.TypeUtils;
 
 import br.com.tokunaga.trancoder.Trancoder;
+import br.com.tokunaga.trancoder.exception.TrancodeFieldException;
 
 public class NumericProperty extends Property {
 
@@ -22,7 +24,8 @@ public class NumericProperty extends Property {
 
   @Override
   public boolean supports(final Class<?> cls) {
-    return Number.class.isAssignableFrom(cls);
+    return Stream.of(Number.class, Byte.class, Short.class, Integer.class, Long.class, BigInteger.class)
+                 .anyMatch(type -> TypeUtils.isAssignable(cls, type));
   }
 
   @Override
@@ -30,21 +33,21 @@ public class NumericProperty extends Property {
     if (Objects.isNull(value))
       return Trancoder.convert((Byte) null, size(), padChar(), leftPad(), zeroIfNull());
 
-    if (value instanceof Byte)
+    if (TypeUtils.isInstance(value, Byte.class))
       return Trancoder.convert((Byte) value, size(), padChar(), leftPad(), zeroIfNull());
 
-    if (value instanceof Short)
+    if (TypeUtils.isInstance(value, Short.class))
       return Trancoder.convert((Short) value, size(), padChar(), leftPad(), zeroIfNull());
 
-    if (value instanceof Integer)
+    if (TypeUtils.isInstance(value, Integer.class))
       return Trancoder.convert((Integer) value, size(), padChar(), leftPad(), zeroIfNull());
 
-    if (value instanceof Long)
+    if (TypeUtils.isInstance(value, Long.class))
       return Trancoder.convert((Long) value, size(), padChar(), leftPad(), zeroIfNull());
 
-    if (value instanceof BigInteger)
+    if (TypeUtils.isInstance(value, BigInteger.class))
       return Trancoder.convert((BigInteger) value, size(), padChar(), leftPad(), zeroIfNull());
 
-    return StringUtils.EMPTY;
+    throw new TrancodeFieldException();
   }
 }
