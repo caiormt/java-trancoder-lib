@@ -2,6 +2,8 @@ package br.com.tokunaga.trancoder;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.math.BigInteger;
+
 import org.apache.commons.lang3.StringUtils;
 
 import net.jqwik.api.Example;
@@ -57,11 +59,51 @@ class ProcessorTests {
   }
 
   @Property
+  void shouldTrancodeByteField(@ForAll final Byte value) {
+    final String expected = Byte.toString(value);
+    final int length = expected.length();
+    final String pad = StringUtils.repeat('0', 100 - length);
+    final NumericHolderLeftNull<Byte> numericHolder = new NumericHolderLeftNull<>(value);
+    assertThat(Processor.trancode(numericHolder))
+        .isEqualTo(pad + expected);
+  }
+
+  @Property
+  void shouldTrancodeShortField(@ForAll final Short value) {
+    final String expected = Short.toString(value);
+    final int length = expected.length();
+    final String pad = StringUtils.repeat('0', 100 - length);
+    final NumericHolderLeftNull<Short> numericHolder = new NumericHolderLeftNull<>(value);
+    assertThat(Processor.trancode(numericHolder))
+        .isEqualTo(pad + expected);
+  }
+
+  @Property
   void shouldTrancodeIntegerField(@ForAll final Integer integer) {
     final String expected = Integer.toString(integer);
     final int length = expected.length();
     final String pad = StringUtils.repeat('0', 100 - length);
-    final NumericHolderLeftNull<Integer> numericHolder = new NumericHolderLeftNull<>(integer);
+    final NumericHolderLeftNull<Integer> numericHolder = new NumericHolderLeftNull<Integer>(integer) {};
+    assertThat(Processor.trancode(numericHolder))
+        .isEqualTo(pad + expected);
+  }
+
+  @Property
+  void shouldTrancodeLongField(@ForAll final Long value) {
+    final String expected = Long.toString(value);
+    final int length = expected.length();
+    final String pad = StringUtils.repeat('0', 100 - length);
+    final NumericHolderLeftNull<Long> numericHolder = new NumericHolderLeftNull<>(value);
+    assertThat(Processor.trancode(numericHolder))
+        .isEqualTo(pad + expected);
+  }
+
+  @Property
+  void shouldTrancodeBigIntegerField(@ForAll final BigInteger value) {
+    final String expected = value.toString();
+    final int length = expected.length();
+    final String pad = StringUtils.repeat('0', 100 - length);
+    final NumericHolderLeftNull<BigInteger> numericHolder = new NumericHolderLeftNull<>(value);
     assertThat(Processor.trancode(numericHolder))
         .isEqualTo(pad + expected);
   }
@@ -101,9 +143,41 @@ class ProcessorTests {
   }
 
   @Example
+  void shouldTrancodeByteFieldNullLeftPadding() {
+    final String pad = StringUtils.repeat('0', 99);
+    final NumericHolderLeftNull<Byte> numericHolder = new NumericHolderLeftNull<>(null);
+    assertThat(Processor.trancode(numericHolder))
+        .isEqualTo(pad + "0");
+  }
+
+  @Example
+  void shouldTrancodeShortFieldNullLeftPadding() {
+    final String pad = StringUtils.repeat('0', 99);
+    final NumericHolderLeftNull<Short> numericHolder = new NumericHolderLeftNull<>(null);
+    assertThat(Processor.trancode(numericHolder))
+        .isEqualTo(pad + "0");
+  }
+
+  @Example
   void shouldTrancodeIntegerFieldNullLeftPadding() {
     final String pad = StringUtils.repeat('0', 99);
     final NumericHolderLeftNull<Integer> numericHolder = new NumericHolderLeftNull<>(null);
+    assertThat(Processor.trancode(numericHolder))
+        .isEqualTo(pad + "0");
+  }
+
+  @Example
+  void shouldTrancodeLongFieldNullLeftPadding() {
+    final String pad = StringUtils.repeat('0', 99);
+    final NumericHolderLeftNull<Long> numericHolder = new NumericHolderLeftNull<>(null);
+    assertThat(Processor.trancode(numericHolder))
+        .isEqualTo(pad + "0");
+  }
+
+  @Example
+  void shouldTrancodeBigIntegerFieldNullLeftPadding() {
+    final String pad = StringUtils.repeat('0', 99);
+    final NumericHolderLeftNull<BigInteger> numericHolder = new NumericHolderLeftNull<>(null);
     assertThat(Processor.trancode(numericHolder))
         .isEqualTo(pad + "0");
   }
