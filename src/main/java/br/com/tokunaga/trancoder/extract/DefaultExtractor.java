@@ -10,6 +10,7 @@ public class DefaultExtractor extends CompositeExtractor {
         new NumericExtractor(),
         new DecimalExtractor(),
         new DateExtractor(),
+        new TimeExtractor(),
         new BooleanExtractor()
     ));
   }
