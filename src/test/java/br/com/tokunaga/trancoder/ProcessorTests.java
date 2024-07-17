@@ -2,16 +2,22 @@ package br.com.tokunaga.trancoder;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.DecimalFormat;
 
 import org.apache.commons.lang3.StringUtils;
 
 import net.jqwik.api.Example;
 import net.jqwik.api.ForAll;
 import net.jqwik.api.Property;
+import net.jqwik.api.constraints.BigRange;
+import net.jqwik.api.constraints.DoubleRange;
+import net.jqwik.api.constraints.FloatRange;
 import net.jqwik.api.constraints.StringLength;
 
 import br.com.tokunaga.trancoder.exception.TrancodeFieldException;
+import br.com.tokunaga.trancoder.util.DecimalHolderLeftNull;
 import br.com.tokunaga.trancoder.util.Foo;
 import br.com.tokunaga.trancoder.util.MismatchNumeric;
 import br.com.tokunaga.trancoder.util.MismatchString;
@@ -83,7 +89,7 @@ class ProcessorTests {
     final String expected = Integer.toString(integer);
     final int length = expected.length();
     final String pad = StringUtils.repeat('0', 100 - length);
-    final NumericHolderLeftNull<Integer> numericHolder = new NumericHolderLeftNull<Integer>(integer) {};
+    final NumericHolderLeftNull<Integer> numericHolder = new NumericHolderLeftNull<>(integer);
     assertThat(Processor.trancode(numericHolder))
         .isEqualTo(pad + expected);
   }
@@ -104,6 +110,36 @@ class ProcessorTests {
     final int length = expected.length();
     final String pad = StringUtils.repeat('0', 100 - length);
     final NumericHolderLeftNull<BigInteger> numericHolder = new NumericHolderLeftNull<>(value);
+    assertThat(Processor.trancode(numericHolder))
+        .isEqualTo(pad + expected);
+  }
+
+  @Property
+  void shouldTrancodeFloatField(@ForAll @FloatRange(max = 9999f) final Float value) {
+    final String expected = new DecimalFormat("0.00").format(value);
+    final int length = expected.length();
+    final String pad = StringUtils.repeat('0', 100 - length);
+    final DecimalHolderLeftNull<Float> numericHolder = new DecimalHolderLeftNull<>(value);
+    assertThat(Processor.trancode(numericHolder))
+        .isEqualTo(pad + expected);
+  }
+
+  @Property
+  void shouldTrancodeDoubleField(@ForAll @DoubleRange(max = 9999d) final Double value) {
+    final String expected = new DecimalFormat("0.00").format(value);
+    final int length = expected.length();
+    final String pad = StringUtils.repeat('0', 100 - length);
+    final DecimalHolderLeftNull<Double> numericHolder = new DecimalHolderLeftNull<>(value);
+    assertThat(Processor.trancode(numericHolder))
+        .isEqualTo(pad + expected);
+  }
+
+  @Property
+  void shouldTrancodeBigDecimalField(@ForAll @BigRange(min = "-9999", max = "9999") final BigDecimal value) {
+    final String expected = new DecimalFormat("0.00").format(value);
+    final int length = expected.length();
+    final String pad = StringUtils.repeat('0', 100 - length);
+    final DecimalHolderLeftNull<BigDecimal> numericHolder = new DecimalHolderLeftNull<>(value);
     assertThat(Processor.trancode(numericHolder))
         .isEqualTo(pad + expected);
   }
