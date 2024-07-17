@@ -25,6 +25,7 @@ import br.com.tokunaga.trancoder.util.BigIntegerHolder;
 import br.com.tokunaga.trancoder.util.BooleanHolder;
 import br.com.tokunaga.trancoder.util.ByteHolder;
 import br.com.tokunaga.trancoder.util.DateHolder;
+import br.com.tokunaga.trancoder.util.DateTimeHolder;
 import br.com.tokunaga.trancoder.util.DoubleHolder;
 import br.com.tokunaga.trancoder.util.FloatHolder;
 import br.com.tokunaga.trancoder.util.Foo;
@@ -176,6 +177,19 @@ class ProcessorTests {
     final String pad = StringUtils.repeat(' ', 100 - length);
     final TimeHolder timeHolder = new TimeHolder(value);
     assertThat(Processor.trancode(timeHolder))
+        .isEqualTo(expected + pad);
+  }
+
+  @Property
+  void shouldTrancodeDateTimeField(@ForAll final Date value) {
+    final SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy-HH:mm:ss");
+    sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+    final String expected = sdf.format(value);
+    final int length = expected.length();
+    final String pad = StringUtils.repeat(' ', 100 - length);
+    final DateTimeHolder dateTimeHolder = new DateTimeHolder(value);
+    assertThat(Processor.trancode(dateTimeHolder))
         .isEqualTo(expected + pad);
   }
 
