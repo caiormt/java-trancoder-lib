@@ -7,6 +7,7 @@ import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -37,6 +38,7 @@ import br.com.tokunaga.trancoder.util.StringHolderLeft;
 import br.com.tokunaga.trancoder.util.StringHolderLeftNull;
 import br.com.tokunaga.trancoder.util.StringHolderRight;
 import br.com.tokunaga.trancoder.util.StringHolderRightNull;
+import br.com.tokunaga.trancoder.util.TimeHolder;
 
 class ProcessorTests {
 
@@ -161,6 +163,19 @@ class ProcessorTests {
     final String pad = StringUtils.repeat(' ', 100 - length);
     final DateHolder dateHolder = new DateHolder(value);
     assertThat(Processor.trancode(dateHolder))
+        .isEqualTo(expected + pad);
+  }
+
+  @Property
+  void shouldTrancodeTimeField(@ForAll final Date value) {
+    final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+    sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+    final String expected = sdf.format(value);
+    final int length = expected.length();
+    final String pad = StringUtils.repeat(' ', 100 - length);
+    final TimeHolder timeHolder = new TimeHolder(value);
+    assertThat(Processor.trancode(timeHolder))
         .isEqualTo(expected + pad);
   }
 
