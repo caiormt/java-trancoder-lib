@@ -19,9 +19,9 @@ import net.jqwik.api.constraints.FloatRange;
 import net.jqwik.api.constraints.StringLength;
 
 import br.com.tokunaga.trancoder.exception.TrancodeFieldException;
+import br.com.tokunaga.trancoder.util.BigDecimalHolder;
 import br.com.tokunaga.trancoder.util.BooleanHolder;
 import br.com.tokunaga.trancoder.util.DateHolder;
-import br.com.tokunaga.trancoder.util.DecimalHolderLeftNull;
 import br.com.tokunaga.trancoder.util.DoubleHolder;
 import br.com.tokunaga.trancoder.util.FloatHolder;
 import br.com.tokunaga.trancoder.util.Foo;
@@ -145,8 +145,8 @@ class ProcessorTests {
     final String expected = new DecimalFormat("0.00").format(value);
     final int length = expected.length();
     final String pad = StringUtils.repeat('0', 100 - length);
-    final DecimalHolderLeftNull<BigDecimal> numericHolder = new DecimalHolderLeftNull<>(value);
-    assertThat(Processor.trancode(numericHolder))
+    final BigDecimalHolder bigDecimalHoldernumericHolder = new BigDecimalHolder(value);
+    assertThat(Processor.trancode(bigDecimalHoldernumericHolder))
         .isEqualTo(pad + expected);
   }
 
