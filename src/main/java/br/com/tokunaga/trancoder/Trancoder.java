@@ -178,6 +178,19 @@ public abstract class Trancoder {
     return safePadValue(str, size, padChar, leftPad);
   }
 
+  public static String convert(
+      final Boolean value,
+      final int size,
+      final String trueCase,
+      final String falseCase,
+      final char padChar,
+      final boolean leftPad,
+      final boolean falseIfNull) {
+
+    final String str = safeValue(value, trueCase, falseCase, falseIfNull);
+    return safePadValue(str, size, padChar, leftPad);
+  }
+
   private static String safeValue(final String value, final boolean spaceIfNull) {
     return Objects.toString(value, nullValue(spaceIfNull));
   }
@@ -201,6 +214,17 @@ public abstract class Trancoder {
     return Objects.nonNull(value) ? dtf.format(value) : nullValue(defaultIfNull, dtf);
   }
 
+  private static String safeValue(
+      final Boolean value,
+      final String trueCase,
+      final String falseCase,
+      final boolean falseIfNull) {
+
+    return Objects.nonNull(value)
+           ? value ? trueCase : falseCase
+           : nullValue(falseIfNull, falseCase);
+  }
+
   private static String nullValue(final boolean spaceIfNull) {
     return spaceIfNull ? StringUtils.SPACE : StringUtils.EMPTY;
   }
@@ -215,6 +239,10 @@ public abstract class Trancoder {
 
   private static String nullValue(final boolean defaultIfNull, final DateTimeFormatter dateTimeFormatter) {
     return defaultIfNull ? dateTimeFormatter.format(DEFAULT_LOCALDATETIME) : StringUtils.EMPTY;
+  }
+
+  private static String nullValue(final boolean falseIfNull, final String falseCase) {
+    return falseIfNull ? falseCase : StringUtils.EMPTY;
   }
 
   private static SimpleDateFormat formatDateWithPattern(final String pattern) {
