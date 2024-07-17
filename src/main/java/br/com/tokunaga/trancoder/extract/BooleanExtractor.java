@@ -15,8 +15,8 @@ public class BooleanExtractor implements Extractor {
 
   @Override
   public FieldProcessor extract(final Field field) {
-    final BooleanField str = field.getAnnotation(BooleanField.class);
-    return Objects.nonNull(str) ? createBooleanProperty(str) : null;
+    final BooleanField bool = field.getAnnotation(BooleanField.class);
+    return Objects.nonNull(bool) ? createBooleanProperty(bool) : null;
   }
 
   private static BooleanFieldProcessor createBooleanProperty(final BooleanField field) {

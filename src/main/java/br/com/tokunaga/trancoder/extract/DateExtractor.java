@@ -15,8 +15,8 @@ public class DateExtractor implements Extractor {
 
   @Override
   public FieldProcessor extract(final Field field) {
-    final DateField number = field.getAnnotation(DateField.class);
-    return Objects.nonNull(number) ? createDateProperty(number) : null;
+    final DateField date = field.getAnnotation(DateField.class);
+    return Objects.nonNull(date) ? createDateProperty(date) : null;
   }
 
   private static DateFieldProcessor createDateProperty(final DateField field) {
