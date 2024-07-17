@@ -167,6 +167,18 @@ public abstract class Trancoder {
   }
 
   public static String convert(
+      final LocalTime value,
+      final int size,
+      final String pattern,
+      final char padChar,
+      final boolean leftPad,
+      final boolean defaultIfNull) {
+
+    final String str = safeValue(value, pattern, defaultIfNull);
+    return safePadValue(str, size, padChar, leftPad);
+  }
+
+  public static String convert(
       final LocalDateTime value,
       final int size,
       final String pattern,
