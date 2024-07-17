@@ -8,6 +8,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
@@ -733,6 +734,74 @@ class TrancoderTests {
   }
 
   @Property
+  void shouldConvertNullLocalTime(
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert((LocalTime) null, size, "HH:mm:ss", padChar, false, false))
+        .isEqualTo(pad);
+  }
+
+  @Property
+  void shouldConvertNullLocalTimeLeftPadded(
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert((LocalTime) null, size, "HH:mm:ss", padChar, true, false))
+        .isEqualTo(pad);
+  }
+
+  @Property
+  void shouldConvertNullLocalTimeAsDefault(
+      @ForAll @IntRange(min = 10, max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = "00:00:00";
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size - length);
+    assertThat(Trancoder.convert((LocalTime) null, size, "HH:mm:ss", padChar, false, true))
+        .isEqualTo(expected + pad);
+  }
+
+  @Property
+  void shouldConvertNullLocalTimeAsDefaultWithPattern(
+      @ForAll @IntRange(min = 10, max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = "00.00.00";
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size - length);
+    assertThat(Trancoder.convert((LocalTime) null, size, "HH.mm.ss", padChar, false, true))
+        .isEqualTo(expected + pad);
+  }
+
+  @Property
+  void shouldConvertNullLocalTimeAsDefaultLeftPadded(
+      @ForAll @IntRange(min = 10, max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = "00:00:00";
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size - length);
+    assertThat(Trancoder.convert((LocalTime) null, size, "HH:mm:ss", padChar, true, true))
+        .isEqualTo(pad + expected);
+  }
+
+  @Property
+  void shouldConvertNullLocalTimeAsDefaultWithPatternLeftPadded(
+      @ForAll @IntRange(min = 10, max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = "00.00.00";
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size - length);
+    assertThat(Trancoder.convert((LocalTime) null, size, "HH.mm.ss", padChar, true, true))
+        .isEqualTo(pad + expected);
+  }
+
+  @Property
   void shouldConvertNullLocalDateTime(
       @ForAll @IntRange(max = 1000) final int size,
       @ForAll final char padChar) {
@@ -1126,6 +1195,32 @@ class TrancoderTests {
   }
 
   @Property
+  void shouldConvertAnyLocalTime(
+      @ForAll final LocalTime value,
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = DateTimeFormatter.ofPattern("HH:mm:ss").format(value);
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert(value, length + size, "HH:mm:ss", padChar, false, false))
+        .isEqualTo(expected + pad);
+  }
+
+  @Property
+  void shouldConvertAnyLocalTimeWithPattern(
+      @ForAll final LocalTime value,
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = DateTimeFormatter.ofPattern("HH.mm.ss").format(value);
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert(value, length + size, "HH.mm.ss", padChar, false, false))
+        .isEqualTo(expected + pad);
+  }
+
+  @Property
   void shouldConvertAnyLocalDateTime(
       @ForAll final LocalDateTime value,
       @ForAll @IntRange(max = 1000) final int size,
@@ -1423,6 +1518,32 @@ class TrancoderTests {
   }
 
   @Property
+  void shouldConvertAnyLocalTimeLeftPadded(
+      @ForAll final LocalTime value,
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = DateTimeFormatter.ofPattern("HH:mm:ss").format(value);
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert(value, length + size, "HH:mm:ss", padChar, true, false))
+        .isEqualTo(pad + expected);
+  }
+
+  @Property
+  void shouldConvertAnyLocalTimeWithPatternLeftPadded(
+      @ForAll final LocalTime value,
+      @ForAll @IntRange(max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = DateTimeFormatter.ofPattern("HH.mm.ss").format(value);
+    int length = expected.length();
+    String pad = StringUtils.repeat(padChar, size);
+    assertThat(Trancoder.convert(value, length + size, "HH.mm.ss", padChar, true, false))
+        .isEqualTo(pad + expected);
+  }
+
+  @Property
   void shouldConvertAnyLocalDateTimeLeftPadded(
       @ForAll final LocalDateTime value,
       @ForAll @IntRange(max = 1000) final int size,
@@ -1712,6 +1833,28 @@ class TrancoderTests {
         .isExactlyInstanceOf(TrancodeOverflowException.class);
 
     assertThatThrownBy(() -> Trancoder.convert(value, target, "dd.MM.yyyy", padChar, false, true))
+        .isExactlyInstanceOf(TrancodeOverflowException.class);
+  }
+
+  @Property
+  void shouldThrowOverflowConvertingAnyLocalTimeExceedingSize(
+      @ForAll final LocalTime value,
+      @ForAll @IntRange(min = 1, max = 1000) final int size,
+      @ForAll final char padChar) {
+
+    String expected = value.toString();
+    int length = expected.length();
+    int target = length - size;
+    assertThatThrownBy(() -> Trancoder.convert(value, target, "HH:mm:ss", padChar, true, false))
+        .isExactlyInstanceOf(TrancodeOverflowException.class);
+
+    assertThatThrownBy(() -> Trancoder.convert(value, target, "HH:mm:ss", padChar, false, false))
+        .isExactlyInstanceOf(TrancodeOverflowException.class);
+
+    assertThatThrownBy(() -> Trancoder.convert(value, target, "HH:mm:ss", padChar, true, true))
+        .isExactlyInstanceOf(TrancodeOverflowException.class);
+
+    assertThatThrownBy(() -> Trancoder.convert(value, target, "HH:mm:ss", padChar, false, true))
         .isExactlyInstanceOf(TrancodeOverflowException.class);
   }
 
