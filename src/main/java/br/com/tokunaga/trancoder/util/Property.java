@@ -6,7 +6,7 @@ public abstract class Property {
   private final char padChar;
   private final boolean leftPad;
 
-  public Property(final int size, final char padChar, final boolean leftPad) {
+  protected Property(final int size, final char padChar, final boolean leftPad) {
     this.size = size;
     this.padChar = padChar;
     this.leftPad = leftPad;
