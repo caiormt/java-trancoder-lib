@@ -4,8 +4,8 @@ import java.lang.reflect.Field;
 import java.util.Objects;
 
 import br.com.tokunaga.trancoder.annotation.NumericField;
-import br.com.tokunaga.trancoder.processor.NumericFieldProcessor;
 import br.com.tokunaga.trancoder.processor.FieldProcessor;
+import br.com.tokunaga.trancoder.processor.NumericFieldProcessor;
 
 /**
  * The NumericExtractor class is an implementation of the {@link Extractor} interface that extracts a

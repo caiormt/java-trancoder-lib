@@ -20,6 +20,12 @@ public class DecimalExtractor implements Extractor {
   }
 
   private static DecimalFieldProcessor createDecimalProperty(final DecimalField field) {
-    return new DecimalFieldProcessor(field.size(), field.precision(), field.padChar(), field.leftPad(), field.zeroIfNull());
+    return new DecimalFieldProcessor(
+        field.size(),
+        field.precision(),
+        field.padChar(),
+        field.leftPad(),
+        field.zeroIfNull()
+    );
   }
 }

@@ -19,7 +19,7 @@ import net.jqwik.api.constraints.DoubleRange;
 import net.jqwik.api.constraints.FloatRange;
 import net.jqwik.api.constraints.StringLength;
 
-import br.com.tokunaga.trancoder.exception.TrancodeFieldException;
+import br.com.tokunaga.trancoder.exception.TrancoderFieldException;
 import br.com.tokunaga.trancoder.util.BigDecimalHolder;
 import br.com.tokunaga.trancoder.util.BigIntegerHolder;
 import br.com.tokunaga.trancoder.util.BooleanHolder;
@@ -53,14 +53,14 @@ class ProcessorTests {
   void shouldThrowFieldExceptionOnMismatchField(@ForAll final Long value) {
     final MismatchString mismatchString = new MismatchString(value);
     assertThatThrownBy(() -> Processor.trancode(mismatchString))
-        .isExactlyInstanceOf(TrancodeFieldException.class);
+        .isExactlyInstanceOf(TrancoderFieldException.class);
   }
 
   @Property
   void shouldThrowFieldExceptionOnMismatchFieldNumeric(@ForAll final String string) {
     final MismatchNumeric mismatchNumeric = new MismatchNumeric(string);
     assertThatThrownBy(() -> Processor.trancode(mismatchNumeric))
-        .isExactlyInstanceOf(TrancodeFieldException.class);
+        .isExactlyInstanceOf(TrancoderFieldException.class);
   }
 
   @Property

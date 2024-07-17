@@ -19,7 +19,7 @@ import net.jqwik.api.Property;
 import net.jqwik.api.constraints.IntRange;
 import net.jqwik.api.constraints.NotEmpty;
 
-import br.com.tokunaga.trancoder.exception.TrancodeOverflowException;
+import br.com.tokunaga.trancoder.exception.TrancoderOverflowException;
 
 class TrancoderTests {
 
@@ -1604,16 +1604,16 @@ class TrancoderTests {
     int length = str.length();
     int target = length - size;
     assertThatThrownBy(() -> Trancoder.convert(str, target, padChar, true, false))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
 
     assertThatThrownBy(() -> Trancoder.convert(str, target, padChar, false, false))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
 
     assertThatThrownBy(() -> Trancoder.convert(str, target, padChar, true, true))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
 
     assertThatThrownBy(() -> Trancoder.convert(str, target, padChar, false, true))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
   }
 
   @Property
@@ -1626,16 +1626,16 @@ class TrancoderTests {
     int length = expected.length();
     int target = length - size;
     assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, true, false))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
 
     assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, false, false))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
 
     assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, true, true))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
 
     assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, false, true))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
   }
 
   @Property
@@ -1648,16 +1648,16 @@ class TrancoderTests {
     int length = expected.length();
     int target = length - size;
     assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, true, false))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
 
     assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, false, false))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
 
     assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, true, true))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
 
     assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, false, true))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
   }
 
   @Property
@@ -1670,16 +1670,16 @@ class TrancoderTests {
     int length = expected.length();
     int target = length - size;
     assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, true, false))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
 
     assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, false, false))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
 
     assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, true, true))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
 
     assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, false, true))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
   }
 
   @Property
@@ -1692,16 +1692,16 @@ class TrancoderTests {
     int length = expected.length();
     int target = length - size;
     assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, true, false))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
 
     assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, false, false))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
 
     assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, true, true))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
 
     assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, false, true))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
   }
 
   @Property
@@ -1714,16 +1714,16 @@ class TrancoderTests {
     int length = expected.length();
     int target = length - size;
     assertThatThrownBy(() -> Trancoder.convert(value, target, 2, padChar, true, false))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
 
     assertThatThrownBy(() -> Trancoder.convert(value, target, 2, padChar, false, false))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
 
     assertThatThrownBy(() -> Trancoder.convert(value, target, 2, padChar, true, true))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
 
     assertThatThrownBy(() -> Trancoder.convert(value, target, 2, padChar, false, true))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
   }
 
   @Property
@@ -1736,16 +1736,16 @@ class TrancoderTests {
     int length = expected.length();
     int target = length - size;
     assertThatThrownBy(() -> Trancoder.convert(value, target, 2, padChar, true, false))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
 
     assertThatThrownBy(() -> Trancoder.convert(value, target, 2, padChar, false, false))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
 
     assertThatThrownBy(() -> Trancoder.convert(value, target, 2, padChar, true, true))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
 
     assertThatThrownBy(() -> Trancoder.convert(value, target, 2, padChar, false, true))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
   }
 
   @Property
@@ -1758,16 +1758,16 @@ class TrancoderTests {
     int length = expected.length();
     int target = length - size;
     assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, true, false))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
 
     assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, false, false))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
 
     assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, true, true))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
 
     assertThatThrownBy(() -> Trancoder.convert(value, target, padChar, false, true))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
   }
 
   @Property
@@ -1780,16 +1780,16 @@ class TrancoderTests {
     int length = expected.length();
     int target = length - size;
     assertThatThrownBy(() -> Trancoder.convert(value, target, 2, padChar, true, false))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
 
     assertThatThrownBy(() -> Trancoder.convert(value, target, 2, padChar, false, false))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
 
     assertThatThrownBy(() -> Trancoder.convert(value, target, 2, padChar, true, true))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
 
     assertThatThrownBy(() -> Trancoder.convert(value, target, 2, padChar, false, true))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
   }
 
   @Property
@@ -1802,16 +1802,16 @@ class TrancoderTests {
     int length = expected.length();
     int target = length - size;
     assertThatThrownBy(() -> Trancoder.convert(value, target, "dd.MM.yyyy", padChar, true, false))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
 
     assertThatThrownBy(() -> Trancoder.convert(value, target, "dd.MM.yyyy", padChar, false, false))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
 
     assertThatThrownBy(() -> Trancoder.convert(value, target, "dd.MM.yyyy", padChar, true, true))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
 
     assertThatThrownBy(() -> Trancoder.convert(value, target, "dd.MM.yyyy", padChar, false, true))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
   }
 
   @Property
@@ -1824,16 +1824,16 @@ class TrancoderTests {
     int length = expected.length();
     int target = length - size;
     assertThatThrownBy(() -> Trancoder.convert(value, target, "dd.MM.yyyy", padChar, true, false))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
 
     assertThatThrownBy(() -> Trancoder.convert(value, target, "dd.MM.yyyy", padChar, false, false))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
 
     assertThatThrownBy(() -> Trancoder.convert(value, target, "dd.MM.yyyy", padChar, true, true))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
 
     assertThatThrownBy(() -> Trancoder.convert(value, target, "dd.MM.yyyy", padChar, false, true))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
   }
 
   @Property
@@ -1846,16 +1846,16 @@ class TrancoderTests {
     int length = expected.length();
     int target = length - size;
     assertThatThrownBy(() -> Trancoder.convert(value, target, "HH:mm:ss", padChar, true, false))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
 
     assertThatThrownBy(() -> Trancoder.convert(value, target, "HH:mm:ss", padChar, false, false))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
 
     assertThatThrownBy(() -> Trancoder.convert(value, target, "HH:mm:ss", padChar, true, true))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
 
     assertThatThrownBy(() -> Trancoder.convert(value, target, "HH:mm:ss", padChar, false, true))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
   }
 
   @Property
@@ -1868,16 +1868,16 @@ class TrancoderTests {
     int length = expected.length();
     int target = length - size;
     assertThatThrownBy(() -> Trancoder.convert(value, target, "dd.MM.yyyy.HH-mm-ss-SSSSSS", padChar, true, false))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
 
     assertThatThrownBy(() -> Trancoder.convert(value, target, "dd.MM.yyyy.HH-mm-ss-SSSSSS", padChar, false, false))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
 
     assertThatThrownBy(() -> Trancoder.convert(value, target, "dd.MM.yyyy.HH-mm-ss-SSSSSS", padChar, true, true))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
 
     assertThatThrownBy(() -> Trancoder.convert(value, target, "dd.MM.yyyy.HH-mm-ss-SSSSSS", padChar, false, true))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
   }
 
   @Property
@@ -1890,15 +1890,15 @@ class TrancoderTests {
     int length = expected.length();
     int target = length - size;
     assertThatThrownBy(() -> Trancoder.convert(value, target, "S", "N", padChar, true, false))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
 
     assertThatThrownBy(() -> Trancoder.convert(value, target, "S", "N", padChar, false, false))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
 
     assertThatThrownBy(() -> Trancoder.convert(value, target, "S", "N", padChar, true, true))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
 
     assertThatThrownBy(() -> Trancoder.convert(value, target, "S", "N", padChar, false, true))
-        .isExactlyInstanceOf(TrancodeOverflowException.class);
+        .isExactlyInstanceOf(TrancoderOverflowException.class);
   }
 }

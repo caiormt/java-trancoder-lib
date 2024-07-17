@@ -6,8 +6,8 @@ import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
-import br.com.tokunaga.trancoder.exception.TrancodeFieldException;
-import br.com.tokunaga.trancoder.exception.TrancodeReflectionException;
+import br.com.tokunaga.trancoder.exception.TrancoderFieldException;
+import br.com.tokunaga.trancoder.exception.TrancoderReflectionException;
 import br.com.tokunaga.trancoder.extract.DefaultExtractor;
 import br.com.tokunaga.trancoder.extract.Extractor;
 import br.com.tokunaga.trancoder.processor.FieldProcessor;
@@ -35,7 +35,7 @@ public abstract class Processor {
         continue;
 
       if (!processor.supports(field.getType()))
-        throw new TrancodeFieldException();
+        throw new TrancoderFieldException();
 
       final Object value = extractValue(field, object);
       final String trancode = processor.trancode(value);
@@ -51,7 +51,7 @@ public abstract class Processor {
       return FieldUtils.readField(field, object, true);
     }
     catch (final IllegalAccessException ex) {
-      throw new TrancodeReflectionException();
+      throw new TrancoderReflectionException();
     }
   }
 }

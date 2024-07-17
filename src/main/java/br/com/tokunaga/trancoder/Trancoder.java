@@ -17,7 +17,7 @@ import java.util.TimeZone;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
-import br.com.tokunaga.trancoder.exception.TrancodeOverflowException;
+import br.com.tokunaga.trancoder.exception.TrancoderOverflowException;
 
 public abstract class Trancoder {
 
@@ -286,7 +286,7 @@ public abstract class Trancoder {
   private static String safePadValue(final String str, final int size, final char padChar, final boolean leftPad) {
     final String value = padValue(str, size, padChar, leftPad);
     if (isPadOverflow(value, size))
-      throw new TrancodeOverflowException();
+      throw new TrancoderOverflowException();
     return value;
   }
 }
