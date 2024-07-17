@@ -220,9 +220,8 @@ public abstract class Trancoder {
       final String falseCase,
       final boolean falseIfNull) {
 
-    return Objects.nonNull(value)
-           ? value ? trueCase : falseCase
-           : nullValue(falseIfNull, falseCase);
+    final String result = Boolean.TRUE.equals(value) ? trueCase : falseCase;
+    return Objects.nonNull(value) ? result : nullValue(falseIfNull, falseCase);
   }
 
   private static String nullValue(final boolean spaceIfNull) {
