@@ -5,6 +5,8 @@ import static org.assertj.core.api.Assertions.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -17,6 +19,7 @@ import net.jqwik.api.constraints.FloatRange;
 import net.jqwik.api.constraints.StringLength;
 
 import br.com.tokunaga.trancoder.exception.TrancodeFieldException;
+import br.com.tokunaga.trancoder.util.DateHolderLeftNull;
 import br.com.tokunaga.trancoder.util.DecimalHolderLeftNull;
 import br.com.tokunaga.trancoder.util.Foo;
 import br.com.tokunaga.trancoder.util.MismatchNumeric;
@@ -142,6 +145,16 @@ class ProcessorTests {
     final DecimalHolderLeftNull<BigDecimal> numericHolder = new DecimalHolderLeftNull<>(value);
     assertThat(Processor.trancode(numericHolder))
         .isEqualTo(pad + expected);
+  }
+
+  @Property
+  void shouldTrancodeDateField(@ForAll final Date value) {
+    final String expected = new SimpleDateFormat("dd.MM.yyyy").format(value);
+    final int length = expected.length();
+    final String pad = StringUtils.repeat(' ', 100 - length);
+    final DateHolderLeftNull<Date> dateHolder = new DateHolderLeftNull<>(value);
+    assertThat(Processor.trancode(dateHolder))
+        .isEqualTo(expected + pad);
   }
 
   @Property
