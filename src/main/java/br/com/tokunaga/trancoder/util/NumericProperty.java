@@ -9,7 +9,7 @@ public class NumericProperty extends Property {
     this.zeroIfNull = zeroIfNull;
   }
 
-  public boolean isZeroIfNull() {
+  public boolean zeroIfNull() {
     return zeroIfNull;
   }
 }

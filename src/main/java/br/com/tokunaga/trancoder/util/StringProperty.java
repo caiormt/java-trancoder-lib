@@ -9,7 +9,7 @@ public class StringProperty extends Property {
     this.spaceIfNull = spaceIfNull;
   }
 
-  public boolean isSpaceIfNull() {
+  public boolean spaceIfNull() {
     return spaceIfNull;
   }
 }

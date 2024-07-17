@@ -12,15 +12,15 @@ public class Property {
     this.leftPad = leftPad;
   }
 
-  public int getSize() {
+  public int size() {
     return size;
   }
 
-  public char getPadChar() {
+  public char padChar() {
     return padChar;
   }
 
-  public boolean isLeftPad() {
+  public boolean leftPad() {
     return leftPad;
   }
 }

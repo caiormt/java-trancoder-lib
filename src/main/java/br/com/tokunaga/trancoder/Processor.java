@@ -85,12 +85,12 @@ public abstract class Processor {
   private static String trancodeValue(final Object object, final Property property) {
     if (StringProperty.class.isAssignableFrom(property.getClass())) {
       final StringProperty str = (StringProperty) property;
-      return Trancoder.convert((String) object, str.getSize(), str.getPadChar(), str.isLeftPad(), str.isSpaceIfNull());
+      return Trancoder.convert((String) object, str.size(), str.padChar(), str.leftPad(), str.spaceIfNull());
     }
 
     if (NumericProperty.class.isAssignableFrom(property.getClass())) {
       final NumericProperty str = (NumericProperty) property;
-      return Trancoder.convert((Integer) object, str.getSize(), str.getPadChar(), str.isLeftPad(), str.isZeroIfNull());
+      return Trancoder.convert((Integer) object, str.size(), str.padChar(), str.leftPad(), str.zeroIfNull());
     }
 
     return StringUtils.EMPTY;
