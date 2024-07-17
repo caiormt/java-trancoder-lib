@@ -8,8 +8,8 @@ import br.com.tokunaga.trancoder.processor.DateFieldProcessor;
 import br.com.tokunaga.trancoder.processor.FieldProcessor;
 
 /**
- * The DateExtractor class is an implementation of the {@link Extractor} interface that extracts a {@link DateFieldProcessor}
- * from a {@link Field} annotated with {@link DateField}.
+ * The DateExtractor class is an implementation of the {@link Extractor} interface that extracts a
+ * {@link DateFieldProcessor} from a {@link Field} annotated with {@link DateField}.
  */
 public class DateExtractor implements Extractor {
 
@@ -20,6 +20,12 @@ public class DateExtractor implements Extractor {
   }
 
   private static DateFieldProcessor createDateProperty(final DateField field) {
-    return new DateFieldProcessor(field.size(), field.pattern(), field.padChar(), field.leftPad(), field.defaultIfNull());
+    return new DateFieldProcessor(
+        field.size(),
+        field.pattern(),
+        field.padChar(),
+        field.leftPad(),
+        field.defaultIfNull()
+    );
   }
 }
