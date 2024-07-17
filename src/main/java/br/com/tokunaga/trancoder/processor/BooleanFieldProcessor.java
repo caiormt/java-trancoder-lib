@@ -32,7 +32,7 @@ public class BooleanFieldProcessor extends FieldProcessor {
     return falseCase;
   }
 
-  public boolean spaceIfNull() {
+  public boolean falseIfNull() {
     return falseIfNull;
   }
 
@@ -43,6 +43,6 @@ public class BooleanFieldProcessor extends FieldProcessor {
 
   @Override
   public String trancode(final Object value) {
-    return Trancoder.convert((Boolean) value, size(), trueCase(), falseCase(), padChar(), leftPad(), spaceIfNull());
+    return Trancoder.convert((Boolean) value, size(), trueCase(), falseCase(), padChar(), leftPad(), falseIfNull());
   }
 }
