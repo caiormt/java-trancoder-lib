@@ -30,6 +30,7 @@ import br.com.tokunaga.trancoder.util.IntegerHolder;
 import br.com.tokunaga.trancoder.util.MismatchNumeric;
 import br.com.tokunaga.trancoder.util.MismatchString;
 import br.com.tokunaga.trancoder.util.NumericHolderLeftNull;
+import br.com.tokunaga.trancoder.util.ShortHolder;
 import br.com.tokunaga.trancoder.util.StringHolderLeft;
 import br.com.tokunaga.trancoder.util.StringHolderLeftNull;
 import br.com.tokunaga.trancoder.util.StringHolderRight;
@@ -86,8 +87,8 @@ class ProcessorTests {
     final String expected = Short.toString(value);
     final int length = expected.length();
     final String pad = StringUtils.repeat('0', 100 - length);
-    final NumericHolderLeftNull<Short> numericHolder = new NumericHolderLeftNull<>(value);
-    assertThat(Processor.trancode(numericHolder))
+    final ShortHolder shortHolder = new ShortHolder(value);
+    assertThat(Processor.trancode(shortHolder))
         .isEqualTo(pad + expected);
   }
 
@@ -216,8 +217,8 @@ class ProcessorTests {
   @Example
   void shouldTrancodeShortFieldNullLeftPadding() {
     final String pad = StringUtils.repeat('0', 99);
-    final NumericHolderLeftNull<Short> numericHolder = new NumericHolderLeftNull<>(null);
-    assertThat(Processor.trancode(numericHolder))
+    final ShortHolder shortHolder = new ShortHolder(null);
+    assertThat(Processor.trancode(shortHolder))
         .isEqualTo(pad + "0");
   }
 
