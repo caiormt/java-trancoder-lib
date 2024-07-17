@@ -1,13 +1,11 @@
 package br.com.tokunaga.trancoder.processor;
 
 import java.math.BigDecimal;
-import java.util.Objects;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.reflect.TypeUtils;
 
 import br.com.tokunaga.trancoder.Trancoder;
-import br.com.tokunaga.trancoder.exception.TrancodeFieldException;
 
 public class DecimalFieldProcessor extends FieldProcessor {
 
@@ -36,15 +34,12 @@ public class DecimalFieldProcessor extends FieldProcessor {
 
   @Override
   public boolean supports(final Class<?> cls) {
-    return Stream.of(Number.class, Float.class, Double.class, BigDecimal.class)
+    return Stream.of(Float.class, Double.class, BigDecimal.class)
                  .anyMatch(type -> TypeUtils.isAssignable(cls, type));
   }
 
   @Override
   public String trancode(final Object value) {
-    if (Objects.isNull(value))
-      return Trancoder.convert((Float) null, size(), precision(), padChar(), leftPad(), zeroIfNull());
-
     if (TypeUtils.isInstance(value, Float.class))
       return Trancoder.convert((Float) value, size(), precision(), padChar(), leftPad(), zeroIfNull());
 
@@ -54,6 +49,6 @@ public class DecimalFieldProcessor extends FieldProcessor {
     if (TypeUtils.isInstance(value, BigDecimal.class))
       return Trancoder.convert((BigDecimal) value, size(), precision(), padChar(), leftPad(), zeroIfNull());
 
-    throw new TrancodeFieldException();
+    return Trancoder.convert((Float) null, size(), precision(), padChar(), leftPad(), zeroIfNull());
   }
 }
