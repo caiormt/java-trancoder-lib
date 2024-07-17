@@ -21,6 +21,7 @@ import net.jqwik.api.constraints.StringLength;
 import br.com.tokunaga.trancoder.exception.TrancodeFieldException;
 import br.com.tokunaga.trancoder.util.BigDecimalHolder;
 import br.com.tokunaga.trancoder.util.BooleanHolder;
+import br.com.tokunaga.trancoder.util.ByteHolder;
 import br.com.tokunaga.trancoder.util.DateHolder;
 import br.com.tokunaga.trancoder.util.DoubleHolder;
 import br.com.tokunaga.trancoder.util.FloatHolder;
@@ -75,8 +76,8 @@ class ProcessorTests {
     final String expected = Byte.toString(value);
     final int length = expected.length();
     final String pad = StringUtils.repeat('0', 100 - length);
-    final NumericHolderLeftNull<Byte> numericHolder = new NumericHolderLeftNull<>(value);
-    assertThat(Processor.trancode(numericHolder))
+    final ByteHolder byteHolder = new ByteHolder(value);
+    assertThat(Processor.trancode(byteHolder))
         .isEqualTo(pad + expected);
   }
 
@@ -207,8 +208,8 @@ class ProcessorTests {
   @Example
   void shouldTrancodeByteFieldNullLeftPadding() {
     final String pad = StringUtils.repeat('0', 99);
-    final NumericHolderLeftNull<Byte> numericHolder = new NumericHolderLeftNull<>(null);
-    assertThat(Processor.trancode(numericHolder))
+    final ByteHolder byteHolder = new ByteHolder(null);
+    assertThat(Processor.trancode(byteHolder))
         .isEqualTo(pad + "0");
   }
 
