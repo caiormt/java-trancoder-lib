@@ -27,6 +27,7 @@ import br.com.tokunaga.trancoder.util.DoubleHolder;
 import br.com.tokunaga.trancoder.util.FloatHolder;
 import br.com.tokunaga.trancoder.util.Foo;
 import br.com.tokunaga.trancoder.util.IntegerHolder;
+import br.com.tokunaga.trancoder.util.IntegerSpaceHolder;
 import br.com.tokunaga.trancoder.util.MismatchNumeric;
 import br.com.tokunaga.trancoder.util.MismatchString;
 import br.com.tokunaga.trancoder.util.NumericHolderLeftNull;
@@ -269,7 +270,7 @@ class ProcessorTests {
     final String expected = Integer.toString(integer);
     final int length = expected.length();
     final String pad = StringUtils.repeat(' ', 100 - length);
-    final IntegerHolder integerHolder = new IntegerHolder(integer);
+    final IntegerSpaceHolder integerHolder = new IntegerSpaceHolder(integer);
     assertThat(Processor.trancode(integerHolder))
         .isEqualTo(pad + expected);
   }
