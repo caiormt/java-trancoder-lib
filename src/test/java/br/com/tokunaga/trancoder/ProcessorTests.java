@@ -22,6 +22,7 @@ import br.com.tokunaga.trancoder.exception.TrancodeFieldException;
 import br.com.tokunaga.trancoder.util.BooleanHolder;
 import br.com.tokunaga.trancoder.util.DateHolder;
 import br.com.tokunaga.trancoder.util.DecimalHolderLeftNull;
+import br.com.tokunaga.trancoder.util.DoubleHolder;
 import br.com.tokunaga.trancoder.util.FloatHolder;
 import br.com.tokunaga.trancoder.util.Foo;
 import br.com.tokunaga.trancoder.util.MismatchNumeric;
@@ -134,8 +135,8 @@ class ProcessorTests {
     final String expected = new DecimalFormat("0.00").format(value);
     final int length = expected.length();
     final String pad = StringUtils.repeat('0', 100 - length);
-    final DecimalHolderLeftNull<Double> numericHolder = new DecimalHolderLeftNull<>(value);
-    assertThat(Processor.trancode(numericHolder))
+    final DoubleHolder doubleHolder = new DoubleHolder(value);
+    assertThat(Processor.trancode(doubleHolder))
         .isEqualTo(pad + expected);
   }
 
