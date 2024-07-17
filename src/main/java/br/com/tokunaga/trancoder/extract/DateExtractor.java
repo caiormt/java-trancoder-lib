@@ -1,7 +1,6 @@
 package br.com.tokunaga.trancoder.extract;
 
 import java.lang.reflect.Field;
-import java.util.Objects;
 
 import br.com.tokunaga.trancoder.annotation.DateField;
 import br.com.tokunaga.trancoder.processor.DateFieldProcessor;
@@ -11,15 +10,14 @@ import br.com.tokunaga.trancoder.processor.FieldProcessor;
  * The DateExtractor class is an implementation of the {@link Extractor} interface that extracts a
  * {@link DateFieldProcessor} from a {@link Field} annotated with {@link DateField}.
  */
-public class DateExtractor implements Extractor {
+public class DateExtractor extends AnnotationExtractor<DateField> {
 
-  @Override
-  public FieldProcessor extract(final Field field) {
-    final DateField date = field.getAnnotation(DateField.class);
-    return Objects.nonNull(date) ? createDateProperty(date) : null;
+  public DateExtractor() {
+    super(DateField.class);
   }
 
-  private static DateFieldProcessor createDateProperty(final DateField field) {
+  @Override
+  protected FieldProcessor createProcessor(final DateField field) {
     return new DateFieldProcessor(
         field.size(),
         field.pattern(),
