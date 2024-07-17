@@ -10,7 +10,7 @@ import br.com.tokunaga.trancoder.exception.TrancodeFieldException;
 import br.com.tokunaga.trancoder.exception.TrancodeReflectionException;
 import br.com.tokunaga.trancoder.extract.DefaultExtractor;
 import br.com.tokunaga.trancoder.extract.Extractor;
-import br.com.tokunaga.trancoder.util.Property;
+import br.com.tokunaga.trancoder.processor.FieldProcessor;
 
 public abstract class Processor {
 
@@ -30,15 +30,15 @@ public abstract class Processor {
     final StringBuilder sb = new StringBuilder();
     for (final Field field : FieldUtils.getAllFieldsList(cls)) {
 
-      final Property property = extractor.extract(field);
-      if (Objects.isNull(property))
+      final FieldProcessor processor = extractor.extract(field);
+      if (Objects.isNull(processor))
         continue;
 
-      if (!property.supports(field.getType()))
+      if (!processor.supports(field.getType()))
         throw new TrancodeFieldException();
 
       final Object value = extractValue(field, object);
-      final String trancode = property.trancode(value);
+      final String trancode = processor.trancode(value);
 
       sb.append(trancode);
     }

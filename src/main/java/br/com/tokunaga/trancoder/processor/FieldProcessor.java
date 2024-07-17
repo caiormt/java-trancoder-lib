@@ -1,12 +1,12 @@
-package br.com.tokunaga.trancoder.util;
+package br.com.tokunaga.trancoder.processor;
 
-public abstract class Property {
+public abstract class FieldProcessor {
 
   private final int size;
   private final char padChar;
   private final boolean leftPad;
 
-  protected Property(final int size, final char padChar, final boolean leftPad) {
+  protected FieldProcessor(final int size, final char padChar, final boolean leftPad) {
     this.size = size;
     this.padChar = padChar;
     this.leftPad = leftPad;

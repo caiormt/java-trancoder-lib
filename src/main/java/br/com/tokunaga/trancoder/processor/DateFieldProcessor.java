@@ -1,4 +1,4 @@
-package br.com.tokunaga.trancoder.util;
+package br.com.tokunaga.trancoder.processor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -11,12 +11,12 @@ import org.apache.commons.lang3.reflect.TypeUtils;
 import br.com.tokunaga.trancoder.Trancoder;
 import br.com.tokunaga.trancoder.exception.TrancodeFieldException;
 
-public class DateProperty extends Property {
+public class DateFieldProcessor extends FieldProcessor {
 
   private final String pattern;
   private final boolean defaultIfNull;
 
-  public DateProperty(
+  public DateFieldProcessor(
       final int size,
       final String pattern,
       final char padChar,

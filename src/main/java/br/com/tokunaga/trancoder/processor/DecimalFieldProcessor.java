@@ -1,4 +1,4 @@
-package br.com.tokunaga.trancoder.util;
+package br.com.tokunaga.trancoder.processor;
 
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -9,12 +9,12 @@ import org.apache.commons.lang3.reflect.TypeUtils;
 import br.com.tokunaga.trancoder.Trancoder;
 import br.com.tokunaga.trancoder.exception.TrancodeFieldException;
 
-public class DecimalProperty extends Property {
+public class DecimalFieldProcessor extends FieldProcessor {
 
   private final int precision;
   private final boolean zeroIfNull;
 
-  public DecimalProperty(
+  public DecimalFieldProcessor(
       final int size,
       final int precision,
       final char padChar,

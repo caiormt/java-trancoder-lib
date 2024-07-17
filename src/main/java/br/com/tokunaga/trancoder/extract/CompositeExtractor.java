@@ -4,11 +4,11 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Objects;
 
-import br.com.tokunaga.trancoder.util.Property;
+import br.com.tokunaga.trancoder.processor.FieldProcessor;
 
 /**
  * The CompositeExtractor class is an implementation of the {@link Extractor} interface that combines multiple
- * Extractors to extract {@link Property properties} from a {@link Field}.
+ * Extractors to extract {@link FieldProcessor properties} from a {@link Field}.
  */
 public class CompositeExtractor implements Extractor {
 
@@ -19,11 +19,11 @@ public class CompositeExtractor implements Extractor {
   }
 
   @Override
-  public Property extract(final Field field) {
+  public FieldProcessor extract(final Field field) {
     for (final Extractor extractor : delegates) {
-      final Property property = extractor.extract(field);
-      if (Objects.nonNull(property))
-        return property;
+      final FieldProcessor fieldProcessor = extractor.extract(field);
+      if (Objects.nonNull(fieldProcessor))
+        return fieldProcessor;
     }
     return null;
   }

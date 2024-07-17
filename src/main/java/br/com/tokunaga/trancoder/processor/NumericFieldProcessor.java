@@ -1,4 +1,4 @@
-package br.com.tokunaga.trancoder.util;
+package br.com.tokunaga.trancoder.processor;
 
 import java.math.BigInteger;
 import java.util.Objects;
@@ -9,11 +9,11 @@ import org.apache.commons.lang3.reflect.TypeUtils;
 import br.com.tokunaga.trancoder.Trancoder;
 import br.com.tokunaga.trancoder.exception.TrancodeFieldException;
 
-public class NumericProperty extends Property {
+public class NumericFieldProcessor extends FieldProcessor {
 
   private final boolean zeroIfNull;
 
-  public NumericProperty(final int size, final char padChar, final boolean leftPad, final boolean zeroIfNull) {
+  public NumericFieldProcessor(final int size, final char padChar, final boolean leftPad, final boolean zeroIfNull) {
     super(size, padChar, leftPad);
     this.zeroIfNull = zeroIfNull;
   }

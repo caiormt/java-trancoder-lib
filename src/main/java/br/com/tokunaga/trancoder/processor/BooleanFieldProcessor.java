@@ -1,16 +1,16 @@
-package br.com.tokunaga.trancoder.util;
+package br.com.tokunaga.trancoder.processor;
 
 import org.apache.commons.lang3.reflect.TypeUtils;
 
 import br.com.tokunaga.trancoder.Trancoder;
 
-public class BooleanProperty extends Property {
+public class BooleanFieldProcessor extends FieldProcessor {
 
   private final String trueCase;
   private final String falseCase;
   private final boolean falseIfNull;
 
-  public BooleanProperty(
+  public BooleanFieldProcessor(
       final int size,
       final String trueCase,
       final String falseCase,
