@@ -10,7 +10,7 @@ public abstract class AnnotationExtractor<T extends Annotation> implements Extra
 
   private final Class<T> annotationClass;
 
-  public AnnotationExtractor(final Class<T> annotationClass) {
+  protected AnnotationExtractor(final Class<T> annotationClass) {
     this.annotationClass = annotationClass;
   }
 
