@@ -17,7 +17,7 @@ import java.util.TimeZone;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
-import br.com.tokunaga.trancoder.exception.TrancodeOverflowException;
+import br.com.tokunaga.trancoder.exception.TrancoderOverflowException;
 
 public abstract class Trancoder {
 
@@ -167,6 +167,18 @@ public abstract class Trancoder {
   }
 
   public static String convert(
+      final LocalTime value,
+      final int size,
+      final String pattern,
+      final char padChar,
+      final boolean leftPad,
+      final boolean defaultIfNull) {
+
+    final String str = safeValue(value, pattern, defaultIfNull);
+    return safePadValue(str, size, padChar, leftPad);
+  }
+
+  public static String convert(
       final LocalDateTime value,
       final int size,
       final String pattern,
@@ -175,6 +187,19 @@ public abstract class Trancoder {
       final boolean defaultIfNull) {
 
     final String str = safeValue(value, pattern, defaultIfNull);
+    return safePadValue(str, size, padChar, leftPad);
+  }
+
+  public static String convert(
+      final Boolean value,
+      final int size,
+      final String trueCase,
+      final String falseCase,
+      final char padChar,
+      final boolean leftPad,
+      final boolean falseIfNull) {
+
+    final String str = safeValue(value, trueCase, falseCase, falseIfNull);
     return safePadValue(str, size, padChar, leftPad);
   }
 
@@ -201,6 +226,16 @@ public abstract class Trancoder {
     return Objects.nonNull(value) ? dtf.format(value) : nullValue(defaultIfNull, dtf);
   }
 
+  private static String safeValue(
+      final Boolean value,
+      final String trueCase,
+      final String falseCase,
+      final boolean falseIfNull) {
+
+    final String result = Boolean.TRUE.equals(value) ? trueCase : falseCase;
+    return Objects.nonNull(value) ? result : nullValue(falseIfNull, falseCase);
+  }
+
   private static String nullValue(final boolean spaceIfNull) {
     return spaceIfNull ? StringUtils.SPACE : StringUtils.EMPTY;
   }
@@ -215,6 +250,10 @@ public abstract class Trancoder {
 
   private static String nullValue(final boolean defaultIfNull, final DateTimeFormatter dateTimeFormatter) {
     return defaultIfNull ? dateTimeFormatter.format(DEFAULT_LOCALDATETIME) : StringUtils.EMPTY;
+  }
+
+  private static String nullValue(final boolean falseIfNull, final String falseCase) {
+    return falseIfNull ? falseCase : StringUtils.EMPTY;
   }
 
   private static SimpleDateFormat formatDateWithPattern(final String pattern) {
@@ -247,7 +286,7 @@ public abstract class Trancoder {
   private static String safePadValue(final String str, final int size, final char padChar, final boolean leftPad) {
     final String value = padValue(str, size, padChar, leftPad);
     if (isPadOverflow(value, size))
-      throw new TrancodeOverflowException();
+      throw new TrancoderOverflowException();
     return value;
   }
 }
