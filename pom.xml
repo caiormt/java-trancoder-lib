@@ -20,7 +20,7 @@
         <assertj.version>3.26.3</assertj.version>
         <jqwik.version>1.9.1</jqwik.version>
 
-        <maven-surefire-plugin.version>3.5.0</maven-surefire-plugin.version>
+        <maven-surefire-plugin.version>3.5.1</maven-surefire-plugin.version>
         <jacoco-maven-plugin.version>0.8.12</jacoco-maven-plugin.version>
     </properties>
 
