@@ -17,7 +17,7 @@
         <commons-lang3.version>3.17.0</commons-lang3.version>
 
         <junit-jupiter.version>5.11.3</junit-jupiter.version>
-        <assertj.version>3.26.3</assertj.version>
+        <assertj.version>3.27.0</assertj.version>
         <jqwik.version>1.9.1</jqwik.version>
 
         <maven-surefire-plugin.version>3.5.2</maven-surefire-plugin.version>
